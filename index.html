@@ -384,6 +384,26 @@
             color: #6c757d;
         }
 
+        .instructor-avatar {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            border-radius: 50%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+        }
+
+        .qualifications {
+            margin-top: 2rem;
+        }
+        .qualifications-list {
+            margin-top: 0.5rem;
+        }
+
         @media (max-width: 768px) {
             .mission-grid,
             .services-grid {
@@ -642,12 +662,9 @@
             .section h2, .reviews-section h2 {
                 font-size: 2rem;
             }
-
-            .about-grid ul {
-                list-style-position: inside; /* Puts bullets inside the text block */
-                text-align: left; /* Re-align text to the left for readability */
-                display: inline-block; /* To respect the parent's text-align: center */
-                padding-left: 0; /* Remove default padding */
+            .qualifications {
+                display: inline-block; /* Allows the parent's text-align:center to work */
+                text-align: left; /* Aligns the text inside this block to the left */
             }
         }
     </style>
@@ -944,15 +961,15 @@
         <section id="about" class="section">
             <h2>About Your Instructor</h2>
             <div class="about-grid">
-                <div style="text-align: center;">
-                    <div style="width: 200px; height: 200px; background: linear-gradient(135deg, #48bb78, #38a169); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">♛</div>
+                <div>
+                    <div class="instructor-avatar">♛</div>
                 </div>
                 <div>
                     <p>With over 15 years of chess teaching experience, I'm passionate about sharing the beauty and strategy of chess with students of all ages. I hold a USCF rating of 2100 and have coached numerous students to tournament success.</p>
                     <p>My teaching philosophy focuses on making chess fun and accessible while building strong fundamentals. Whether you're a complete beginner or looking to break through to the next level, I'll tailor lessons to your specific needs and goals.</p>
-                    <div style="margin-top: 2rem;">
+                    <div class="qualifications">
                         <strong>Qualifications:</strong>
-                        <ul style="margin-top: 0.5rem;">
+                        <ul class="qualifications-list">
                             <li>USCF Certified Chess Coach</li>
                             <li>15+ years teaching experience</li>
                             <li>Tournament director certification</li>
