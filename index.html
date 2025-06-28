@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tecumseh Chess Lessons - Professional Chess Lessons</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
         * {
             margin: 0;
             padding: 0;
@@ -28,31 +30,45 @@
         header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 1rem 0;
+            /* padding: 1rem 0; */ /* Replaced with fixed height and flexbox for alignment */
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            height: 80px; /* Set a fixed height for the header */
+            display: flex;
+            align-items: center;
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
+            padding: 0 20px;
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #4a5568;
             display: flex;
             align-items: center;
             gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-text {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem; /* Adjusted for two lines */
+            color: #2d3748;
+            letter-spacing: -0.5px;
+            line-height: 1.1; /* Adjust line height for stacked text */
         }
 
         .chess-piece {
-            font-size: 2rem;
+            font-size: 2.2rem;
+            color: #38a169;
+            line-height: 1;
         }
 
         .nav-links {
@@ -68,12 +84,48 @@
             transition: color 0.3s ease;
         }
 
+        /* Hamburger Menu Styles */
+        .hamburger-menu {
+            display: none; /* Hidden by default on desktop */
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+            z-index: 1100; /* Above nav-links when active */
+        }
+
+        .hamburger-menu span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: #4a5568;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* Hamburger animation to 'X' */
+        .hamburger-menu.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .hamburger-menu.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-menu.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Mobile Nav Links */
+        /* Styles for when the menu is open will be in the media query */
+
         .nav-links a:hover {
             color: #48bb78;
         }
 
         main {
-            margin-top: 80px;
+            margin-top: 120px; /* Increased space from header */
         }
 
         .hero {
@@ -115,9 +167,32 @@
             animation: fadeInUp 1s ease-out 0.4s both;
         }
 
+        .video-placeholder {
+            aspect-ratio: 16 / 9;
+            width: 90%;
+            max-width: 800px;
+            margin: 2rem auto;
+            background: #000; /* Black background for a clean look */
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            animation: fadeInUp 1s ease-out 0.1s both;
+            overflow: hidden; /* Ensures the iframe corners are rounded */
+        }
+
+        .video-placeholder iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         .cta-button:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 25px rgba(47, 133, 90, 0.6);
+        }
+
+        .section-cta-wrapper {
+            text-align: center;
+            margin-top: 3rem;
         }
 
         .section {
@@ -131,6 +206,39 @@
 
         .section:hover {
             transform: translateY(-5px);
+        }
+
+        .reviews-section {
+            background: white;
+            margin: 2rem 0;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .reviews-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .reviews-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #4a5568;
+            position: relative;
+        }
+
+        .reviews-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(45deg, #48bb78, #38a169);
+            border-radius: 2px;
         }
 
         .section h2 {
@@ -155,9 +263,83 @@
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr); /* Set to a 2-column grid */
             gap: 2rem;
             margin-top: 2rem;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .reviews-slider-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reviews-slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            align-items: flex-start; /* Prevents slides from stretching vertically */
+        }
+
+        .reviews-page {
+            display: grid;
+            grid-template-columns: 1fr; /* Single column layout */
+            gap: 2rem;
+            min-width: 100%;
+            padding: 0 15%; /* Add padding on desktop to prevent it being too wide */
+        }
+
+        .slider-navigation {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 1rem;
+            z-index: 10;
+        }
+
+        .slider-navigation button {
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .slider-dots {
+            text-align: center;
+            padding-top: 1rem;
+        }
+
+        .dot {
+            cursor: pointer;
+            height: 12px;
+            width: 12px;
+            margin: 0 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: #48bb78;
+        }
+
+        .review {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
         }
 
         .service-card {
@@ -166,6 +348,7 @@
             border-radius: 15px;
             text-align: center;
             transition: all 0.3s ease;
+            min-width: 0; /* Allow cards to shrink below their content size */
             border: 2px solid transparent;
         }
 
@@ -180,6 +363,37 @@
             margin-bottom: 1rem;
         }
 
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .mission-item {
+            text-align: center;
+        }
+
+        .mission-item h3 {
+            font-size: 1.75rem;
+            color: #4a5568;
+            margin-bottom: 1rem;
+        }
+
+        .mission-item p {
+            color: #6c757d;
+        }
+
+        @media (max-width: 768px) {
+            .mission-grid,
+            .services-grid {
+                grid-template-columns: 1fr;  /* revert to a 1-column grid on smaller screens */
+            }
+            .service-card {
+                min-width: auto;
+            }
+        }
+
         .pricing-table {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -191,15 +405,21 @@
             background: linear-gradient(135deg, #48bb78, #38a169);
             color: white;
             padding: 2.5rem 2rem;
-            border-radius: 20px;
+            border-radius: 20px;            
             text-align: center;
             position: relative;
             overflow: hidden;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         .pricing-card:hover {
-            transform: scale(1.05);
+            transform: scale(1.05) rotate(1deg);
+            box-shadow: 0 15px 30px rgba(72, 187, 120, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+            border: 2px solid transparent;
+            background: linear-gradient(135deg, #38a169, #2f855a);
         }
 
         .pricing-card::before {
@@ -209,21 +429,58 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
             transform: rotate(45deg);
             transition: all 0.6s ease;
             opacity: 0;
         }
-
+        
         .pricing-card:hover::before {
             opacity: 1;
             animation: shine 0.6s ease-in-out;
         }
 
-        .price {
-            font-size: 3rem;
+        .pricing-card.featured::after {
+            content: 'Popular';
+            position: absolute;
+            top: 20px;
+            right: -40px;
+            background: #FFD700;
+            color: #1a202c;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 0.9rem;
             font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .pricing-card:nth-child(1)::after,  /* Target "1 Kid" card */
+        .pricing-card:nth-child(3)::after {  /* Target "2+ Kids" card */
+            content: 'Popular';
+            position: absolute;
+            top: 20px;
+            right: -40px;
+            background: #FFD700;
+            color: #1a202c;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 0.9rem;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+
+        .price {
+            font-size: 3.5rem;
+            font-weight: 700;
             margin: 1rem 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .price-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
         }
 
         .contact-form {
@@ -243,7 +500,8 @@
         }
 
         .form-group input,
-        .form-group textarea {
+        .form-group textarea,
+        .form-group select {
             width: 100%;
             padding: 12px;
             border: 2px solid #e2e8f0;
@@ -253,7 +511,8 @@
         }
 
         .form-group input:focus,
-        .form-group textarea:focus {
+        .form-group textarea:focus,
+        .form-group select:focus {
             outline: none;
             border-color: #48bb78;
             box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.1);
@@ -294,6 +553,7 @@
             font-size: 1.5rem;
             margin: 0 10px;
             transition: color 0.3s ease;
+            text-decoration: none;
         }
 
         .social-links a:hover {
@@ -316,43 +576,129 @@
             100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
+        /* === Mobile Styles === */
         @media (max-width: 768px) {
             .nav-links {
-                display: none;
+                position: fixed; /* Fixed so it stays when scrolling */
+                top: 80px; /* Position below the 80px header */
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                
+                /* Use max-height for a smooth slide-down animation */
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.4s ease-in-out;
+
+                z-index: 999;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             }
-            
+
+            .nav-links.mobile-active {
+                max-height: 500px; /* A height larger than the menu content */
+            }
+
+            .nav-links a {
+                height: 50px; /* Fixed height for each link */
+                line-height: 50px; /* Vertically center text within the fixed height */
+                text-align: center;
+                border-top: 1px solid rgba(0, 0, 0, 0.05);
+                padding: 0 1rem; /* Keep horizontal padding */
+            }
+
+            .hamburger-menu {
+                display: flex;
+            }
+
             .hero h1 {
                 font-size: 2.5rem;
             }
-            
+
             .hero p {
                 font-size: 1.1rem;
+            }
+
+            .pricing-table, .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .reviews-page {
+                padding: 0 1.5rem; /* This is the key fix for mobile reviews */
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr; /* Stack about section on mobile */
+                text-align: center;
+            }
+
+            .section, .reviews-section {
+                padding: 2rem 1rem;
+            }
+
+            .section h2, .reviews-section h2 {
+                font-size: 2rem;
+            }
+
+            .about-grid ul {
+                list-style-position: inside; /* Puts bullets inside the text block */
+                text-align: left; /* Re-align text to the left for readability */
+                display: inline-block; /* To respect the parent's text-align: center */
+                padding-left: 0; /* Remove default padding */
             }
         }
     </style>
 </head>
 <body>
     <header>
-        <nav class="container">
-            <div class="logo">
+        <nav>
+            <a href="#home" class="logo">
                 <span class="chess-piece">♔</span>
-                Tecumseh Chess
-            </div>
+                <span class="logo-text">Tecumseh<br>Chess</span>
+            </a>
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
+                <li><a href="#mission">Our Mission</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#pricing">Membership</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
+            <div class="hamburger-menu">
+                <span></span><span></span><span></span>
+            </div>
         </nav>
     </header>
 
     <main class="container">
         <section id="home" class="hero">
             <h1>Education and Fun Come Together!</h1>
+            <div class="video-placeholder">
+                <iframe src="https://www.youtube.com/embed/cs-dgU1Ot0k" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
             <p>Professional chess instruction for all skill levels in your local community</p>
             <a href="#contact" class="cta-button">Book A Free Intro Lesson!</a>
+        </section>
+
+        <section id="mission" class="section">
+            <h2>Our Purpose, Vision & Mission</h2>
+            <div class="mission-grid">
+                <div class="mission-item">
+                    <h3>Our Purpose</h3>
+                    <p>To ignite a lifelong passion for chess. We believe the game is a powerful tool for personal development, fostering essential skills like <strong>critical thinking</strong>, strategic planning, and <strong>self-reliance</strong>. We aim to build a strong community where every move on the board translates into greater <strong>confidence</strong> and resilience off the board.</p>
+                </div>
+                <div class="mission-item">
+                    <h3>Our Vision</h3>
+                    <p>To be the heart of the local chess scene—a vibrant, inclusive <strong>community</strong> hub. We aspire to create an environment where players of all ages and abilities feel supported to learn, compete, and grow, building not just their skills but also lasting friendships and a powerful sense of belonging.</p>
+                </div>
+                <div class="mission-item">
+                    <h3>Our Mission</h3>
+                    <p>To deliver exceptional and accessible chess instruction that inspires every student. Through a structured yet fun approach, we empower individuals to unlock their potential, develop sharp <strong>critical thinking</strong>, and build the <strong>confidence</strong> and <strong>self-reliance</strong> needed to succeed in chess and in life.</p>
+                </div>
+            </div>
         </section>
 
         <section id="services" class="section">
@@ -389,88 +735,215 @@
                     <p>Intensive chess camps during school holidays, combining learning with fun activities and tournaments.</p>
                 </div>
             </div>
+            <div class="section-cta-wrapper">
+                <a href="#contact" class="cta-button">Book A Free Intro Lesson!</a>
+            </div>
         </section>
 
- <section id="pricing" class="section">
-    <h2>Membership Menu</h2>
-    <div class="pricing-table">
-        <div class="pricing-card">
-            <h3>1 Kid (Under 12) - Weekly</h3>
-            <div class="price">$25<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
-            <p>Perfect for individual focused learning</p>
-            <ul style="list-style: none; padding: 0; margin-top: 1rem;">
-                <li>✓ 1 class per week</li>
-                <li>✓ Small group setting</li>
-                <li>✓ Age-appropriate instruction</li>
-                <li>✓ Progress tracking</li>
-            </ul>
-        </div>
-        <div class="pricing-card">
-            <h3>1 Kid (Under 12) - Twice Weekly</h3>
-            <div class="price">$45<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
-            <p>Accelerated learning with extra practice</p>
-            <ul style="list-style: none; padding: 0; margin-top: 1rem;">
-                <li>✓ 2 classes per week</li>
-                <li>✓ Faster skill development</li>
-                <li>✓ Regular practice sessions</li>
-                <li>✓ Homework assignments</li>
-            </ul>
-        </div>
-        <div class="pricing-card">
-            <h3>2+ Kids (Under 12) - Weekly</h3>
-            <div class="price">$35<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
-            <p>Great for siblings or friends learning together</p>
-            <ul style="list-style: none; padding: 0; margin-top: 1rem;">
-                <li>✓ 1 class per week</li>
-                <li>✓ Multi-child discount</li>
-                <li>✓ Social learning environment</li>
-                <li>✓ Family-friendly scheduling</li>
-            </ul>
-        </div>
-        <div class="pricing-card">
-            <h3>2+ Kids (Under 12) - Twice Weekly</h3>
-            <div class="price">$45<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
-            <p>Maximum learning for multiple children</p>
-            <ul style="list-style: none; padding: 0; margin-top: 1rem;">
-                <li>✓ 2 classes per week</li>
-                <li>✓ Best value for families</li>
-                <li>✓ Rapid skill improvement</li>
-                <li>✓ Tournament preparation</li>
-            </ul>
-        </div>
-        <div class="pricing-card">
-            <h3>Parent & Child Classes</h3>
-            <div class="price">$35<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
-            <p>Learn together and bond over chess</p>
-            <ul style="list-style: none; padding: 0; margin-top: 1rem;">
-                <li>✓ Family bonding activity</li>
-                <li>✓ Parent learns alongside child</li>
-                <li>✓ Home practice support</li>
-                <li>✓ Special family tournaments</li>
-            </ul>
-        </div>
-        <div class="pricing-card">
-            <h3>Over 12 Classes</h3>
-            <div class="price">$25<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
-            <p>Chess instruction for teens and adults</p>
-            <ul style="list-style: none; padding: 0; margin-top: 1rem;">
-                <li>✓ Age-appropriate teaching</li>
-                <li>✓ Strategic thinking focus</li>
-                <li>✓ Competitive play preparation</li>
-                <li>✓ Advanced learning methods</li>
-            </ul>
-        </div>
-    </div>
-</section>
+        <section id="reviews" class="reviews-section">
+            <h2>What Our Students Say</h2>
+            <div class="reviews-slider-container">
+                <div class="reviews-slider">
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"From the first lesson, I was impressed by the quality of instruction at Tecumseh Chess. The lessons are well-structured and challenging, and the instructors provide clear and concise explanations. I've seen a significant improvement in my game since joining." - Maria G.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"My child was struggling with chess, but Tecumseh Chess has turned things around. The instructors have a knack for identifying areas for improvement and providing targeted training. He's now playing with confidence and enjoying the game more than ever." - Paul H.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"I appreciate the flexibility of the online lessons offered by Tecumseh Chess. It allows me to learn at my own pace and fit lessons into my busy schedule. The instructors are responsive and provide excellent support." - Lisa V.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"Tecumseh Chess is not just about learning chess; it's about building character and critical thinking skills. My child has become more focused, patient, and strategic in all aspects of his life. I'm thrilled with the positive impact the program has had on him." - David C.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"The online lessons have been a lifesaver! I can fit chess into my hectic schedule without sacrificing effectiveness. It's been a fantastic experience, and I'm loving the game more than ever!" - Rachel S.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"The adult classes are a fantastic mental workout! They're challenging, engaging, and a great way to sharpen my mind while enjoying a classic game. I look forward to them every week!" - Tom B.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"My son has always been interested in chess, but Tecumseh Chess has taken his passion to a new level. The instructors are knowledgeable, patient, and really know how to engage young minds. We've seen a huge improvement in his game and his confidence!" - Karen P.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"As a beginner, I was nervous about joining a chess class, but the welcoming atmosphere at Tecumseh Chess made me feel comfortable right away. The lessons are well-structured, and I'm already seeing progress. It's a great community to be a part of!" - Mark R.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"The personalized coaching my daughter received from Tecumseh Chess was exceptional. Her coach identified her weaknesses and tailored the lessons to address them specifically. The results speak for themselves – she's now competing at a much higher level!" - Jennifer W.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"Tecumseh Chess has helped me rediscover my love for chess. The classes are challenging yet enjoyable, and the instructors provide valuable feedback. It's a great way to keep my mind sharp and connect with other chess enthusiasts." - Robert T.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"My kids love the group classes! They're not only learning chess but also important social skills like sportsmanship and teamwork. The instructors make learning fun, and my kids always look forward to their lessons." - Amy S.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"I highly recommend Tecumseh Chess to anyone looking to improve their chess game. The instructors are knowledgeable and passionate, and they create a supportive learning environment. I've learned so much in a short amount of time!" - Brian K.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"Tecumseh Chess has transformed my approach to the game. The structured lessons, coupled with insightful feedback, have helped me identify and correct weaknesses I didn't even know I had. I'm now playing with more confidence and strategic depth." - Daniel G.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"I was looking for a way to challenge my mind and learn a new skill, and Tecumseh Chess exceeded my expectations. The adult classes are engaging and intellectually stimulating, and the instructor's passion for the game is contagious. I'm hooked!" - Olivia R.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-navigation">
+                    <button class="prev-slide" aria-label="Previous slide">&#10094;</button>
+                    <button class="next-slide" aria-label="Next slide">&#10095;</button>
+                </div>
+                <div class="slider-dots"></div>
+            </div>
+            <div class="section-cta-wrapper">
+                <a href="#contact" class="cta-button">Book A Free Intro Lesson!</a>
+            </div>
+        </section>
 
 
 
 
 
+
+
+
+
+
+        <section id="pricing" class="section">
+            <h2>Membership Menu</h2>
+            <div class="pricing-table">
+                <div class="pricing-card" id="card1">
+                    <span class="price-icon">♞</span>
+                    <h3>1 Kid - Once a Week</h3>
+                    <div class="price">$25<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
+                    <p>Perfect for individual focused learning</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                        <li>✓ 1 class per week</li>
+                        <li>✓ Small group setting</li>
+                        <li>✓ Age-appropriate instruction</li>
+                        <li>✓ Progress tracking</li>
+                    </ul>
+                </div>
+                <div class="pricing-card" id="card2.0">
+                    <span class="price-icon">♝</span>
+                    <h3>1 Kid - Twice a Week</h3>
+                    <div class="price">$30<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
+                    <p>Accelerated learning with extra practice</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                        <li>✓ 2 classes per week</li>
+                        <li>✓ Faster skill development</li>
+                        <li>✓ Regular practice sessions</li>
+                        <li>✓ Homework assignments</li>
+                    </ul>
+                </div>
+                <div class="pricing-card" id="card3.0">
+                    <span class="price-icon">♟️</span>
+                    <h3>2+ Kids - Once a Week</h3>
+                    <div class="price">$30<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
+                    <p>Great for siblings or friends learning together</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                        <li>✓ 1 class per week</li>
+                        <li>✓ Multi-child discount</li>
+                        <li>✓ Social learning environment</li>
+                        <li>✓ Family-friendly scheduling</li>
+                    </ul>
+                </div>
+                <div class="pricing-card" id="card4.0">
+                    <span class="price-icon">♛</span>
+                    <h3>2+ Kids - Twice a Week</h3>
+                    <div class="price">$35<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
+                    <p>Maximum learning for multiple children</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                        <li>✓ 2 classes per week</li>
+                        <li>✓ Best value for families</li>
+                        <li>✓ Rapid skill improvement</li>
+                        <li>✓ Tournament preparation</li>
+                    </ul>
+                </div>
+                <div class="pricing-card" id="card5.0">
+                    <span class="price-icon">♚</span>
+                    <h3>Parent & Child Classes</h3>
+                    <div class="price">$30<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
+                    <p>Learn together and bond over chess</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                        <li>✓ Family bonding activity</li>
+                        <li>✓ Parent learns alongside child</li>
+                        <li>✓ Home practice support</li>
+                        <li>✓ Special family tournaments</li>
+                    </ul>
+                </div>
+                <div class="pricing-card" id="card7.0">
+                    <span class="price-icon">♕</span>
+                    <h3>Adult Classes</h3>
+                    <div class="price">$25<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
+                    <p>Chess instruction for adult learners</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                        <li>✓ Adult-focused teaching</li>
+                        <li>✓ Strategic thinking emphasis</li>
+                        <li>✓ Competitive play preparation</li>
+                        <li>✓ Flexible learning pace</li>
+                    </ul>
+                </div>
+                <div class="pricing-card" id="card6.0">
+                    <span class="price-icon">♜</span>
+                    <h3>1-1 Lessons</h3>
+                    <div class="price">$45<span style="font-size: 1.5rem;">/h</span><span style="font-size: 1.5rem;">+HST</span></div>
+                    <p>Personalized one-on-one instruction</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                        <li>✓ Individual attention</li>
+                        <li>✓ Customized curriculum</li>
+                        <li>✓ Flexible scheduling</li>
+                        <li>✓ Rapid improvement</li>
+                    </ul>
+                </div>
+                <div class="pricing-card" id="card8.0">
+                    <span class="price-icon">💻</span>
+                    <h3>Online Classes</h3>
+                    <div class="price">$25<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
+                    <p>Flexible learning from anywhere</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                        <li>✓ Learn from home</li>
+                        <li>✓ Flexible scheduling</li>
+                        <li>✓ Access to online resources</li>
+                        <li>✓ Global community</li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="section-cta-wrapper">
+                <a href="#contact" class="cta-button">Book A Free Intro Lesson!</a>
+            </div>
+        </section>
 
         <section id="about" class="section">
             <h2>About Your Instructor</h2>
-            <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 3rem; align-items: center;">
+            <div class="about-grid">
                 <div style="text-align: center;">
                     <div style="width: 200px; height: 200px; background: linear-gradient(135deg, #48bb78, #38a169); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 4rem; color: white;">♛</div>
                 </div>
@@ -488,73 +961,81 @@
                     </div>
                 </div>
             </div>
+            <div class="section-cta-wrapper">
+                <a href="#contact" class="cta-button">Book A Free Intro Lesson!</a>
+            </div>
         </section>
 
         <section id="contact" class="section">
-    <h2>Book Your Free Intro Lesson</h2>
-    <form class="contact-form" onsubmit="handleSubmit(event)">
-        <div class="form-group">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" required>
-        </div>
-        <div class="form-group">
-            <label for="classType">Which class would you like to join?</label>
-            <select id="classType" name="classType" required style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem;">
-                <option value="">Select a class type</option>
-                <option value="1kid">1 Kid (Individual Lesson)</option>
-                <option value="2kids">2+ Kids (Group Lesson)</option>
-                <option value="individual">Individual Lesson (Any Age)</option>
-                <option value="parentkid">Parent & Child Classes</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="numKids">How many people will be attending the lesson?</label>
-            <input type="number" id="numKids" name="numKids" min="0" max="10" placeholder="Enter number of kids" />
-        </div>
-          <div class="form-group">
-            <label for="kidsnames">Please enter the names of your kids</label>
-            <input type="text" id="kidsnames" name="kidsnames" placeholder="e.g. Jana, Max" />
-        </div>
-        <div class="form-group">
-            <label for="kidsAges">Please enter the ages of the kids</label>
-            <input type="text" id="kidsAges" name="kidsAges" placeholder="e.g. 5, 8, 10" />
-        </div>
-      
-        <div class="form-group">
-            <label for="experience">Chess Experience Level</label>
-            <select id="experience" name="experience" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem;">
-                <option value="">Select your level</option>
-                <option value="beginner">Complete Beginner</option>
-                <option value="casual">Some Knowledge</option>
-                <option value="intermediate">Intermediate</option>
-                <option value="advanced">Advanced</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="goals">What are your chess goals?</label>
-            <textarea id="goals" name="goals" rows="4" placeholder="Tell me about what you'd like to achieve with chess lessons..."></textarea>
-        </div>
-        <div class="form-group">
-            <label for="availability">Preferred lesson times</label>
-            <textarea id="availability" name="availability" rows="3" placeholder="Let me know your preferred days and times for lessons..."></textarea>
-        </div>
-        <button type="submit" class="submit-btn">Send Message & Book Consultation</button>
-    </form>
-</section>
-
+            <h2>Book Your Free Intro Lesson</h2>
+            <form class="contact-form" onsubmit="handleSubmit(event)">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                    <span class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                    <span class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                    <span class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="classType">What class are you interested in?</label>
+                    <span class="error-message"></span>
+                    <select id="classType" name="classType" required>
+                        <option value="">Select a class type</option>
+                        <option value="1kid">1 Kid - Once a Week ($25/w)</option>
+                        <option value="1kid-twice">1 Kid - Twice a Week ($30/w)</option>
+                        <option value="2kids-once">2+ Kids - Once a Week ($30/w)</option>
+                        <option value="2kids-twice">2+ Kids - Twice a Week ($35/w)</option>
+                        <option value="parentkid">Parent & Child Classes ($30/w)</option>
+                        <option value="individual">1-1 Lessons ($45/h)</option>
+                        <option value="adult">Adult Group Class ($25/w)</option>
+                        <option value="online">Online Classes ($25/w)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="numKids">How many people will be joining the lesson?</label>
+                    <input type="number" id="numKids" name="numKids" min="0" max="10" placeholder="Enter number of attendees" />
+                </div>
+                <div class="form-group">
+                    <label for="kidsnames">Please enter the names of whos joining!</label>
+                    <input type="text" id="kidsnames" name="kidsnames" placeholder="e.g. Jana, Max" />
+                </div>
+                <div class="form-group">
+                    <label for="kidsAges">Please enter the ages of the people attending</label>
+                    <input type="text" id="kidsAges" name="kidsAges" />
+                </div>
+                <div class="form-group">
+                    <label for="experience">Chess Experience Level</label>
+                    <select id="experience" name="experience">
+                        <option value="">Select level</option>
+                        <option value="beginner">Complete Beginner</option>
+                        <option value="casual">Some Knowledge</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="goals">What are your goals for yourself or your kids ?</label>
+                    <textarea id="goals" name="goals" rows="4" placeholder="Tell me about what you'd like to achieve with chess lessons..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="availability">Preferred lesson times</label>
+                    <textarea id="availability" name="availability" rows="3" placeholder="Let me know your preferred days and times for lessons..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message & Book Consultation</button>
+            </form>
+        </section>
     </main>
-
     <footer>
         <div class="container">
-            <p>&copy; 25 Amy Croft Dr. All rights reserved.</p>
+            <p>© 25 Amy Croft Dr. Unit B All rights reserved.</p>
             <p>📍 Serving the local community | 📧 info@tecumsehchess.com | 📞 (519) 890-5885</p>
             <div class="social-links">
                 <a href="mailto:hasanbukhari1978@gmail.com" title="Email us">📧</a>
@@ -569,11 +1050,17 @@
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    const headerOffset = 80; // The height of your fixed header
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
                     });
                 }
             });
@@ -582,21 +1069,51 @@
         // Form submission handler
         function handleSubmit(event) {
             event.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(event.target);
+            const form = event.target;
+            let isValid = true;
+
+            // Helper function to show errors
+            function showError(inputElement, message) {
+                const formGroup = inputElement.closest('.form-group');
+                const errorSpan = formGroup.querySelector('.error-message');
+                errorSpan.textContent = message;
+                inputElement.classList.add('invalid');
+            }
+
+            // Clear previous errors
+            form.querySelectorAll('.error-message').forEach(span => span.textContent = '');
+            form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+
+            // Validation Logic
+            const name = form.querySelector('#name');
+            if (name.value.trim() === '') {
+                showError(name, 'Full Name is required.');
+                isValid = false;
+            }
+
+            const email = form.querySelector('#email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email.value.trim() === '') {
+                showError(email, 'Email Address is required.');
+                isValid = false;
+            } else if (!emailRegex.test(email.value)) {
+                showError(email, 'Please enter a valid email address.');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // If valid, proceed with submission
+            const formData = new FormData(form);
             const data = Object.fromEntries(formData);
-            
-            // Simulate form submission
-            const submitBtn = event.target.querySelector('.submit-btn');
+            const submitBtn = form.querySelector('.submit-btn');
             const originalText = submitBtn.textContent;
-            
             submitBtn.textContent = 'Sending...';
             submitBtn.disabled = true;
-            
             setTimeout(() => {
                 alert(`Thank you ${data.name}! I've received your message and will contact you within 24 hours to schedule your chess lesson consultation. Looking forward to helping you improve your game!`);
-                event.target.reset();
+                form.reset();
+                form.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
             }, 1500);
@@ -605,7 +1122,7 @@
         // Add scroll effect to header
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
-            if (window.scrollY > 100) {
+           if (window.scrollY > 100) {
                 header.style.background = 'rgba(255, 255, 255, 0.98)';
             } else {
                 header.style.background = 'rgba(255, 255, 255, 0.95)';
@@ -620,7 +1137,7 @@
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
+               if (entry.isIntersecting) {
                     entry.target.style.opacity = '1';
                     entry.target.style.transform = 'translateY(0)';
                 }
@@ -628,11 +1145,130 @@
         }, observerOptions);
 
         document.querySelectorAll('.section').forEach(section => {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(30px)';
-            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(section);
+            // Exclude the 'services' section from the fade-in-on-scroll animation
+            if (section.id !== 'services') {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(section);
+            }
         });
+        
+        document.querySelectorAll('.pricing-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const cardId = card.id;
+                let classTypeValue = '';
+       
+                switch (cardId) {
+                    case 'card1': classTypeValue = '1kid'; break;
+                    case 'card2.0': classTypeValue = '1kid-twice'; break;
+                    case 'card3.0': classTypeValue = '2kids-once'; break;
+                    case 'card4.0': classTypeValue = '2kids-twice'; break;
+                    case 'card5.0': classTypeValue = 'parentkid'; break;
+                    case 'card6.0': classTypeValue = 'individual'; break;
+                    case 'card7.0': classTypeValue = 'adult'; break;
+                    case 'card8.0': classTypeValue = 'online'; break;
+                }
+
+                if (classTypeValue) {
+                    // Set the selected value in the contact form
+                    const classTypeSelect = document.getElementById('classType');
+                    if (classTypeSelect) {
+                        classTypeSelect.value = classTypeValue;
+                    }
+
+                    // Scroll to the contact form
+                    const contactForm = document.getElementById('contact');
+                    if (contactForm) {
+                        contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // Review slider functionality
+        const slider = document.querySelector('.reviews-slider');
+        const prevButton = document.querySelector('.prev-slide');
+        const nextButton = document.querySelector('.next-slide');
+        const pages = document.querySelectorAll('.reviews-page');
+        const dotsContainer = document.querySelector('.slider-dots');
+        let currentIndex = 0;
+
+        // Create dots
+        pages.forEach((_, i) => {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            dot.dataset.index = i;
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        // Add click event to dots
+        dots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                currentIndex = parseInt(e.target.dataset.index);
+                updateSlider();
+                stopAutoSlide();
+            });
+        });
+
+        nextButton.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % pages.length;
+            updateSlider();
+        });
+
+        prevButton.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + pages.length) % pages.length;
+            updateSlider();
+        });
+
+        function updateSlider() {
+            const translateAmount = -currentIndex * 100;
+            slider.style.transform = `translateX(${translateAmount}%)`;
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentIndex].classList.add('active');
+        }
+
+        // Auto-slide functionality
+        const autoSlideIntervalTime = 5000; // 5 seconds
+        let autoSlideInterval;
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % pages.length; // Loop back to start
+                updateSlider();
+            }, autoSlideIntervalTime);
+        }
+
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+
+        // Pause auto-slide on manual interaction
+        prevButton.addEventListener('click', stopAutoSlide);
+        nextButton.addEventListener('click', stopAutoSlide);
+        dotsContainer.addEventListener('click', stopAutoSlide);
+
+        // Hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('mobile-active');
+            hamburger.classList.toggle('open');
+        });
+
+        // Close mobile menu when a link is clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('mobile-active');
+                hamburger.classList.remove('open');
+            });
+        });
+
+        updateSlider(); // Set initial slide and dot
+        startAutoSlide(); // Start auto-slide
     </script>
 </body>
 </html>
