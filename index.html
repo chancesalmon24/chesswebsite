@@ -671,8 +671,8 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-        .pricing-card:nth-child(1)::after,  /* Target "1 Kid" card */
-        .pricing-card:nth-child(3)::after {  /* Target "2+ Kids" card */
+        .pricing-card:nth-child(1)::after,  /* Target "1 Kid - Once a Week" card */
+        .pricing-card:nth-child(2)::after {  /* Target "1 Kid - Twice a Week" card */
             content: 'Popular';
             position: absolute;
             top: 20px;
@@ -1097,7 +1097,8 @@
             <div class="pricing-table">
                 <div class="pricing-card" id="card1">
                     <span class="price-icon">♞</span>
-                    <h3>1 Kid - Once a Week</h3>
+                    <h3>Once a Week</h3>
+                    <p style="font-size: 0.9rem; margin-top: -0.25rem; margin-bottom: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.9);">+$5 per additional sibling</p>
                     <div class="price">$25<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
                     <p>Perfect for individual focused learning</p>
                     <ul style="list-style: none; padding: 0; margin-top: 1rem;">
@@ -1105,42 +1106,21 @@
                         <li>✓ Small group setting</li>
                         <li>✓ Age-appropriate instruction</li>
                         <li>✓ Progress tracking</li>
+                        <li>✓ Discount prices on tournaments</li>
                     </ul>
                 </div>
                 <div class="pricing-card" id="card2.0">
                     <span class="price-icon">♝</span>
-                    <h3>1 Kid - Twice a Week</h3>
+                    <h3>Twice a Week</h3>
+                    <p style="font-size: 0.9rem; margin-top: -0.25rem; margin-bottom: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.9);">+$5 per additional sibling</p>
                     <div class="price">$30<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
-                    <p>Accelerated learning with extra practice</p>
+                    <p>Ideal for advanced learning</p>
                     <ul style="list-style: none; padding: 0; margin-top: 1rem;">
                         <li>✓ 2 classes per week</li>
-                        <li>✓ Faster skill development</li>
-                        <li>✓ Regular practice sessions</li>
-                        <li>✓ Homework assignments</li>
-                    </ul>
-                </div>
-                <div class="pricing-card" id="card3.0">
-                    <span class="price-icon">♟️</span>
-                    <h3>2+ Kids - Once a Week</h3>
-                    <div class="price">$30<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
-                    <p>Great for siblings or friends learning together</p>
-                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
-                        <li>✓ 1 class per week</li>
-                        <li>✓ Multi-child discount</li>
-                        <li>✓ Social learning environment</li>
-                        <li>✓ Family-friendly scheduling</li>
-                    </ul>
-                </div>
-                <div class="pricing-card" id="card4.0">
-                    <span class="price-icon">♛</span>
-                    <h3>2+ Kids - Twice a Week</h3>
-                    <div class="price">$35<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
-                    <p>Maximum learning for multiple children</p>
-                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
-                        <li>✓ 2 classes per week</li>
-                        <li>✓ Best value for families</li>
-                        <li>✓ Rapid skill improvement</li>
-                        <li>✓ Tournament preparation</li>
+                        <li>✓ Small group setting</li>
+                        <li>✓ Accelerated learning</li>
+                        <li>✓ Progress tracking</li>
+                        <li>✓ Discount prices on tournaments</li>
                     </ul>
                 </div>
                 <div class="pricing-card" id="card5.0">
@@ -1151,8 +1131,7 @@
                     <ul style="list-style: none; padding: 0; margin-top: 1rem;">
                         <li>✓ Family bonding activity</li>
                         <li>✓ Parent learns alongside child</li>
-                        <li>✓ Home practice support</li>
-                        <li>✓ Special family tournaments</li>
+                        <li>✓ 1 Hour lessons</li>
                     </ul>
                 </div>
                 <div class="pricing-card" id="card7.0">
@@ -1253,10 +1232,8 @@
                     <span class="error-message"></span>
                     <select id="classType" name="classType" required>
                         <option value="">Select a class type</option>
-                        <option value="1kid">1 Kid - Once a Week ($25/w)</option>
-                        <option value="1kid-twice">1 Kid - Twice a Week ($30/w)</option>
-                        <option value="2kids-once">2+ Kids - Once a Week ($30/w)</option>
-                        <option value="2kids-twice">2+ Kids - Twice a Week ($35/w)</option>
+                        <option value="1kid">Once a Week ($25/w)</option>
+                        <option value="1kid-twice">Twice a Week ($30/w)</option>
                         <option value="parentkid">Parent & Child Classes ($30/w)</option>
                         <option value="individual">1-1 PrivateLessons ($45/w)</option>
                         <option value="adult">Adult Group Class ($25/w)</option>
@@ -1378,8 +1355,6 @@
                 switch (cardId) {
                     case 'card1': classTypeValue = '1kid'; break;
                     case 'card2.0': classTypeValue = '1kid-twice'; break;
-                    case 'card3.0': classTypeValue = '2kids-once'; break;
-                    case 'card4.0': classTypeValue = '2kids-twice'; break;
                     case 'card5.0': classTypeValue = 'parentkid'; break;
                     case 'card6.0': classTypeValue = 'individual'; break;
                     case 'card7.0': classTypeValue = 'adult'; break;
