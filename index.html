@@ -199,6 +199,29 @@
         .hero::before, .hero::after {
             z-index: 0;
         }
+
+        .hero-social-links {
+            margin-top: 1.5rem; /* Spacing from the button above */
+            margin-bottom: 0; /* No extra space needed at the bottom of hero */
+            animation: fadeInUp 1s ease-out 0.5s both; /* Appear after button */
+        }
+
+        .hero-social-links a {
+            color: white;
+            margin: 0 15px;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-social-links a:hover {
+            transform: scale(1.15);
+        }
+
+        .hero-social-links a svg {
+            width: 32px;
+            height: 32px;
+            vertical-align: middle;
+        }
         .cta-button {
             display: inline-block;
             background: linear-gradient(45deg, #38a169, #2f855a);
@@ -391,15 +414,8 @@
             padding: 2rem;
             border-radius: 15px;
             text-align: center;
-            transition: all 0.3s ease;
             min-width: 0; /* Allow cards to shrink below their content size */
             border: 2px solid transparent;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            border-color: #48bb78;
-            box-shadow: 0 15px 35px rgba(72, 187, 120, 0.2);
         }
 
         .service-icon {
@@ -964,6 +980,15 @@
                 Book A Free Intro Lesson!
                 <span class="cta-button-subtext">(scrolls to bottom)</span>
             </a>
+            <div class="hero-social-links">
+                <a href="https://instagram.com/tecumsehchess" target="_blank" title="Follow us on Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="https://www.facebook.com/your-page-here" target="_blank" title="Follow us on Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <p style="margin-top: 0.75rem; font-size: 1.1rem; font-weight: 500; opacity: 0.9;">@tecumsehchess</p>
+            </div>
         </section>
 
         <section id="mission" class="section">
@@ -1004,9 +1029,9 @@
                     <p>Learn the fundamentals of chess, from basic rules to opening principles. Perfect for complete beginners of all ages.</p>
                 </div>
                 <div class="service-card">
-                    <div class="service-icon">⚡</div>
-                    <h3>Intermediate Training</h3>
-                    <p>Develop tactical awareness, positional understanding, and endgame skills to take your game to the next level.</p>
+                    <div class="service-icon">♕</div>
+                    <h3>Adult Classes</h3>
+                    <p>Engaging and challenging classes designed for adult learners, focusing on strategic thinking and competitive play.</p>
                 </div>
                 <div class="service-card">
                     <div class="service-icon">🏆</div>
@@ -1160,7 +1185,7 @@
                     <span class="price-icon">♝</span>
                     <h3>Twice a Week</h3>
                     <p style="font-size: 0.9rem; margin-top: -0.25rem; margin-bottom: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.9);">+$5 per additional sibling</p>
-                    <div class="price">$30<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
+                    <div class="price">$35<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
                     <p>Ideal for advanced learning</p>
                     <ul style="list-style: none; padding: 0; margin-top: 1rem;">
                         <li>✓ 2 classes per week</li>
@@ -1184,6 +1209,7 @@
                 <div class="pricing-card" id="card7.0">
                     <span class="price-icon">♕</span>
                     <h3>Adult Classes</h3>
+                    <p style="font-size: 0.9rem; margin-top: -0.25rem; margin-bottom: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.9);">+$5 for partner</p>
                     <div class="price">$25<span style="font-size: 1.5rem;">/w</span><span style="font-size: 1.5rem;">+HST</span></div>
                     <p>Chess instruction for adult learners</p>
                     <ul style="list-style: none; padding: 0; margin-top: 1rem;">
@@ -1288,7 +1314,7 @@
                     <select id="classType" name="classType" required>
                         <option value="">Select a class type</option>
                         <option value="1kid">Once a Week ($25/w)</option>
-                        <option value="1kid-twice">Twice a Week ($30/w)</option>
+                        <option value="1kid-twice">Twice a Week ($35/w)</option>
                         <option value="parentkid">Parent & Child Classes ($30/w)</option>
                         <option value="individual">1-1 PrivateLessons ($45/w)</option>
                         <option value="adult">Adult Group Class ($25/w)</option>
