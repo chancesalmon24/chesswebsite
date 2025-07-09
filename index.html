@@ -482,6 +482,27 @@
             margin: 0 auto;
         }
 
+        .availability-highlight {
+            margin-top: 1.5rem;
+            padding: 1rem 1.5rem;
+            background: #e9f7ef; /* A light green background */
+            border-left: 5px solid #38a169;
+            border-radius: 8px;
+            display: inline-block; /* To make it fit the content width and respect center alignment */
+        }
+
+        .availability-highlight h4 {
+            font-size: 1.25rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .availability-highlight p {
+            font-size: 1.1rem;
+            color: #4a5568;
+            margin: 0; /* Reset margin for the paragraph inside */
+        }
+
         .map-container {
             position: relative;
             overflow: hidden;
@@ -532,10 +553,32 @@
             pointer-events: none; /* Allows clicks to pass through to the map */
         }
 
+        .location-photos-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .location-photo img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .location-photo img:hover {
+            transform: scale(1.03);
+        }
+
         @media (max-width: 768px) {
             .mission-grid,
             .services-grid {
                 grid-template-columns: 1fr;  /* revert to a 1-column grid on smaller screens */
+            }
+            .location-photos-grid {
+                grid-template-columns: 1fr;
             }
             .service-card {
                 min-width: auto;
@@ -914,7 +957,7 @@
             <h1>Education and Fun Come Together</h1>
             <p class="hero-subtitle">Over 120+ Students taught in the Tecumseh and Windsor area. Premium chess lessons for you or your kids at a quality price!</p>
             <div class="video-placeholder">
-                <iframe src="https://www.youtube.com/embed/6J16-kRBo7I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/7GVHGrIc8Rk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
             <p class="hero-description">Professional chess lessons for all ages and skill</p>
             <a href="#contact" class="cta-button">
@@ -926,7 +969,11 @@
         <section id="mission" class="section">
             <div class="scheduling-info">
                 <h3>📅 Flexible Scheduling & Class Options</h3>
-                <p>We do weekly lessons at a time that fits best for you, open 10am - 8pm Monday through Sunday. We offer group classes up to 12 people a session (best for single kids or siblings), private lessons, parent-child classes, and online classes too!</p>
+                <p>We offer weekly lessons at a time that fits best for you. Our class options include group classes (up to 12 people), private lessons, parent-child classes, and online classes.</p>
+                <div class="availability-highlight">
+                    <h4>Our Hours</h4>
+                    <p><strong>Monday - Sunday:</strong> 10am - 8pm</p>
+                </div>
             </div>
             <h2>Our Purpose, Vision & Mission</h2>
             <div class="mission-grid">
@@ -1202,10 +1249,18 @@
 
         <section id="location" class="section">
             <h2>Our Location</h2>
-            <p style="text-align:center; color: #6c757d; margin-top: -1rem; margin-bottom: 2rem;">25 Amy Croft Dr, Tecumseh, ON</p>
+            <p style="text-align:center; color: #6c757d; margin-top: -1rem; margin-bottom: 2rem;">25 Amy Croft Dr, Tecumseh, ON Inside Bradys Fitness, First Room on the Left</p>
             <div class="map-container">
                 <div class="map-overlay"></div>
                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2950.48873926294!2d-82.9053496238918!3d42.31065097119286!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x883ad5a9e52c1a99%3A0x11773c1a88ef833!2s25%20Amy%20Croft%20Dr%2C%20Lakeshore%2C%20ON%20N9K%201C7!5e0!3m2!1sen!2sca!4v1716924933159!5m2!1sen!2sca" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="location-photos-grid">
+                <div class="location-photo">
+                    <img src="images/front.jpg" alt="Front view of the chess club location">
+                </div>
+                <div class="location-photo">
+                    <img src="images/inside.jpg" alt="Inside view of the chess club location">
+                </div>
             </div>
         </section>
 
