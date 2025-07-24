@@ -330,7 +330,7 @@
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Set to a 2-column grid */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
@@ -416,6 +416,13 @@
             text-align: center;
             min-width: 0; /* Allow cards to shrink below their content size */
             border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: #48bb78;
+            box-shadow: 0 15px 35px rgba(72, 187, 120, 0.2);
         }
 
         .service-icon {
@@ -955,8 +962,8 @@
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#mission">Our Mission</a></li>
-                <li><a href="#math-tutoring">Math Tutoring</a></li>
                 <li><a href="#events">Events</a></li>
+                <li><a href="#services">Services</a></li>
                 <li><a href="#pricing">Membership</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#location">Location</a></li>
@@ -1130,13 +1137,37 @@
             </div>
         </section>
 
-
-
-
-
-
-
-
+        <section id="services" class="section">
+            <h2>Our Services</h2>
+            <p style="text-align:center; color: #6c757d; margin-top: -1rem; margin-bottom: 2rem;">We offer a variety of programs tailored to different needs and skill levels.</p>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🎓</div>
+                    <h3>Beginner Classes</h3>
+                    <p>Perfect for new players to learn the fundamentals in a fun, supportive environment.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🏆</div>
+                    <h3>Fun Group Events</h3>
+                    <p>Join our community for tournaments, workshops, and casual play nights like our Saturday Smackdown.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💻</div>
+                    <h3>Online Classes</h3>
+                    <p>Learn from the comfort of your home with our flexible and interactive online lessons.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">♛</div>
+                    <h3>Adult Classes</h3>
+                    <p>Engaging and challenging classes designed specifically for adult learners to sharpen their minds.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🧮</div>
+                    <h3>Math Lessons</h3>
+                    <p>Specialized math tutoring for grades 1-12, building on the logical skills honed in chess.</p>
+                </div>
+            </div>
+        </section>
 
 
         <section id="pricing" class="section">
