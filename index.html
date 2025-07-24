@@ -955,6 +955,7 @@
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#mission">Our Mission</a></li>
+                <li><a href="#math-tutoring">Math Tutoring</a></li>
                 <li><a href="#events">Events</a></li>
                 <li><a href="#pricing">Membership</a></li>
                 <li><a href="#about">About</a></li>
@@ -969,8 +970,8 @@
 
     <main class="container">
         <section id="home" class="hero">
-            <h1>Education and Fun Come Together</h1>
-            <p class="hero-subtitle">Over 120+ Students taught in the Tecumseh and Windsor area. Premium chess lessons for you or your kids at a quality price!</p>
+            <h1>Education and Fun Come Together!</h1>
+            <p class="hero-subtitle">Over 120+ Students taught in the Tecumseh and Windsor area. Premium chess lessons for you or your kids at an affordable price!</p>
             <div class="video-placeholder">
                 <iframe src="https://www.youtube.com/embed/7GVHGrIc8Rk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
@@ -1247,6 +1248,22 @@
             </div>
         </section>
 
+        <section id="math-tutoring" class="section">
+            <h2>Beyond the Board: Math Tutoring</h2>
+            <div style="text-align: center; max-width: 700px; margin: 0 auto 2rem;">
+                <span class="mission-icon" style="font-size: 3.5rem;">🧮</span>
+                <p style="font-size: 1.2rem; color: #4a5568; margin-bottom: 1.5rem;">
+                    In addition to our chess programs, we are proud to offer specialized math tutoring for students from <strong>Grade 1 to 12</strong>. We believe the logical skills honed in chess are a perfect complement to mathematical excellence.
+                </p>
+                <p style="color: #6c757d;">
+                    Our experienced instructor provides personalized support to help students build confidence, overcome challenges, and excel in their math studies.
+                </p>
+            </div>
+            <div class="section-cta-wrapper">
+                <a href="#contact" class="cta-button" id="math-cta-button">Inquire About Math Lessons</a>
+            </div>
+        </section>
+
         <section id="contact" class="section">
             <h2>Book Your Free Intro Lesson</h2>
             <form class="contact-form" action="https://formsubmit.co/hasanbukhari1978@gmail.com" method="POST">
@@ -1276,6 +1293,7 @@
                         <option value="individual">1-1 PrivateLessons ($45/w)</option>
                         <option value="adult">Adult Group Class ($25/w)</option>
                         <option value="online">Online Classes ($25/w)</option>
+                        <option value="math-tutoring">Math Tutoring (Grades 1-12)</option>
                         <option value="event-smackdown">Event: Saturday Smackdown</option>
                         <option value="event-workshop">Event: Beginner's Workshop</option>
                         <option value="event-camp">Event: Kids' Chess Camp</option>
@@ -1435,6 +1453,17 @@
                 }
             });
         });
+
+        // Pre-select math tutoring from its CTA
+        const mathCtaButton = document.getElementById('math-cta-button');
+        if (mathCtaButton) {
+            mathCtaButton.addEventListener('click', () => {
+                const classTypeSelect = document.getElementById('classType');
+                if (classTypeSelect) {
+                    classTypeSelect.value = 'math-tutoring';
+                }
+            });
+        }
 
         // Map overlay functionality to prevent scroll-hijacking on mobile
         const mapContainer = document.querySelector('.map-container');
