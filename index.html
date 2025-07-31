@@ -425,6 +425,59 @@
             box-shadow: 0 15px 35px rgba(72, 187, 120, 0.2);
         }
 
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .instagram-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .instagram-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+        }
+
+        .instagram-thumbnail {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .play-button-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .instagram-card:hover .play-button-overlay {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .play-button-overlay svg {
+            color: white;
+        }
         .service-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
@@ -707,6 +760,33 @@
             background-color: #e9f7ef; /* Light green to indicate availability */
         }
 
+        .calendar-legend {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 4px;
+        }
+
+        .legend-color.chess { background-color: #e9f7ef; border: 1px solid #38a169; }
+        .legend-color.math { background-color: #fff5f5; border: 1px solid #e53e3e; }
+
         /* Events Section */
         .events-grid {
             display: grid;
@@ -955,6 +1035,28 @@
     width: 1.5rem; /* Match the font-size of other icons */
     height: 1.5rem;
 }
+
+        #modal-current-bookings-container {
+            margin: 2rem 0 1.5rem 0; /* More space on top, standard space on bottom */
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+            display: none; /* Hidden by default, shown by JS if bookings exist */
+        }
+        #modal-current-bookings-container h4 {
+            margin: 0 0 0.75rem 0;
+            color: #4a5568;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+        #modal-current-bookings-container ul {
+            margin: 0;
+            max-height: 150px; /* Give it a max height and scroll for many bookings */
+            overflow-y: auto;
+        }
 
         /* Modal Styles */
         .modal {
@@ -1389,6 +1491,16 @@
                     <h3 id="month-year"></h3>
                     <button id="next-month" aria-label="Next month">&#10095;</button>
                 </div>
+                <div class="calendar-legend">
+                    <div class="legend-item">
+                        <span class="legend-color chess"></span>
+                        <span>Chess Booking</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color math"></span>
+                        <span>Math Booking</span>
+                    </div>
+                </div>
                 <div class="calendar-grid" id="calendar-grid"></div>
             </div>
         </section>
@@ -1760,6 +1872,17 @@
                 <input type="text" id="modal-kids-names">
             </div>
 
+            <div class="modal-form-group" style="text-align: center; margin-bottom: 1.5rem;">
+                <label style="display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 500;">
+                    <input type="checkbox" id="modal-book-3-weeks" style="width: 1.2em; height: 1.2em; accent-color: #38a169; flex-shrink: 0;">
+                    <span>Book for the next 3 weeks <small style="font-weight: 400; color: #6c757d; margin-left: 4px;">(you can change times if needed)</small></span>
+                </label>
+            </div>
+
+            <div id="modal-current-bookings-container">
+                <!-- JS will populate this with current bookings for the day -->
+            </div>
+
             <a href="#" class="cta-button" id="modal-book-button">Confirm Booking & Add to Calendar</a>
         </div>
     </div>
@@ -1969,7 +2092,6 @@
 
         let bookings = {}; // To store bookings: { "YYYY-MM-DD": [{ time: "10:30 AM", name: "Alex", type: "chess" }] }
 
-
         // Helper to get a consistent date key in local time, avoiding timezone issues.
         function getDateKey(date) {
             const year = date.getFullYear();
@@ -2027,8 +2149,29 @@
 
                 // Add booking list if bookings exist
                 const dateKey = getDateKey(dayDate);
-                const dayBookings = bookings[dateKey] || [];
+
+                let dayBookings = (bookings[dateKey] || []).map((booking, index) => ({
+                    ...booking,
+                    originalIndex: index
+                }));
+
                 if (dayBookings.length > 0) {
+                    // Sort bookings chronologically before rendering
+                    dayBookings.sort((a, b) => {
+                        const timeToMinutes = (timeStr) => {
+                            const [time, modifier] = timeStr.split(' ');
+                            let [hours, minutes] = time.split(':').map(Number);
+                            if (modifier === 'PM' && hours !== 12) {
+                                hours += 12;
+                            }
+                            if (modifier === 'AM' && hours === 12) {
+                                hours = 0; // Midnight case
+                            }
+                            return hours * 60 + (minutes || 0);
+                        };
+                        return timeToMinutes(a.time) - timeToMinutes(b.time);
+                    });
+
                     const bookingList = document.createElement('ul');
                     bookingList.classList.add('day-booking-list');
                     dayBookings.forEach((booking, index) => {
@@ -2043,6 +2186,8 @@
                             listItem.classList.add('math-booking');
                         }
 
+                        const deleteButtonHtml = `<button class="delete-booking-btn" title="Cancel booking" data-date-key="${dateKey}" data-booking-index="${index}">&times;</button>`;
+
                         listItem.title = `${booking.name} - ${booking.time}`; // Tooltip always shows full name
                         listItem.innerHTML = `
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
@@ -2050,7 +2195,7 @@
                                 <span class="booking-name">${displayName}</span>
                                 <span class="booking-time">${booking.time}</span>
                             </div>
-                            <button class="delete-booking-btn" title="Cancel booking" data-date-key="${dateKey}" data-booking-index="${index}">&times;</button>
+                            ${deleteButtonHtml}
                         `;
                         bookingList.appendChild(listItem);
                     });
@@ -2062,9 +2207,13 @@
 
         const openModal = (date) => {
             document.getElementById('modal-kids-names').value = '';
+            document.getElementById('modal-book-3-weeks').checked = false;
             document.querySelector('input[name="lessonType"][value="chess"]').checked = true;
             modal.dataset.selectedDate = date.toISOString(); // Store the date object for later use
             modalDateEl.textContent = date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+
+            const bookingsContainer = document.getElementById('modal-current-bookings-container');
+            bookingsContainer.innerHTML = ''; // Clear previous content
 
             const timeSlotsContainer = document.getElementById('modal-time-slots');
             timeSlotsContainer.innerHTML = ''; // Clear previous slots
@@ -2072,10 +2221,45 @@
             // Get already booked times for this day
             const dateKey = getDateKey(date);
             const dayBookings = bookings[dateKey] || [];
-            const bookedTimes = dayBookings.map(b => b.time);
 
-            // Filter available slots
-            const availableNow = standardAvailableSlots.filter(slot => !bookedTimes.includes(slot));
+            // Display current bookings for the day in the modal
+            if (dayBookings.length > 0) {
+                bookingsContainer.style.display = 'block'; // Show the container
+                const title = document.createElement('h4');
+                title.textContent = 'Current Bookings';
+                bookingsContainer.appendChild(title);
+
+                const bookingList = document.createElement('ul');
+                bookingList.className = 'day-booking-list'; // Reuse styles from calendar
+
+                // Sort for display (already sorted in calendar render, but good to be safe here too)
+                const sortedBookings = [...dayBookings].sort((a, b) => {
+                    const timeToMinutes = (timeStr) => {
+                        const [time, modifier] = timeStr.split(' ');
+                        let [hours, minutes] = time.split(':').map(Number);
+                        if (modifier === 'PM' && hours !== 12) hours += 12;
+                        if (modifier === 'AM' && hours === 12) hours = 0;
+                        return hours * 60 + (minutes || 0);
+                    };
+                    return timeToMinutes(a.time) - timeToMinutes(b.time);
+                });
+
+                sortedBookings.forEach(booking => {
+                    const listItem = document.createElement('li');
+                    if (booking.type === 'math') listItem.classList.add('math-booking');
+                    listItem.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                        <div class="booking-info"><span class="booking-name">${booking.name}</span><span class="booking-time">${booking.time}</span></div>
+                    `;
+                    bookingList.appendChild(listItem);
+                });
+                bookingsContainer.appendChild(bookingList);
+            } else {
+                bookingsContainer.style.display = 'none'; // Hide if no bookings
+            }
+
+            // All time slots are always available for group bookings.
+            const availableNow = standardAvailableSlots;
 
             // Group slots by time of day
             const morningSlots = availableNow.filter(slot => {
@@ -2161,6 +2345,7 @@
             const selectedTimeBtn = document.querySelector('#modal-time-slots .selected');
             const selectedDateISO = modal.dataset.selectedDate;
             const lessonType = document.querySelector('input[name="lessonType"]:checked').value;
+            const bookThreeWeeks = document.getElementById('modal-book-3-weeks').checked;
 
             // Validation
             if (!selectedTimeBtn) {
@@ -2174,14 +2359,25 @@
 
             const selectedTime = selectedTimeBtn.dataset.time;
             const selectedDate = new Date(selectedDateISO);
-            const dateKey = getDateKey(selectedDate);
+            const bookingDetails = {
+                time: selectedTime,
+                name: kidsNames.trim(),
+                type: lessonType
+            };
 
-            // Add the new booking
-            if (!bookings[dateKey]) {
-                bookings[dateKey] = [];
+            if (bookThreeWeeks) {
+                for (let i = 0; i < 3; i++) {
+                    const bookingDate = new Date(selectedDate);
+                    bookingDate.setDate(selectedDate.getDate() + (i * 7));
+                    const dateKey = getDateKey(bookingDate);
+                    if (!bookings[dateKey]) { bookings[dateKey] = []; }
+                    bookings[dateKey].push(bookingDetails);
+                }
+            } else {
+                const dateKey = getDateKey(selectedDate);
+                if (!bookings[dateKey]) { bookings[dateKey] = []; }
+                bookings[dateKey].push(bookingDetails);
             }
-            bookings[dateKey].push({ time: selectedTime, name: kidsNames.trim(), type: lessonType });
-
             closeModal(); // Close modal
             renderCalendar(); // Re-render the calendar to show the new booking
         });
@@ -2196,14 +2392,11 @@
                 const bookingIndex = parseInt(button.dataset.bookingIndex, 10);
 
                 if (confirm('Are you sure you want to cancel this booking?')) {
-                    // Remove the booking from the array
                     bookings[dateKey].splice(bookingIndex, 1);
-
-                    // If the day has no more bookings, remove the key itself
                     if (bookings[dateKey].length === 0) {
                         delete bookings[dateKey];
                     }
-                    renderCalendar(); // Re-render the calendar to show the change
+                    renderCalendar();
                 }
             }
         });
