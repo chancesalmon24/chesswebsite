@@ -1872,6 +1872,11 @@
                 <input type="text" id="modal-kids-names">
             </div>
 
+            <div class="modal-form-group">
+                <label for="modal-phone-number">Your Phone Number (for reminders)</label>
+                <input type="tel" id="modal-phone-number" placeholder="e.g., 555-123-4567" required>
+            </div>
+
             <div class="modal-form-group" style="text-align: center; margin-bottom: 1.5rem;">
                 <label style="display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 500;">
                     <input type="checkbox" id="modal-book-3-weeks" style="width: 1.2em; height: 1.2em; accent-color: #38a169; flex-shrink: 0;">
@@ -2090,7 +2095,13 @@
         let viewStartDate = new Date();
         viewStartDate.setHours(0, 0, 0, 0); // Normalize to the start of today
 
-        let bookings = {}; // To store bookings: { "YYYY-MM-DD": [{ time: "10:30 AM", name: "Alex", type: "chess" }] }
+        // Load bookings from localStorage, or initialize as an empty object if none are found.
+        let bookings = JSON.parse(localStorage.getItem('tec-chess-bookings')) || {};
+
+        // Helper function to save the current bookings object to localStorage
+        const saveBookings = () => {
+            localStorage.setItem('tec-chess-bookings', JSON.stringify(bookings));
+        };
 
         // Helper to get a consistent date key in local time, avoiding timezone issues.
         function getDateKey(date) {
@@ -2378,6 +2389,7 @@
                 if (!bookings[dateKey]) { bookings[dateKey] = []; }
                 bookings[dateKey].push(bookingDetails);
             }
+            saveBookings(); // Save the updated bookings to localStorage
             closeModal(); // Close modal
             renderCalendar(); // Re-render the calendar to show the new booking
         });
@@ -2396,6 +2408,7 @@
                     if (bookings[dateKey].length === 0) {
                         delete bookings[dateKey];
                     }
+                    saveBookings(); // Save the updated bookings to localStorage
                     renderCalendar();
                 }
             }
