@@ -2192,7 +2192,7 @@
                             listItem.classList.add('math-booking');
                         }
 
-                        const deleteButtonHtml = `<button class="delete-booking-btn" title="Cancel booking" data-date-key="${dateKey}" data-booking-index="${index}">&times;</button>`;
+                        const deleteButtonHtml = `<button class="delete-booking-btn" title="Cancel booking" data-date-key="${dateKey}" data-booking-index="${booking.originalIndex}">&times;</button>`;
 
                         listItem.title = `${booking.name} - ${booking.time}`; // Tooltip always shows full name
                         listItem.innerHTML = `
