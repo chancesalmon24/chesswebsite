@@ -739,7 +739,7 @@
             padding: 1rem;
             font-weight: bold;
             flex-shrink: 0;
-            width: 80px; /* Fixed width */
+            width: 90px; /* Increased width to prevent cutoff */
         }
 
         .event-date .month {
@@ -750,7 +750,7 @@
 
         .event-date .day {
             display: block;
-            font-size: 2.5rem;
+            font-size: 2.4rem; /* Slightly reduced font size for better fit */
             line-height: 1;
         }
 
@@ -1076,6 +1076,7 @@
 
         .day-booking-list li {
             display: flex;
+            position: relative; /* For positioning the delete button */
             align-items: center;
             gap: 8px;
             background: #e9f7ef;
@@ -1116,6 +1117,27 @@
             width: 12px;
             height: 12px;
             stroke-width: 2;
+        }
+
+        .delete-booking-btn {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: transparent;
+            border: none;
+            color: #a0aec0; /* A softer gray color */
+            font-family: sans-serif;
+            font-size: 1rem;
+            font-weight: bold;
+            line-height: 1;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+        .delete-booking-btn:hover {
+            background-color: #fed7d7; /* Light red background on hover */
+            color: #c53030; /* Darker red text on hover */
         }
 
         #modal-bookings-list {
@@ -1958,7 +1980,7 @@
                 if (dayBookings.length > 0) {
                     const bookingList = document.createElement('ul');
                     bookingList.classList.add('day-booking-list');
-                    dayBookings.forEach(booking => {
+                    dayBookings.forEach((booking, index) => {
                         const listItem = document.createElement('li');
 
                         // Truncate name if it's longer than 10 characters for display
@@ -1974,6 +1996,7 @@
                                 <span class="booking-name">${displayName}</span>
                                 <span class="booking-time">${booking.time}</span>
                             </div>
+                            <button class="delete-booking-btn" title="Cancel booking" data-date-key="${dateKey}" data-booking-index="${index}">&times;</button>
                         `;
                         bookingList.appendChild(listItem);
                     });
@@ -2105,6 +2128,28 @@
 
             closeModal(); // Close modal
             renderCalendar(); // Re-render the calendar to show the new booking
+        });
+
+        // Event delegation for deleting bookings
+        calendarGrid.addEventListener('click', function(e) {
+            if (e.target.classList.contains('delete-booking-btn')) {
+                e.stopPropagation(); // Prevent the modal from opening when clicking the 'x'
+
+                const button = e.target;
+                const dateKey = button.dataset.dateKey;
+                const bookingIndex = parseInt(button.dataset.bookingIndex, 10);
+
+                if (confirm('Are you sure you want to cancel this booking?')) {
+                    // Remove the booking from the array
+                    bookings[dateKey].splice(bookingIndex, 1);
+
+                    // If the day has no more bookings, remove the key itself
+                    if (bookings[dateKey].length === 0) {
+                        delete bookings[dateKey];
+                    }
+                    renderCalendar(); // Re-render the calendar to show the change
+                }
+            }
         });
 
         renderCalendar();
