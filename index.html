@@ -881,6 +881,13 @@
             color: #4a5568;
         }
 
+        .optional-text {
+            font-weight: 400;
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-left: 5px;
+        }
+
         .form-group input,
         .form-group textarea,
         .form-group select {
@@ -1010,6 +1017,29 @@
             font-size: 1rem;
         }
 
+        .lesson-type-selector {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+        .lesson-type-selector label {
+            display: flex;
+            align-items: center; /* This is the key fix for vertical alignment */
+            gap: 8px; /* Adds a nice space between the circle and the text */
+            cursor: pointer;
+        }
+        .lesson-type-selector input[type="radio"] {
+            margin: 0; /* Removes default browser margins */
+            accent-color: #38a169; /* Green for chess */
+            width: 1.1em;
+            height: 1.1em;
+        }
+        .lesson-type-selector input[type="radio"][value="math"] {
+            accent-color: #e53e3e; /* Red for math */
+        }
+
         .time-period {
             margin-bottom: 1.5rem;
         }
@@ -1089,6 +1119,19 @@
             overflow: hidden;
         }
 
+        .day-booking-list li.math-booking {
+            background: #fff5f5;
+            border-left-color: #e53e3e;
+        }
+        .day-booking-list li.math-booking .booking-name {
+            color: #c53030;
+        }
+        .day-booking-list li.math-booking .booking-time {
+            color: #e53e3e;
+        }
+        .day-booking-list li.math-booking svg {
+            stroke: #c53030;
+        }
         .booking-info {
             display: flex;
             flex-direction: column;
@@ -1317,7 +1360,7 @@
     <main class="container">
         <section id="home" class="hero">
             <h1>Education and Fun Come Together!</h1>
-            <p class="hero-subtitle">Over 120+ Students taught in the Tecumseh and Windsor area. Premium chess lessons for you or your kids at an affordable price!</p>
+            <p class="hero-subtitle">Over 140+ Students taught in the Tecumseh and Windsor area. Premium chess lessons for you or your kids at an affordable price!</p>
             <div class="video-placeholder">
                 <iframe src="https://www.youtube.com/embed/7GVHGrIc8Rk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
@@ -1586,7 +1629,7 @@
                     <h3 class="instructor-name">Hasan Bukhari</h3>
                 </div>
                 <div>
-                    <p>With over 10 years of chess experience, I'm passionate about sharing the beauty and strategy of chess with students of all ages. I have taught over 120+ students in the Tecumseh and Windsor Community.</p>
+                    <p>With over 10 years of chess experience, I'm passionate about sharing the beauty and strategy of chess with students of all ages. I have taught over 140+ students in the Tecumseh and Windsor Community.</p>
                     <p>My teaching philosophy focuses on making chess fun and accessible while building strong fundamentals. Whether you're a complete beginner or looking to break through to the next level, our lessons are designed to instill deep chess understanding and confidence in your or your child's ability.</p>
                 </div>
             </div>
@@ -1607,7 +1650,7 @@
                 </p>
             </div>
             <div class="section-cta-wrapper">
-                <a href="#contact" class="cta-button" id="math-cta-button">Inquire About Math Lessons</a>
+                <a href="#contact" class="cta-button" id="math-cta-button">Book Free Intro Math Lesson</a>
             </div>
         </section>
 
@@ -1655,7 +1698,7 @@
                     <input type="text" id="kidsAges" name="kidsAges" />
                 </div>
                 <div class="form-group">
-                    <label for="experience">Chess Experience Level</label>
+                    <label for="experience">Chess Experience Level <span class="optional-text">(optional)</span></label>
                     <select id="experience" name="experience">
                         <option value="">Select level</option>
                         <option value="beginner">Complete Beginner</option>
@@ -1665,11 +1708,11 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="goals">What are your goals for yourself or your kids ?</label>
+                    <label for="goals">What are your goals for yourself or your kids? <span class="optional-text">(optional)</span></label>
                     <textarea id="goals" name="goals" rows="4" placeholder="Tell me about what you'd like to achieve with chess lessons..."></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="availability">Preferred lesson times</label>
+                    <label for="availability">Preferred lesson times <span class="optional-text">(optional)</span></label>
                     <textarea id="availability" name="availability" rows="3" placeholder="Let me know your preferred days and times for lessons..."></textarea>
                 </div>
                 <button type="submit" class="submit-btn">Send Message & Book Free Intro Lesson</button>
@@ -1697,6 +1740,14 @@
             <h3>Book a Lesson for <span id="modal-date"></span></h3>
             <p>Select a time, enter your details, and your time and day will be booked for your kids or your yourself!</p>
             
+            <div class="modal-form-group">
+                <label>Lesson Type</label>
+                <div class="lesson-type-selector">
+                    <label><input type="radio" name="lessonType" value="chess" checked> Chess</label>
+                    <label><input type="radio" name="lessonType" value="math"> Math</label>
+                </div>
+            </div>
+
             <div class="modal-form-group">
                 <label>Select an Available Time</label>
                 <div id="modal-time-slots">
@@ -1916,7 +1967,7 @@
         let viewStartDate = new Date();
         viewStartDate.setHours(0, 0, 0, 0); // Normalize to the start of today
 
-        let bookings = {}; // To store bookings: { "YYYY-MM-DD": [{ time: "10:30 AM", name: "Alex" }] }
+        let bookings = {}; // To store bookings: { "YYYY-MM-DD": [{ time: "10:30 AM", name: "Alex", type: "chess" }] }
 
 
         // Helper to get a consistent date key in local time, avoiding timezone issues.
@@ -1981,12 +2032,15 @@
                     const bookingList = document.createElement('ul');
                     bookingList.classList.add('day-booking-list');
                     dayBookings.forEach((booking, index) => {
+                        // Default type to chess if not present, for backward compatibility
+                        if (!booking.type) booking.type = 'chess';
+
                         const listItem = document.createElement('li');
 
-                        // Truncate name if it's longer than 10 characters for display
-                        let displayName = booking.name;
-                        if (booking.name.length > 10) {
-                            displayName = booking.name.substring(0, 10) + '...';
+                        // CSS will handle truncation with ellipsis if the name is too long.
+                        const displayName = booking.name;
+                        if (booking.type === 'math') {
+                            listItem.classList.add('math-booking');
                         }
 
                         listItem.title = `${booking.name} - ${booking.time}`; // Tooltip always shows full name
@@ -2008,6 +2062,7 @@
 
         const openModal = (date) => {
             document.getElementById('modal-kids-names').value = '';
+            document.querySelector('input[name="lessonType"][value="chess"]').checked = true;
             modal.dataset.selectedDate = date.toISOString(); // Store the date object for later use
             modalDateEl.textContent = date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
@@ -2105,6 +2160,7 @@
             const kidsNames = document.getElementById('modal-kids-names').value;
             const selectedTimeBtn = document.querySelector('#modal-time-slots .selected');
             const selectedDateISO = modal.dataset.selectedDate;
+            const lessonType = document.querySelector('input[name="lessonType"]:checked').value;
 
             // Validation
             if (!selectedTimeBtn) {
@@ -2124,7 +2180,7 @@
             if (!bookings[dateKey]) {
                 bookings[dateKey] = [];
             }
-            bookings[dateKey].push({ time: selectedTime, name: kidsNames.trim() });
+            bookings[dateKey].push({ time: selectedTime, name: kidsNames.trim(), type: lessonType });
 
             closeModal(); // Close modal
             renderCalendar(); // Re-render the calendar to show the new booking
