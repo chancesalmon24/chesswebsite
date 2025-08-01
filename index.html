@@ -1570,10 +1570,10 @@
 
         <section id="location" class="section">
             <h2>Our Location</h2>
-            <p style="text-align:center; color: #6c757d; margin-top: -1rem; margin-bottom: 2rem;">25 Amy Croft Dr, Tecumseh, ON Inside Bradys Fitness, First Room on the Left</p>
+            <p style="text-align:center; color: #6c757d; margin-top: -1rem; margin-bottom: 2rem;">First Room Inside Brady’s Fitness, 25 Amy Croft Dr, Windsor, ON N9K 1C7</p>
             <div class="map-container">
                 <div class="map-overlay"></div>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2950.48873926294!2d-82.9053496238918!3d42.31065097119286!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x883ad5a9e52c1a99%3A0x11773c1a88ef833!2s25%20Amy%20Croft%20Dr%2C%20Lakeshore%2C%20ON%20N9K%201C7!5e0!3m2!1sen!2sca!4v1716924933159!5m2!1sen!2sca" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d94421.89579248174!2d-82.94886636819548!3d42.30660250436067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x883ad570c82b0ddb%3A0x9ebbadf191261024!2sFirst%20Room%20Inside%20Brady%E2%80%99s%20Fitness%2C%2025%20Amy%20Croft%20Dr%2C%20Windsor%2C%20ON%20N9K%201C7!3m2!1d42.306632!2d-82.8664656!5e0!3m2!1sen!2sca!4v1753996571202!5m2!1sen!2sca" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <div class="location-photos-grid">
                 <div class="location-photo">
@@ -1887,6 +1887,9 @@
         </div>
     </div>
 
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <script>
         // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
@@ -2090,12 +2093,43 @@
         let viewStartDate = new Date();
         viewStartDate.setHours(0, 0, 0, 0); // Normalize to the start of today
 
-        // Load bookings from localStorage, or initialize as an empty object if none are found.
-        let bookings = JSON.parse(localStorage.getItem('tec-chess-bookings')) || {};
+        // This will hold the booking data fetched from the central server.
+        // The data will be structured like: { "YYYY-MM-DD": [ {id: "...", ...}, ... ] }
+        let bookings = {};
 
-        // Helper function to save the current bookings object to localStorage
-        const saveBookings = () => {
-            localStorage.setItem('tec-chess-bookings', JSON.stringify(bookings));
+        // --- Supabase Setup ---
+        // IMPORTANT: Replace these with your actual Supabase URL and Anon Key!
+        const SUPABASE_URL = 'https://rgpgrpigtpqwvxlqylra.supabase.co'; // This is your project URL
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJncGdycGlndHBxd3Z4bHF5bHJhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQwNTY5OTUsImV4cCI6MjA2OTYzMjk5NX0.rhEbl1N1_qnh8YTBfbyaeQxflCLaKBQprhylirivihw'; // This is your public anon key
+
+        // Initialize the Supabase client
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // NEW: Function to fetch all bookings from the server
+        async function fetchBookings() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('bookings') // The table name you created
+                    .select('*');
+
+                if (error) throw error;
+
+                // Transform the flat array from Supabase into the nested object the calendar expects
+                // This groups all bookings by their date.
+                bookings = data.reduce((acc, booking) => {
+                    const dateKey = booking.date; // The 'date' column in your Supabase table
+                    if (!acc[dateKey]) {
+                        acc[dateKey] = [];
+                    }
+                    acc[dateKey].push(booking);
+                    return acc;
+                }, {});
+
+                renderCalendar(); // Re-render the calendar with the fresh data
+            } catch (error) {
+                console.error('Error fetching bookings from Supabase:', error.message);
+                alert('Could not load the schedule. Please try refreshing the page.');
+            }
         };
 
         // Helper to get a consistent date key in local time, avoiding timezone issues.
@@ -2106,12 +2140,6 @@
             return `${year}-${month}-${day}`;
         }
 
-        // Define the standard available time slots for any given day.
-        const standardAvailableSlots = [
-            "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
-            "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM",
-            "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM"
-        ];
 
         const renderCalendar = () => {
             calendarGrid.innerHTML = ''; // Clear previous days
@@ -2156,14 +2184,7 @@
                 // Add booking list if bookings exist
                 const dateKey = getDateKey(dayDate);
 
-                let dayBookings = (bookings[dateKey] || []).map((booking, index) => ({
-                    ...booking,
-                    originalIndex: index
-                }));
-
-                if (dayBookings.length > 0) {
-                    // Sort bookings chronologically before rendering
-                    dayBookings.sort((a, b) => {
+                let dayBookings = (bookings[dateKey] || []).sort((a, b) => {
                         const timeToMinutes = (timeStr) => {
                             const [time, modifier] = timeStr.split(' ');
                             let [hours, minutes] = time.split(':').map(Number);
@@ -2178,9 +2199,10 @@
                         return timeToMinutes(a.time) - timeToMinutes(b.time);
                     });
 
+                if (dayBookings.length > 0) {
                     const bookingList = document.createElement('ul');
                     bookingList.classList.add('day-booking-list');
-                    dayBookings.forEach((booking, index) => {
+                    dayBookings.forEach(booking => {
                         // Default type to chess if not present, for backward compatibility
                         if (!booking.type) booking.type = 'chess';
 
@@ -2192,7 +2214,8 @@
                             listItem.classList.add('math-booking');
                         }
 
-                        const deleteButtonHtml = `<button class="delete-booking-btn" title="Cancel booking" data-date-key="${dateKey}" data-booking-index="${booking.originalIndex}">&times;</button>`;
+                        // The server MUST provide a unique `id` for each booking for reliable deletion.
+                        const deleteButtonHtml = `<button class="delete-booking-btn" title="Cancel booking" data-booking-id="${booking.id}">&times;</button>`;
 
                         listItem.title = `${booking.name} - ${booking.time}`; // Tooltip always shows full name
                         listItem.innerHTML = `
@@ -2210,6 +2233,13 @@
                 calendarGrid.appendChild(dayEl);
             }
         };
+
+        // Define the standard available time slots for any given day.
+        const standardAvailableSlots = [
+            "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
+            "12:00 PM", "12:30 PM", "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", "5:00 PM", "5:30 PM",
+            "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM"
+        ];
 
         const openModal = (date) => {
             document.getElementById('modal-kids-names').value = '';
@@ -2343,8 +2373,8 @@
         });
         
         // When the user clicks the "Book Now" button in the modal, scroll to the contact form
-        modalBookButton.addEventListener('click', (e) => {
-            e.preventDefault(); // Prevent default anchor behavior
+        modalBookButton.addEventListener('click', async (e) => {
+            e.preventDefault();
 
             // Get data from modal
             const kidsNames = document.getElementById('modal-kids-names').value;
@@ -2364,7 +2394,9 @@
             }
 
             const selectedTime = selectedTimeBtn.dataset.time;
-            const selectedDate = new Date(selectedDateISO);
+
+            // Create a list of new bookings to send to the server
+            const newBookingsPayload = [];
             const bookingDetails = {
                 time: selectedTime,
                 name: kidsNames.trim(),
@@ -2373,43 +2405,65 @@
 
             if (bookThreeWeeks) {
                 for (let i = 0; i < 3; i++) {
-                    const bookingDate = new Date(selectedDate);
-                    bookingDate.setDate(selectedDate.getDate() + (i * 7));
-                    const dateKey = getDateKey(bookingDate);
-                    if (!bookings[dateKey]) { bookings[dateKey] = []; }
-                    bookings[dateKey].push(bookingDetails);
+                    const bookingDate = new Date(selectedDateISO);
+                    bookingDate.setDate(bookingDate.getDate() + (i * 7));
+                    newBookingsPayload.push({
+                        date: getDateKey(bookingDate), // Send the date with each booking
+                        ...bookingDetails
+                    });
                 }
             } else {
-                const dateKey = getDateKey(selectedDate);
-                if (!bookings[dateKey]) { bookings[dateKey] = []; }
-                bookings[dateKey].push(bookingDetails);
+                newBookingsPayload.push({
+                    date: getDateKey(new Date(selectedDateISO)),
+                    ...bookingDetails
+                });
             }
-            saveBookings(); // Save the updated bookings to localStorage
-            closeModal(); // Close modal
-            renderCalendar(); // Re-render the calendar to show the new booking
+
+            // Send the new bookings to the server
+            try {
+                const { error } = await supabaseClient
+                    .from('bookings')
+                    .insert(newBookingsPayload); // Supabase can insert an array of new rows
+
+                if (error) throw error;
+
+                // If successful, fetch the latest bookings to update the UI
+                await fetchBookings();
+                closeModal();
+            } catch (error) {
+                console.error('Error saving booking to Supabase:', error.message);
+                alert('There was a problem saving your booking. Please try again.');
+            }
         });
 
         // Event delegation for deleting bookings
-        calendarGrid.addEventListener('click', function(e) {
-            if (e.target.classList.contains('delete-booking-btn')) {
-                e.stopPropagation(); // Prevent the modal from opening when clicking the 'x'
+        calendarGrid.addEventListener('click', async function(e) {
+            const deleteButton = e.target.closest('.delete-booking-btn');
+            if (deleteButton) {
+                e.stopPropagation(); // Prevent modal from opening
 
-                const button = e.target;
-                const dateKey = button.dataset.dateKey;
-                const bookingIndex = parseInt(button.dataset.bookingIndex, 10);
+                const bookingId = deleteButton.dataset.bookingId;
+                if (!bookingId) return console.error('Delete button is missing a booking ID.');
 
                 if (confirm('Are you sure you want to cancel this booking?')) {
-                    bookings[dateKey].splice(bookingIndex, 1);
-                    if (bookings[dateKey].length === 0) {
-                        delete bookings[dateKey];
+                    try {
+                        const { error } = await supabaseClient
+                            .from('bookings')
+                            .delete()
+                            .eq('id', bookingId); // Delete the row where the 'id' matches
+
+                        if (error) throw error;
+                        await fetchBookings(); // Refresh the calendar from the server
+                    } catch (error) {
+                        console.error('Error deleting booking from Supabase:', error.message);
+                        alert('There was a problem canceling your booking. Please try again.');
                     }
-                    saveBookings(); // Save the updated bookings to localStorage
-                    renderCalendar();
                 }
             }
         });
 
-        renderCalendar();
+        // Initial load of all bookings from the server when the page opens
+        fetchBookings();
     </script>
 </body>
 </html>
