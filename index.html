@@ -784,8 +784,8 @@
             border-radius: 4px;
         }
 
-        .legend-color.chess { background-color: #e9f7ef; border: 1px solid #38a169; }
-        .legend-color.math { background-color: #fff5f5; border: 1px solid #e53e3e; }
+        .legend-color.chess { background-color: #e9f7ef; border: 1px solid #38a169; } /* Green for Chess */
+        .legend-color.math { background-color: #dbeafe; border: 1px solid #2563eb; } /* Rich Blue for Math */
 
         /* Events Section */
         .events-grid {
@@ -1139,7 +1139,7 @@
             height: 1.1em;
         }
         .lesson-type-selector input[type="radio"][value="math"] {
-            accent-color: #e53e3e; /* Red for math */
+            accent-color: #2563eb; /* Rich Blue for math */
         }
 
         .time-period {
@@ -1222,17 +1222,17 @@
         }
 
         .day-booking-list li.math-booking {
-            background: #fff5f5;
-            border-left-color: #e53e3e;
+            background: #dbeafe; /* Lighter rich blue */
+            border-left-color: #2563eb; /* Rich blue */
         }
         .day-booking-list li.math-booking .booking-name {
-            color: #c53030;
+            color: #1e40af; /* Darker rich blue */
         }
         .day-booking-list li.math-booking .booking-time {
-            color: #e53e3e;
+            color: #2563eb; /* Rich blue */
         }
         .day-booking-list li.math-booking svg {
-            stroke: #c53030;
+            stroke: #1e40af; /* Darker rich blue */
         }
         .booking-info {
             display: flex;
@@ -2169,7 +2169,14 @@
 
                 // Since all days have the same slots, we just make them all bookable
                 dayEl.classList.add('booked');
-                dayEl.addEventListener('click', () => openModal(dayDate));
+                dayEl.addEventListener('click', (e) => {
+                    // If the click was on a delete button, let the delegated handler on the grid manage it
+                    // and do not open the modal.
+                    if (e.target.closest('.delete-booking-btn')) {
+                        return;
+                    }
+                    openModal(dayDate);
+                });
 
                 // Highlight today
                 if (dayDate.getTime() === today.getTime()) {
