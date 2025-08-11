@@ -648,6 +648,27 @@
             transform: scale(1.03);
         }
 
+        .photo-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .photo-item img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
         @media (max-width: 768px) {
             .mission-grid,
             .services-grid {
@@ -1356,10 +1377,12 @@
             .nav-links.mobile-active li:nth-child(1) { transition-delay: 0.1s; }
             .nav-links.mobile-active li:nth-child(2) { transition-delay: 0.15s; }
             .nav-links.mobile-active li:nth-child(3) { transition-delay: 0.2s; }
+            .nav-links.mobile-active li:nth-child(4) { transition-delay: 0.25s; }
             .nav-links.mobile-active li:nth-child(5) { transition-delay: 0.3s; }
             .nav-links.mobile-active li:nth-child(6) { transition-delay: 0.35s; }
             .nav-links.mobile-active li:nth-child(7) { transition-delay: 0.4s; }
             .nav-links.mobile-active li:nth-child(8) { transition-delay: 0.45s; }
+            .nav-links.mobile-active li:nth-child(9) { transition-delay: 0.5s; }
 
             .hamburger-menu {
                 display: flex;
@@ -1447,6 +1470,7 @@
                 <li><a href="#home">Home</a></li>
                 <li><a href="#mission">Our Mission</a></li>
                 <li><a href="#events">Events</a></li>
+                <li><a href="#community-photos">Photos</a></li>
                 <li><a href="#services">Services</a></li>
                 <li><a href="#pricing">Membership</a></li>
                 <li><a href="#about">About</a></li>
@@ -1502,6 +1526,53 @@
                     </div>
                 </div>
                 <div class="calendar-grid" id="calendar-grid"></div>
+            </div>
+        </section>
+
+        <section id="community-photos" class="section">
+            <h2>Our Community in Action</h2>
+            <p style="text-align:center; color: #6c757d; margin-top: -1rem; margin-bottom: 2rem;">A glimpse into our vibrant chess community, events, and student successes.</p>
+            <div class="photo-gallery-grid">
+                <div class="photo-item">
+                    <img src="images/community-1.jpg" alt="Community photo 1">
+                </div>
+                <div class="photo-item">
+                    <img src="images/community-2.jpg" alt="Community photo 2">
+                </div>
+                <div class="photo-item">
+                    <img src="images/community-3.jpg" alt="Community photo 3">
+                </div>
+                <div class="photo-item">
+                    <img src="images/community-4.jpg" alt="Community photo 4">
+                </div>
+                <div class="photo-item">
+                    <img src="images/community-5.jpg" alt="Community photo 5">
+                </div>
+                <div class="photo-item">
+                    <img src="images/community-6.jpg" alt="Community photo 6">
+                </div>
+                <!-- New photos start here -->
+                <div class="photo-item">
+                    <img src="images/525989077_17942617194040385_4212945890040080596_n.jpg" alt="Students playing chess at an event">
+                </div>
+                <div class="photo-item">
+                    <img src="images/527697490_17943385443040385_6572568058503988379_n.jpg" alt="A group of chess students smiling">
+                </div>
+                <div class="photo-item">
+                    <img src="images/IMG_1215.JPG" alt="A young student focused on a chess game">
+                </div>
+                <div class="photo-item">
+                    <img src="images/IMG_1221.JPG" alt="Two students shaking hands over a chessboard">
+                </div>
+                <div class="photo-item">
+                    <img src="images/IMG_1247.JPG" alt="Chess tournament in progress">
+                </div>
+                <div class="photo-item">
+                    <img src="images/IMG_E1263.JPG" alt="A student receiving a chess award">
+                </div>
+                <div class="photo-item">
+                    <img src="images/OAPX7682.JPG" alt="Community members at a chess gathering">
+                </div>
             </div>
         </section>
 
@@ -1677,7 +1748,7 @@
                     <span class="price-icon">♝</span>
                     <h3>Twice a Week</h3>
                     <p style="font-size: 0.9rem; margin-top: -0.25rem; margin-bottom: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.9);">+$5 per additional sibling</p>
-                    <div class="price">$30<span style="font-size: 1.5rem;">/w</span></div>
+                    <div class="price">$35<span style="font-size: 1.5rem;">/w</span></div>
                     <p>Ideal for advanced learning</p>
                     <ul style="list-style: none; padding: 0; margin-top: 1rem;">
                         <li>✓ 2 classes per week</li>
@@ -1714,7 +1785,7 @@
                 <div class="pricing-card" id="card8.0">
                     <span class="price-icon">💻</span>
                     <h3>Online Classes</h3>
-                    <div class="price">$25<span style="font-size: 1.5rem;">/w</span></div>
+                    <div class="price">$30<span style="font-size: 1.5rem;">/w</span></div>
                     <p>Flexible learning from anywhere</p>
                     <ul style="list-style: none; padding: 0; margin-top: 1rem;">
                         <li>✓ Learn from home</li>
