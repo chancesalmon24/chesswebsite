@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,18 +18,9 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
-            background-color: #38a169;
-            background-image: linear-gradient(135deg, #48bb78 0%, #38a169 100%), url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3e%3ctext x='20' y='35' font-size='100' font-family='monospace' fill='%23ffffff' opacity='0.03'%3e♟♟♟♟%3c/text%3e%3ctext x='20' y='140' font-size='100' font-family='monospace' fill='%23ffffff' opacity='0.03'%3e♟♟♟♟%3c/text%3e%3ctext x='20' y='250' font-size='100' font-family='monospace' fill='%23ffffff' opacity='0.03'%3e♟♟♟♟%3c/text%3e%3ctext x='20' y='360' font-size='100' font-family='monospace' fill='%23ffffff' opacity='0.03'%3e♟♟♟♟%3c/text%3e%3c/svg%3e");
+            background-color: #38a169; /* Fallback color */
+            background-image: linear-gradient(135deg, #48bb78 0%, #38a169 100%), url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'%3e%3ctext x='50' y='80' font-size='60' fill='rgba(0,0,0,0.06)'%3e♔%3c/text%3e%3ctext x='150' y='120' font-size='60' fill='rgba(0,0,0,0.06)'%3e♞%3c/text%3e%3ctext x='220' y='250' font-size='60' fill='rgba(0,0,0,0.06)'%3e♜%3c/text%3e%3ctext x='80' y='200' font-size='60' fill='rgba(0,0,0,0.06)'%3e♝%3c/text%3e%3ctext x='300' y='50' font-size='60' fill='rgba(0,0,0,0.06)'%3e♛%3c/text%3e%3ctext x='20' y='350' font-size='60' fill='rgba(0,0,0,0.06)'%3e♟%3c/text%3e%3c/svg%3e");
             min-height: 100vh;
-        }
-
-        /* Respect user's motion preferences */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
         }
 
         .container {
@@ -40,12 +32,13 @@
         header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
+            /* padding: 1rem 0; */ /* Replaced with fixed height and flexbox for alignment */
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            height: 80px;
+            height: 80px; /* Set a fixed height for the header */
             display: flex;
             align-items: center;
         }
@@ -68,10 +61,10 @@
         .logo-text {
             font-family: 'Poppins', sans-serif;
             font-weight: 700;
-            font-size: 1.1rem;
+            font-size: 1.1rem; /* Adjusted for two lines */
             color: #2d3748;
             letter-spacing: -0.5px;
-            line-height: 1.1;
+            line-height: 1.1; /* Adjust line height for stacked text */
         }
 
         .chess-piece {
@@ -93,36 +86,15 @@
             transition: color 0.3s ease;
         }
 
-        .nav-links a:hover,
-        .nav-links a:focus {
-            color: #48bb78;
-            outline: none;
-        }
-
-        .nav-links a:focus-visible {
-            outline: 2px solid #48bb78;
-            outline-offset: 4px;
-            border-radius: 4px;
-        }
-
         /* Hamburger Menu Styles */
         .hamburger-menu {
-            display: none;
+            display: none; /* Hidden by default on desktop */
             flex-direction: column;
             justify-content: space-around;
             width: 30px;
             height: 25px;
             cursor: pointer;
-            z-index: 1100;
-            background: none;
-            border: none;
-            padding: 0;
-        }
-
-        .hamburger-menu:focus-visible {
-            outline: 2px solid #48bb78;
-            outline-offset: 4px;
-            border-radius: 4px;
+            z-index: 1100; /* Above nav-links when active */
         }
 
         .hamburger-menu span {
@@ -134,6 +106,7 @@
             transition: all 0.3s ease;
         }
 
+        /* Hamburger animation to 'X' */
         .hamburger-menu.open span:nth-child(1) {
             transform: translateY(8px) rotate(45deg);
         }
@@ -146,8 +119,15 @@
             transform: translateY(-8px) rotate(-45deg);
         }
 
+        /* Mobile Nav Links */
+        /* Styles for when the menu is open will be in the media query */
+
+        .nav-links a:hover {
+            color: #48bb78;
+        }
+
         main {
-            margin-top: 120px;
+            margin-top: 120px; /* Increased space from header */
         }
 
         .hero {
@@ -160,17 +140,17 @@
             border-radius: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             position: relative;
-            overflow: hidden;
+            overflow: hidden; /* To contain the pseudo-elements */
         }
 
         .hero::before,
         .hero::after {
             content: '';
             position: absolute;
-            font-family: 'Times New Roman', serif;
+            font-family: 'Times New Roman', serif; /* A font that supports chess pieces well */
             color: white;
             opacity: 0.08;
-            font-size: 250px;
+            font-size: 250px; /* Large size */
             top: 50%;
             transform: translateY(-50%);
             z-index: 0;
@@ -179,12 +159,12 @@
         }
 
         .hero::before {
-            content: '♔';
+            content: '♔'; /* King */
             left: 5%;
         }
 
         .hero::after {
-            content: '♞';
+            content: '♞'; /* Knight */
             right: 5%;
         }
 
@@ -193,7 +173,7 @@
             margin-bottom: 1rem;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             animation: fadeInUp 1s ease-out;
-            line-height: 1.2;
+            line-height: 1.2; /* Adjusts vertical spacing between lines */
         }
 
         .hero-subtitle {
@@ -212,20 +192,19 @@
             animation: fadeInUp 1s ease-out 0.3s both;
         }
 
+        /* Ensure hero content is above pseudo-elements */
         .hero > * {
             position: relative;
             z-index: 1;
         }
-
-        .hero::before,
-        .hero::after {
+        .hero::before, .hero::after {
             z-index: 0;
         }
 
         .hero-social-links {
-            margin-top: 1.5rem;
-            margin-bottom: 0;
-            animation: fadeInUp 1s ease-out 0.5s both;
+            margin-top: 1.5rem; /* Spacing from the button above */
+            margin-bottom: 0; /* No extra space needed at the bottom of hero */
+            animation: fadeInUp 1s ease-out 0.5s both; /* Appear after button */
         }
 
         .hero-social-links a {
@@ -239,18 +218,11 @@
             transform: scale(1.15);
         }
 
-        .hero-social-links a:focus-visible {
-            outline: 2px solid white;
-            outline-offset: 4px;
-            border-radius: 4px;
-        }
-
         .hero-social-links a svg {
             width: 32px;
             height: 32px;
             vertical-align: middle;
         }
-
         .cta-button {
             display: inline-block;
             background: linear-gradient(45deg, #38a169, #2f855a);
@@ -266,17 +238,6 @@
             text-align: center;
         }
 
-        .cta-button:hover,
-        .cta-button:focus {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(47, 133, 90, 0.6);
-        }
-
-        .cta-button:focus-visible {
-            outline: 2px solid white;
-            outline-offset: 4px;
-        }
-
         .cta-button-subtext {
             display: block;
             font-size: 0.7rem;
@@ -290,17 +251,22 @@
             width: 90%;
             max-width: 800px;
             margin: 2rem auto;
-            background: #000;
+            background: #000; /* Black background for a clean look */
             border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 15px;
             animation: fadeInUp 1s ease-out 0.2s both;
-            overflow: hidden;
+            overflow: hidden; /* Ensures the iframe corners are rounded */
         }
 
         .video-placeholder iframe {
             width: 100%;
             height: 100%;
             border: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(47, 133, 90, 0.6);
         }
 
         .section-cta-wrapper {
@@ -323,7 +289,6 @@
             transform: translateY(-5px);
         }
 
-        .section h2,
         .reviews-section h2 {
             font-size: 2.5rem;
             margin-bottom: 2rem;
@@ -332,8 +297,27 @@
             position: relative;
         }
 
-        .section h2::after,
         .reviews-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(45deg, #48bb78, #38a169);
+            border-radius: 2px;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: #4a5568;
+            position: relative;
+        }
+
+        .section h2::after {
             content: '';
             position: absolute;
             bottom: -10px;
@@ -367,15 +351,15 @@
         .reviews-slider {
             display: flex;
             transition: transform 0.5s ease-in-out;
-            align-items: flex-start;
+            align-items: flex-start; /* Prevents slides from stretching vertically */
         }
 
         .reviews-page {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr; /* Single column layout */
             gap: 2rem;
             min-width: 100%;
-            padding: 0 15%;
+            padding: 0 15%; /* Add padding on desktop to prevent it being too wide */
         }
 
         .slider-navigation {
@@ -400,16 +384,6 @@
             transition: background 0.3s ease;
         }
 
-        .slider-navigation button:hover,
-        .slider-navigation button:focus {
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        .slider-navigation button:focus-visible {
-            outline: 2px solid #48bb78;
-            outline-offset: 2px;
-        }
-
         .slider-dots {
             text-align: center;
             padding-top: 1rem;
@@ -424,12 +398,6 @@
             border-radius: 50%;
             display: inline-block;
             transition: background-color 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .dot:focus-visible {
-            outline: 2px solid #48bb78;
-            outline-offset: 2px;
         }
 
         .dot.active {
@@ -447,7 +415,7 @@
             padding: 2rem;
             border-radius: 15px;
             text-align: center;
-            min-width: 0;
+            min-width: 0; /* Allow cards to shrink below their content size */
             border: 2px solid transparent;
             transition: all 0.3s ease;
         }
@@ -469,7 +437,7 @@
             background: #fff;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
             text-decoration: none;
             color: inherit;
@@ -479,12 +447,12 @@
 
         .instagram-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.12);
         }
 
         .instagram-thumbnail {
             position: relative;
-            padding-top: 56.25%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
             background-size: cover;
             background-position: center;
         }
@@ -511,7 +479,6 @@
         .play-button-overlay svg {
             color: white;
         }
-
         .service-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
@@ -546,14 +513,14 @@
         }
 
         .instructor-avatar {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin: 0 auto;
+            width: 200px; /* Or your desired size */
+            height: 200px; /* Or your desired size */
+            border-radius: 50%; /* Makes the image circular */
+            object-fit: cover; /* Prevents the image from stretching */
+            margin: 0 auto; /* Centers the image */
             display: block;
-            border: 5px solid #38a169;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 5px solid #38a169; /* Adds a themed border */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Adds depth */
         }
 
         .instructor-name {
@@ -567,7 +534,6 @@
         .qualifications {
             margin-top: 2rem;
         }
-
         .qualifications-list {
             margin-top: 0.5rem;
         }
@@ -596,10 +562,10 @@
         .availability-highlight {
             margin-top: 1.5rem;
             padding: 1rem 1.5rem;
-            background: #e9f7ef;
+            background: #e9f7ef; /* A light green background */
             border-left: 5px solid #38a169;
             border-radius: 8px;
-            display: inline-block;
+            display: inline-block; /* To make it fit the content width and respect center alignment */
         }
 
         .availability-highlight h4 {
@@ -611,13 +577,13 @@
         .availability-highlight p {
             font-size: 1.1rem;
             color: #4a5568;
-            margin: 0;
+            margin: 0; /* Reset margin for the paragraph inside */
         }
 
         .map-container {
             position: relative;
             overflow: hidden;
-            padding-top: 56.25%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio for a responsive map */
             border-radius: 15px;
             margin-top: 2rem;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -661,7 +627,7 @@
 
         .map-overlay.hidden {
             opacity: 0;
-            pointer-events: none;
+            pointer-events: none; /* Allows clicks to pass through to the map */
         }
 
         .location-photos-grid {
@@ -704,6 +670,19 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
+        @media (max-width: 768px) {
+            .mission-grid,
+            .services-grid {
+                grid-template-columns: 1fr;  /* revert to a 1-column grid on smaller screens */
+            }
+            .location-photos-grid {
+                grid-template-columns: 1fr;
+            }
+            .service-card {
+                min-width: auto;
+            }
+        }
+
         .day-of-week {
             font-size: 0.9rem;
             color: #6c757d;
@@ -718,7 +697,6 @@
             line-height: 1.2;
             color: #2d3748;
         }
-
         .legend-item {
             display: flex;
             align-items: center;
@@ -731,16 +709,10 @@
             border-radius: 4px;
         }
 
-        .legend-color.chess {
-            background-color: #e9f7ef;
-            border: 1px solid #38a169;
-        }
+        .legend-color.chess { background-color: #e9f7ef; border: 1px solid #38a169; } /* Green for Chess */
+        .legend-color.math { background-color: #dbeafe; border: 1px solid #2563eb; } /* Rich Blue for Math */
 
-        .legend-color.math {
-            background-color: #dbeafe;
-            border: 1px solid #2563eb;
-        }
-
+        /* Events Section */
         .events-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -772,7 +744,7 @@
             padding: 1rem;
             font-weight: bold;
             flex-shrink: 0;
-            width: 90px;
+            width: 90px; /* Increased width to prevent cutoff */
         }
 
         .event-date .month {
@@ -783,7 +755,7 @@
 
         .event-date .day {
             display: block;
-            font-size: 2.4rem;
+            font-size: 2.4rem; /* Slightly reduced font size for better fit */
             line-height: 1;
         }
 
@@ -805,8 +777,7 @@
             transition: color 0.3s ease;
         }
 
-        .event-button:hover,
-        .event-button:focus {
+        .event-button:hover {
             color: #2f855a;
         }
 
@@ -821,7 +792,7 @@
             background: linear-gradient(135deg, #48bb78, #38a169);
             color: white;
             padding: 2.5rem 2rem;
-            border-radius: 20px;
+            border-radius: 20px;            
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -834,6 +805,7 @@
         .pricing-card:hover {
             transform: scale(1.05) rotate(1deg);
             box-shadow: 0 15px 30px rgba(72, 187, 120, 0.5), 0 0 20px rgba(255, 255, 255, 0.3);
+            border: 2px solid transparent;
             background: linear-gradient(135deg, #38a169, #2f855a);
         }
 
@@ -844,19 +816,18 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
             transform: rotate(45deg);
             transition: all 0.6s ease;
             opacity: 0;
         }
-
+        
         .pricing-card:hover::before {
             opacity: 1;
             animation: shine 0.6s ease-in-out;
         }
 
-        .pricing-card:nth-child(1)::after,
-        .pricing-card:nth-child(2)::after {
+        .pricing-card.featured::after {
             content: 'Popular';
             position: absolute;
             top: 20px;
@@ -869,6 +840,22 @@
             font-weight: bold;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
+
+        .pricing-card:nth-child(1)::after,  /* Target "1 Kid - Once a Week" card */
+        .pricing-card:nth-child(2)::after {  /* Target "1 Kid - Twice a Week" card */
+            content: 'Popular';
+            position: absolute;
+            top: 20px;
+            right: -40px;
+            background: #FFD700;
+            color: #1a202c;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-size: 0.9rem;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
 
         .price {
             font-size: 3.5rem;
@@ -938,15 +925,9 @@
             width: 100%;
         }
 
-        .submit-btn:hover,
-        .submit-btn:focus {
+        .submit-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(72, 187, 120, 0.3);
-        }
-
-        .submit-btn:focus-visible {
-            outline: 2px solid #38a169;
-            outline-offset: 2px;
         }
 
         footer {
@@ -967,459 +948,765 @@
             margin: 0 10px;
             transition: color 0.3s ease;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
+    display: inline-flex;
+    align-items: center;
         }
 
-        .social-links a:hover,
-        .social-links a:focus {
+        .social-links a:hover {
             color: #48bb78;
         }
 
-        .social-links a:focus-visible {
-            outline: 2px solid white;
-            outline-offset: 4px;
-            border-radius: 4px;
-        }
+.social-links a svg {
+    width: 1.5rem; /* Match the font-size of other icons */
+    height: 1.5rem;
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
-        .social-links a svg {
-            width: 1.5rem;
-            height: 1.5rem;
-        }
+@keyframes shine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+/* === Mobile Styles === */
+@media (max-width: 768px) {
+    .nav-links {
+        position: fixed; /* Fixed so it stays when scrolling */
+        top: 80px; /* Position below the 80px header */
+        left: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        
+        /* Use max-height for a smooth slide-down animation */
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease-in-out;
 
-        @keyframes shine {
-            0% {
-                transform: translateX(-100%) translateY(-100%) rotate(45deg);
-            }
-            100% {
-                transform: translateX(100%) translateY(100%) rotate(45deg);
-            }
-        }
+        z-index: 999;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
 
-        /* === Mobile Styles === */
-        @media (max-width: 768px) {
-            .hamburger-menu {
-                display: flex;
-            }
+    .nav-links.mobile-active {
+        max-height: 500px; /* A height larger than the menu content */
+    }
 
-            .nav-links {
-                position: fixed;
-                top: 80px;
-                left: 0;
-                width: 100%;
-                background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(10px);
-                flex-direction: column;
-                align-items: stretch;
-                gap: 0;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.4s ease-in-out;
-                z-index: 999;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            }
+    .nav-links a {
+        height: 50px; /* Fixed height for each link */
+        line-height: 50px; /* Vertically center text within the fixed height */
+        text-align: center;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        padding: 0 1rem; /* Keep horizontal padding */
+    }
 
-            .nav-links.mobile-active {
-                max-height: 500px;
-            }
+    .nav-links li {
+        opacity: 0;
+        transform: translateY(-15px);
+        transition: opacity 0.3s ease-out, transform 0.4s ease-out;
+    }
 
-            .nav-links a {
-                padding: 15px 20px;
-                border-bottom: 1px solid #e2e8f0;
-            }
+    .nav-links.mobile-active li {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
-            .nav-links a:last-child {
-                border-bottom: none;
-            }
+    /* Staggered delay for each link to create a cascading effect */
+    .nav-links.mobile-active li:nth-child(1) { transition-delay: 0.1s; }
+    .nav-links.mobile-active li:nth-child(2) { transition-delay: 0.15s; }
+    .nav-links.mobile-active li:nth-child(3) { transition-delay: 0.2s; }
+    .nav-links.mobile-active li:nth-child(4) { transition-delay: 0.25s; }
+    .nav-links.mobile-active li:nth-child(5) { transition-delay: 0.3s; }
+    .nav-links.mobile-active li:nth-child(6) { transition-delay: 0.35s; }
+    .nav-links.mobile-active li:nth-child(7) { transition-delay: 0.4s; }
+    .nav-links.mobile-active li:nth-child(8) { transition-delay: 0.45s; }
+    .nav-links.mobile-active li:nth-child(9) { transition-delay: 0.5s; }
 
-            main {
-                margin-top: 100px;
-            }
+    .hamburger-menu {
+        display: flex;
+    }
 
-            .hero h1 {
-                font-size: 2.5rem;
-            }
+    .hero::before,
+    .hero::after {
+        font-size: 180px; /* Make them a bit larger */
+        opacity: 0.1; /* Increase visibility */
+    }
+    .hero::before {
+        left: -15px; /* Position them to peek from the edge */
+    }
+    .hero::after {
+        right: -15px; /* Position them to peek from the edge */
+    }
 
-            .hero-subtitle {
-                font-size: 1.1rem;
-            }
 
-            .hero-description {
-                font-size: 1rem;
-            }
+    .hero h1 {
+        font-size: 2.5rem;
+    }
 
-            .reviews-page {
-                padding: 0 5%;
-            }
+    .hero p {
+        font-size: 1.1rem;
+    }
 
-            .mission-grid {
-                grid-template-columns: 1fr;
-            }
+    .pricing-table, .services-grid {
+        grid-template-columns: 1fr;
+    }
 
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
+    .reviews-page {
+        padding: 0 1.5rem; /* This is the key fix for mobile reviews */
+    }
 
-            .location-photos-grid {
-                grid-template-columns: 1fr;
-            }
+    .about-grid {
+        grid-template-columns: 1fr; /* Stack about section on mobile */
+        text-align: center;
+    }
 
-            .about-grid {
-                grid-template-columns: 1fr;
-            }
+    .section, .reviews-section {
+        padding: 2rem 1rem;
+    }
 
-            .service-card {
-                min-width: auto;
-            }
-        }
+    .section h2, .reviews-section h2 {
+        font-size: 2rem;
+    }
+    .qualifications {
+        display: inline-block; /* Allows the parent's text-align:center to work */
+        text-align: left; /* Aligns the text inside this block to the left */
+    }
 
-        @media (max-width: 480px) {
-            header {
-                height: 70px;
-            }
+    /* Calendar Mobile Styles */
+    .calendar-container {
+        padding: 0.5rem;
+    }
 
-            main {
-                margin-top: 90px;
-            }
+    .calendar-grid {
+        gap: 3px;
+    }
 
-            .hero h1 {
-                font-size: 2rem;
-            }
+    .calendar-day {
+        min-height: 120px;
+        padding: 8px 5px;
+    }
 
-            .hero {
-                margin: 1rem;
-                padding: 2rem 0;
-            }
+    .day-number {
+        font-size: 1.5rem;
+    }
 
-            .section,
-            .reviews-section {
-                padding: 2rem 1rem;
-            }
+    .day-of-week {
+        font-size: 0.7rem;
+    }
 
-            .video-placeholder {
-                width: 95%;
-            }
-
-            .pricing-card:nth-child(1)::after,
-            .pricing-card:nth-child(2)::after {
-                font-size: 0.75rem;
-                padding: 4px 30px;
-                top: 15px;
-                right: -35px;
-            }
-        }
-    </style>
+}
+</style>
 </head>
 <body>
     <header>
-        <nav class="container">
-            <a href="#" class="logo">
+        <nav>
+            <a href="#home" class="logo">
                 <span class="chess-piece">♔</span>
                 <span class="logo-text">Tecumseh<br>Chess</span>
             </a>
-            <ul class="nav-links" id="navLinks" role="navigation" aria-label="Main navigation">
+            <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
+                <li><a href="#mission">Our Mission</a></li>
+                <li><a href="#events">Events</a></li>
+                <li><a href="#community-photos">Photos</a></li>
                 <li><a href="#services">Services</a></li>
+                <li><a href="#pricing">Membership</a></li>
                 <li><a href="#about">About</a></li>
-                <li><a href="#reviews">Reviews</a></li>
+                <li><a href="#location">Location</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <button class="hamburger-menu" id="hamburgerMenu" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navLinks">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+            <div class="hamburger-menu">
+                <span></span><span></span><span></span>
+            </div>
         </nav>
     </header>
 
-    <main>
-        <div class="container">
-            <!-- Hero Section -->
-            <section class="hero" id="home">
-                <h1>Level Up Your Chess Game</h1>
-                <p class="hero-subtitle">Professional Chess Lessons for All Skill Levels</p>
-                <p class="hero-description">From beginner to advanced, master the strategies and tactics to dominate the board</p>
-                <a href="#contact" class="cta-button">Book Your First Lesson<span class="cta-button-subtext">Get started today</span></a>
-                <div class="hero-social-links">
-                    <a href="#" aria-label="Follow on Instagram">
-                        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.057-1.645.069-4.849.069-3.205 0-3.584-.012-4.849-.069-3.259-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.322a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/></svg>
-                    </a>
-                    <a href="#" aria-label="Follow on Facebook">
-                        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                    </a>
-                </div>
-            </section>
+    <main class="container">
+        <section id="home" class="hero">
+            <h1>Education and Fun Come Together!</h1>
+            <p class="hero-subtitle">Over 120+ Students taught in the Tecumseh and Windsor area. Premium chess lessons for you or your kids at an affordable price!</p>
+            <div class="video-placeholder">
+                <iframe src="https://www.youtube.com/embed/7GVHGrIc8Rk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <p class="hero-description">Amazing chess lessons for all ages and skill levels!</p>
+            <a href="#contact" class="cta-button">
+                Book A Free Intro Lesson!
+                <span class="cta-button-subtext">(scrolls to bottom)</span>
+            </a>
+            <div class="hero-social-links">
+                <a href="https://instagram.com/tecumsehchess" target="_blank" title="Follow us on Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="https://www.facebook.com/your-page-here" target="_blank" title="Follow us on Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <p style="margin-top: 0.75rem; font-size: 1.1rem; font-weight: 500; opacity: 0.9;">@tecumsehchess</p>
+            </div>
+        </section>
 
-            <!-- Services Section -->
-            <section class="section" id="services">
-                <h2>Our Services</h2>
-                <div class="services-grid">
-                    <div class="service-card">
-                        <div class="service-icon">📚</div>
-                        <h3>Private Lessons</h3>
-                        <p>One-on-one coaching tailored to your skill level and goals</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon">👥</div>
-                        <h3>Group Classes</h3>
-                        <p>Learn together in a collaborative and supportive environment</p>
-                    </div>
-                    <div class="service-card">
-                        <div class="service-icon">🏆</div>
-                        <h3>Tournament Prep</h3>
-                        <p>Intensive training to prepare for competitive chess tournaments</p>
-                    </div>
+        <section id="community-photos" class="section">
+            <h2>Our Community in Action</h2>
+            <p style="text-align:center; color: #6c757d; margin-top: -1rem; margin-bottom: 2rem;">A glimpse into our vibrant chess community, events, and student successes.</p>
+            <div class="photo-gallery-grid">
+                <!-- Photos start here -->
+                <div class="photo-item">
+                    <img src="images/525989077_17942617194040385_4212945890040080596_n.jpg" alt="Students playing chess at an event">
                 </div>
-            </section>
-
-            <!-- About Section -->
-            <section class="section" id="about">
-                <h2>About Your Instructor</h2>
-                <div class="about-grid">
-                    <div>
-                        <img src="instructor.jpg" alt="Instructor profile photo" class="instructor-avatar">
-                        <h3 class="instructor-name">Your Name</h3>
-                    </div>
-                    <div>
-                        <p>With over 15 years of experience in competitive chess, I'm passionate about teaching players of all ages and skill levels.</p>
-                        <div class="qualifications">
-                            <h4>Qualifications:</h4>
-                            <ul class="qualifications-list">
-                                <li>FIDE Master Certification</li>
-                                <li>15+ years teaching experience</li>
-                                <li>Multiple tournament wins</li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="photo-item">
+                    <img src="images/527697490_17943385443040385_6572568058503988379_n.jpg" alt="A group of chess students smiling">
                 </div>
-            </section>
-
-            <!-- Reviews Section -->
-            <section class="reviews-section" id="reviews">
-                <h2>Student Reviews</h2>
-                <div class="reviews-slider-container">
-                    <div class="reviews-slider" id="reviewsSlider">
-                        <div class="reviews-page">
-                            <div class="review">
-                                <p>"Amazing instructor! My chess game improved dramatically in just 3 months."</p>
-                                <strong>- Sarah M.</strong>
-                            </div>
-                            <div class="review">
-                                <p>"Patient, knowledgeable, and really makes learning fun. Highly recommended!"</p>
-                                <strong>- John D.</strong>
-                            </div>
-                        </div>
-                        <div class="reviews-page">
-                            <div class="review">
-                                <p>"Best chess coach I've ever had. My rating went from 800 to 1200!"</p>
-                                <strong>- Alex T.</strong>
-                            </div>
-                            <div class="review">
-                                <p>"Excellent teaching methods and very supportive. Highly recommend!"</p>
-                                <strong>- Maria G.</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="slider-navigation">
-                        <button id="prevBtn" aria-label="Previous reviews">❮</button>
-                        <button id="nextBtn" aria-label="Next reviews">❯</button>
-                    </div>
+                <div class="photo-item">
+                    <img src="images/IMG_1215.JPG" alt="A young student focused on a chess game">
                 </div>
-                <div class="slider-dots" id="dotsContainer"></div>
-            </section>
-
-            <!-- Events Section -->
-            <section class="section">
-                <h2>Upcoming Events</h2>
-                <div class="events-grid">
-                    <div class="event-card">
-                        <div class="event-date">
-                            <span class="month">Sep</span>
-                            <span class="day">15</span>
-                        </div>
-                        <div class="event-details">
-                            <h3>Beginner's Chess Workshop</h3>
-                            <p>Learn the fundamentals of chess in a fun, interactive setting</p>
-                            <a href="#" class="event-button">Learn More →</a>
-                        </div>
-                    </div>
-                    <div class="event-card">
-                        <div class="event-date">
-                            <span class="month">Sep</span>
-                            <span class="day">22</span>
-                        </div>
-                        <div class="event-details">
-                            <h3>Advanced Strategy Session</h3>
-                            <p>Deep dive into opening theory and middlegame tactics</p>
-                            <a href="#" class="event-button">Learn More →</a>
-                        </div>
-                    </div>
+                <div class="photo-item">
+                    <img src="images/IMG_1221.JPG" alt="Two students shaking hands over a chessboard">
                 </div>
-            </section>
+                <div class="photo-item">
+                    <img src="images/IMG_1247.JPG" alt="Chess tournament in progress">
+                </div>
+                <div class="photo-item">
+                    <img src="images/IMG_E1263.JPG" alt="A student receiving a chess award">
+                </div>
+            </div>
+        </section>
 
-            <!-- Pricing Section -->
-            <section class="section">
-                <h2>Pricing Plans</h2>
-                <div class="pricing-table">
-                    <div class="pricing-card">
-                        <div class="price-icon">👦</div>
-                        <h3>1 Kid - Once a Week</h3>
-                        <p style="margin-bottom: 1rem; opacity: 0.9;">60-minute lesson</p>
-                        <div class="price">$60</div>
-                        <p style="margin-bottom: 1.5rem; opacity: 0.9;">per lesson</p>
-                        <a href="#contact" class="cta-button">Book Now</a>
+        <section id="mission" class="section">
+            <div class="scheduling-info">
+                <h3>📅 Flexible Scheduling & Class Options</h3>
+                <p>We offer weekly lessons at times that fits best for you. You are able to book a lesson anytime between Monday through Sunday, 10am-8pm. You do not have to commmit to a day and time once you have chosen your first.</p>
+                <div class="availability-highlight">
+                    <h4>Our Hours</h4>
+                    <p><strong>Monday - Sunday:</strong> 10am - 8pm</p>
+                    <p style="margin-top: 0.5rem;">Each lesson is about 1 hour long.</p>
+                </div>
+            </div>
+            <h2>Our Purpose, Vision & Mission</h2>
+            <div class="mission-grid">
+                <div class="mission-item">
+                    <div class="mission-icon">♟</div>
+                    <h3>Our Purpose</h3>
+                    <p>To ignite a lifelong passion for chess. We believe the game is a powerful tool for personal development, fostering essential skills like <strong>critical thinking</strong>, strategic planning, and <strong>self-reliance</strong>. We aim to build a strong community where every move on the board translates into greater <strong>confidence</strong> and resilience off the board.</p>
+                </div>
+                <div class="mission-item">
+                    <div class="mission-icon">♚</div>
+                    <h3>Our Vision</h3>
+                    <p>To be the heart of the local chess scene—a vibrant, inclusive <strong>community</strong> hub. We aspire to create an environment where players of all ages and abilities feel supported to learn, compete, and grow, building not just their skills but also lasting friendships and a powerful sense of belonging.</p>
+                </div>
+                <div class="mission-item">
+                    <div class="mission-icon">♜</div>
+                    <h3>Our Mission</h3>
+                    <p>To deliver exceptional and accessible chess instruction that inspires every student. Through a structured yet fun approach, we empower individuals to unlock their potential, develop sharp <strong>critical thinking</strong>, and build the <strong>confidence</strong> and <strong>self-reliance</strong> needed to succeed in chess and in life.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="section">
+            <h2>Our Services</h2>
+            <p style="text-align:center; color: #6c757d; margin-top: -1rem; margin-bottom: 2rem;">We offer a variety of programs tailored to different needs and skill levels.</p>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🎓</div>
+                    <h3>Beginner Classes</h3>
+                    <p>Perfect for new players to learn the fundamentals in a fun, supportive environment.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🏆</div>
+                    <h3>Fun Group Events</h3>
+                    <p>Join our community for tournaments, workshops, and casual play nights like our Saturday Smackdown.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💻</div>
+                    <h3>Online Classes</h3>
+                    <p>Learn from the comfort of your home with our flexible and interactive online lessons.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">♛</div>
+                    <h3>Adult Classes</h3>
+                    <p>Engaging and challenging classes designed specifically for adult learners to sharpen their minds.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🧮</div>
+                    <h3>Math Lessons</h3>
+                    <p>Specialized math tutoring for grades 1-12, building on the logical skills honed in chess.</p>
+                </div>
+            </div>
+        </section>
+
+
+        <section id="location" class="section">
+            <h2>Our Location</h2>
+            <p style="text-align:center; color: #6c757d; margin-top: -1rem; margin-bottom: 2rem;">First Room Inside Brady’s Fitness, 25 Amy Croft Dr, Windsor, ON N9K 1C7</p>
+            <div class="map-container">
+                <div class="map-overlay"></div>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m23!1m12!1m3!1d94421.89579248174!2d-82.94886636819548!3d42.30660250436067!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m8!3e6!4m0!4m5!1s0x883ad570c82b0ddb%3A0x9ebbadf191261024!2sFirst%20Room%20Inside%20Brady%E2%80%99s%20Fitness%2C%2025%20Amy%20Croft%20Dr%2C%20Windsor%2C%20ON%20N9K%201C7!3m2!1d42.306632!2d-82.8664656!5e0!3m2!1sen!2sca!4v1753996571202!5m2!1sen!2sca" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+            <div class="location-photos-grid">
+                <div class="location-photo">
+                    <img src="images/front.jpeg" alt="Front view of the chess club location">
+                </div>
+                <div class="location-photo">
+                    <img src="images/inside.jpeg" alt="Inside view of the chess club location">
+                </div>
+            </div>
+        </section>
+
+        <section id="events" class="section">
+            <h2>Upcoming Events</h2>
+            <div class="events-grid">
+                <div class="event-card" id="event-smackdown">
+                    <div class="event-date">
+                        <span class="month">EVERY</span>
+                        <span class="day">SAT</span>
                     </div>
-                    <div class="pricing-card">
-                        <div class="price-icon">👦</div>
-                        <h3>1 Kid - Twice a Week</h3>
-                        <p style="margin-bottom: 1rem; opacity: 0.9;">60-minute lessons</p>
-                        <div class="price">$100</div>
-                        <p style="margin-bottom: 1.5rem; opacity: 0.9;">per week</p>
-                        <a href="#contact" class="cta-button">Book Now</a>
-                    </div>
-                    <div class="pricing-card">
-                        <div class="price-icon">👥</div>
-                        <h3>Group Classes</h3>
-                        <p style="margin-bottom: 1rem; opacity: 0.9;">Up to 4 students</p>
-                        <div class="price">$80</div>
-                        <p style="margin-bottom: 1.5rem; opacity: 0.9;">per lesson</p>
-                        <a href="#contact" class="cta-button">Book Now</a>
+                    <div class="event-details">
+                        <h3>Saturday Smackdown</h3>
+                        <p>Your kids get to apply what they've been learning, play with other students and enjoy the chess atmosphere together with our community. Every Saturday at 2pm!</p>
                     </div>
                 </div>
-            </section>
+            </div>
+        </section>
 
-            <!-- Contact Section -->
-            <section class="section" id="contact">
-                <h2>Get In Touch</h2>
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <label for="name">Your Name <span class="optional-text">(required)</span></label>
-                        <input type="text" id="name" name="name" required aria-required="true">
+        <section id="reviews" class="reviews-section">
+            <h2>What Our Students Say</h2>
+            <div class="reviews-slider-container">
+                <div class="reviews-slider">
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"My son showed some interest in chess, and Hasan created such a fun and encouraging space for him to explore it. He's not just learning moves, he's genuinely excited about the game now. It's been awesome to watch." - Paul H.</p>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Your Email <span class="optional-text">(required)</span></label>
-                        <input type="email" id="email" name="email" required aria-required="true">
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"I always wanted to learn chess but never knew where to start. The adult class is super chill and welcoming. Hasan is a great teacher who makes it easy to ask questions, and the whole group has a really friendly vibe. It's a great way to spend an evening." - Mark R.</p>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="subject">Subject <span class="optional-text">(optional)</span></label>
-                        <input type="text" id="subject" name="subject">
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"Our daughter wanted to try a tournament, and Hasan's coaching was amazing! He gave her tips that made a huge difference and she went into it feeling confident and had a great time. He really knows how to connect with the kids." - Jennifer W.</p>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="message">Message <span class="optional-text">(required)</span></label>
-                        <textarea id="message" name="message" rows="5" required aria-required="true"></textarea>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"We were looking for an activity to help our son with focus, and this has been perfect. Hasan's classes are the perfect mix of fun and learning. We've noticed he's more patient and thoughtful, not just in chess, but with other things too." - David C.</p>
+                        </div>
                     </div>
-                    <button type="submit" class="submit-btn">Send Message</button>
-                </form>
-            </section>
-        </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"With my schedule, online lessons were the only way to go, and it's been so convenient. Hasan is great at explaining things clearly over video, and I feel like I'm learning a ton without having to leave the house. It works perfectly." - Lisa V.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"My kids look forward to their chess class all week! Hasan makes it so much fun for them. They're learning a lot, but they're also just having a great time with the other kids. It's awesome to see them so excited about something." - Amy S.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-page">
+                        <div class="review">
+                            <p>"I wanted to pick up a new hobby and the adult chess class has been perfect. It's a fun way to challenge myself and meet new people. Hasan creates a really relaxed atmosphere. I look forward to it every week." - Tom B.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-navigation">
+                    <button class="prev-slide" aria-label="Previous slide">&#10094;</button>
+                    <button class="next-slide" aria-label="Next slide">&#10095;</button>
+                </div>
+                <div class="slider-dots"></div>
+            </div>
+            <div class="section-cta-wrapper">
+                <a href="#contact" class="cta-button">
+                    Book A Free Intro Lesson!
+                    <span class="cta-button-subtext">(scrolls to bottom)</span>
+                </a>
+            </div>
+        </section>
+        
+        <section id="pricing" class="section">
+            <h2>Membership Menu</h2>
+            <p style="text-align:center; color: #6c757d; margin-top: -1rem; margin-bottom: 2rem;">each price has a $2 tax</p>
+            <div class="pricing-table">
+                <div class="pricing-card" id="card1">
+                    <span class="price-icon">♞</span>
+                    <h3>Once a Week</h3>
+                    <div class="price">$35<span style="font-size: 1.5rem;">/w</span></div>
+                    <p>Perfect for individual focused learning</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                        <li>✓ 1 class per week</li>
+                        <li>✓ 1-1 lessons or small group settings</li>
+                        <li>✓ Age-appropriate instruction</li>
+                        <li>✓ Progress tracking</li>
+                        <li>✓ Discount prices on tournaments</li>
+                    </ul>
+                </div>
+                <div class="pricing-card" id="card2.0">
+                    <span class="price-icon">♝</span>
+                    <h3>Twice a Week</h3>
+                    <div class="price">$55<span style="font-size: 1.5rem;">/w</span></div>
+                    <p>Ideal for advanced learning</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                        <li>✓ 2 classes per week</li>
+                        <li>✓ 1-1 lessons or small group settings</li>
+                        <li>✓ Accelerated learning</li>
+                        <li>✓ Progress tracking</li>
+                        <li>✓ Discount prices on tournaments</li>
+                    </ul>
+                </div>
+                <div class="pricing-card" id="card5.0">
+                    <span class="price-icon">♚</span>
+                    <h3>Parent & Child Classes</h3>
+                    <div class="price">$35<span style="font-size: 1.5rem;">/w</span></div>
+                    <p>Learn together and bond over chess</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                        <li>✓ Family bonding activity</li>
+                        <li>✓ Parent learns alongside child</li>
+                        <li>✓ 1 Hour lessons</li>
+                    </ul>
+                </div>
+                <div class="pricing-card" id="card7.0">
+                    <span class="price-icon">♕</span>
+                    <h3>Adult Classes</h3>
+                    <p style="font-size: 0.9rem; margin-top: -0.25rem; margin-bottom: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.9);">+$5 for partner</p>
+                    <div class="price">$35<span style="font-size: 1.5rem;">/w</span></div>
+                    <p>Chess instruction for adult learners</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                        <li>✓ Adult-focused teaching</li>
+                        <li>✓ Strategic thinking emphasis</li>
+                        <li>✓ Competitive play preparation</li>
+                        <li>✓ Flexible learning pace</li>
+                    </ul>
+                </div>
+                <div class="pricing-card" id="card8.0">
+                    <span class="price-icon">💻</span>
+                    <h3>Online Classes</h3>
+                    <div class="price">$35<span style="font-size: 1.5rem;">/w</span></div>
+                    <p>Flexible learning from anywhere</p>
+                    <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                        <li>✓ Learn from home</li>
+                        <li>✓ Flexible scheduling</li>
+                        <li>✓ Access to online resources</li>
+                        <li>✓ Global community</li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="section-cta-wrapper">
+                <a href="#contact" class="cta-button">
+                    Book A Free Intro Lesson!
+                    <span class="cta-button-subtext">(scrolls to bottom)</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <h2>About Your Instructor</h2>
+            <div class="about-grid">
+                <div>
+                    <img src="images/instructor-photo.jpg" alt="Photo of the instructor, Hasan" class="instructor-avatar">
+                    <h3 class="instructor-name">Hasan Bukhari</h3>
+                </div>
+                <div>
+                    <p>With over 10 years of chess experience, I'm passionate about sharing the beauty and strategy of chess with students of all ages. I have taught over 140+ students in the Tecumseh and Windsor Community.</p>
+                    <p>My teaching philosophy focuses on making chess fun and accessible while building strong fundamentals. Whether you're a complete beginner or looking to break through to the next level, our lessons are designed to instill deep chess understanding and confidence in your or your child's ability.</p>
+                </div>
+            </div>
+            <div class="section-cta-wrapper">
+                <a href="#contact" class="cta-button">
+                    Book A Free Intro Lesson!
+                    <span class="cta-button-subtext">(scrolls to bottom)</span>
+                </a>
+            </div>
+        </section>
+
+        <section id="math-tutoring" class="section">
+            <h2>Beyond the Board: Math Tutoring</h2>
+            <div style="text-align: center; max-width: 700px; margin: 0 auto 2rem;">
+                <span class="mission-icon" style="font-size: 3.5rem;">🧮</span>
+                <p style="font-size: 1.2rem; color: #4a5568; margin-bottom: 1.5rem;">
+                    In addition to our chess programs, we are proud to offer specialized math tutoring for students from <strong>Grade 1 to 12</strong>. We believe the logical skills honed in chess are a perfect complement to mathematical excellence.
+                </p>
+            </div>
+            <div class="section-cta-wrapper">
+                <a href="#contact" class="cta-button" id="math-cta-button">Book Free Intro Math Lesson</a>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <h2>Book Your Free Intro Lesson</h2>
+            <form class="contact-form" action="https://formsubmit.co/hasanbukhari1978@gmail.com" method="POST">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                    <span class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                    <span class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                    <span class="error-message"></span>
+                </div>
+                <div class="form-group">
+                    <label for="classType">What class are you interested in?</label>
+                    <span class="error-message"></span>
+                    <select id="classType" name="classType" required>
+                        <option value="">Select a class type</option>
+                        <option value="1kid">Once a Week</option>
+                        <option value="1kid-twice">Twice a Week</option>
+                        <option value="parentkid">Parent & Child Classes</option>
+                        <option value="adult">Adult Group Class</option>
+                        <option value="online">Online Classes</option>
+                        <option value="math-tutoring">Math Tutoring (Grades 1-12)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="numKids">How many people will be joining the lesson?</label>
+                    <input type="number" id="numKids" name="numKids" min="0" max="10" placeholder="Enter number of attendees" />
+                </div>
+                <div class="form-group">
+                    <label for="kidsnames">Please enter the names of whos joining!</label>
+                    <input type="text" id="kidsnames" name="kidsnames" placeholder="e.g. Jana, Max" />
+                </div>
+                <div class="form-group">
+                    <label for="kidsAges">Please enter the ages of the people attending</label>
+                    <input type="text" id="kidsAges" name="kidsAges" />
+                </div>
+                <div class="form-group">
+                    <label for="experience">Chess Experience Level <span class="optional-text">(optional)</span></label>
+                    <select id="experience" name="experience">
+                        <option value="">Select level</option>
+                        <option value="beginner">Complete Beginner</option>
+                        <option value="casual">Some Knowledge</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="goals">What are your goals for yourself or your kids? <span class="optional-text">(optional)</span></label>
+                    <textarea id="goals" name="goals" rows="4" placeholder="Tell me about what you'd like to achieve with chess lessons..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="availability">Preferred lesson times <span class="optional-text">(optional)</span></label>
+                    <textarea id="availability" name="availability" rows="3" placeholder="Let me know your preferred days and times for lessons..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message & Book Free Intro Lesson</button>
+            </form>
+        </section>
     </main>
-
     <footer>
         <div class="container">
-            <p>&copy; 2024 Tecumseh Chess Lessons. All rights reserved.</p>
+            <p>© 2025 Tecumseh Chess. All rights reserved.</p>
+            <p>📍 Serving the local community of Tecumseh | 📧 hasanbukhari1978@gmail.com | 📞 (519) 890-5885</p>
             <div class="social-links">
-                <a href="#" aria-label="Follow on Instagram">
-                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.057-1.645.069-4.849.069-3.205 0-3.584-.012-4.849-.069-3.259-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073z"/></svg>
+                <a href="mailto:hasanbukhari1978@gmail.com" title="Email us">📧</a>
+                <a href="https://instagram.com/tecumsehchess" target="_blank" title="Follow us on Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
                 </a>
-                <a href="#" aria-label="Follow on Facebook">
-                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                </a>
+                <a href="tel:5198905885" title="Call us">📞</a>
             </div>
         </div>
     </footer>
 
-    <script>
-        // Hamburger Menu Toggle
-        const hamburgerMenu = document.getElementById('hamburgerMenu');
-        const navLinks = document.getElementById('navLinks');
+    <!-- Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        hamburgerMenu.addEventListener('click', () => {
-            const isActive = navLinks.classList.toggle('mobile-active');
-            hamburgerMenu.classList.toggle('open', isActive);
-            hamburgerMenu.setAttribute('aria-expanded', isActive);
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]:not([href="#"])').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    const headerOffset = 80; // The height of your fixed header
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+           if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+
+        // Animate sections on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+               if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(section);
+        });
+        
+        document.querySelectorAll('.pricing-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const cardId = card.id;
+                let classTypeValue = '';
+       
+                switch (cardId) {
+                    case 'card1': classTypeValue = '1kid'; break;
+                    case 'card2.0': classTypeValue = '1kid-twice'; break;
+                    case 'card5.0': classTypeValue = 'parentkid'; break;
+                    case 'card7.0': classTypeValue = 'adult'; break;
+                    case 'card8.0': classTypeValue = 'online'; break;
+                }
+
+                if (classTypeValue) {
+                    // Set the selected value in the contact form
+                    const classTypeSelect = document.getElementById('classType');
+                    if (classTypeSelect) {
+                        classTypeSelect.value = classTypeValue;
+                    }
+
+                    // Scroll to the contact form
+                    const contactForm = document.getElementById('contact');
+                    if (contactForm) {
+                        contactForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        });
+
+        // Pre-select math tutoring from its CTA
+        const mathCtaButton = document.getElementById('math-cta-button');
+        if (mathCtaButton) {
+            mathCtaButton.addEventListener('click', () => {
+                const classTypeSelect = document.getElementById('classType');
+                if (classTypeSelect) {
+                    classTypeSelect.value = 'math-tutoring';
+                }
+            });
+        }
+
+        // Map overlay functionality to prevent scroll-hijacking on mobile
+        const mapContainer = document.querySelector('.map-container');
+        if (mapContainer) {
+            mapContainer.addEventListener('click', function() {
+                const overlay = this.querySelector('.map-overlay');
+                if (overlay) {
+                    overlay.classList.add('hidden');
+                }
+            }, { once: true }); // The listener is removed after the first click
+        }
+
+        // Review slider functionality
+        const slider = document.querySelector('.reviews-slider');
+        const prevButton = document.querySelector('.prev-slide');
+        const nextButton = document.querySelector('.next-slide');
+        const pages = document.querySelectorAll('.reviews-page');
+        const dotsContainer = document.querySelector('.slider-dots');
+        let currentIndex = 0;
+
+        // Create dots
+        pages.forEach((_, i) => {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            dot.dataset.index = i;
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        // Add click event to dots
+        dots.forEach(dot => {
+            dot.addEventListener('click', (e) => {
+                currentIndex = parseInt(e.target.dataset.index);
+                updateSlider();
+                stopAutoSlide();
+            });
+        });
+
+        nextButton.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % pages.length;
+            updateSlider();
+        });
+
+        prevButton.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + pages.length) % pages.length;
+            updateSlider();
+        });
+
+        function updateSlider() {
+            const translateAmount = -currentIndex * 100;
+            slider.style.transform = `translateX(${translateAmount}%)`;
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentIndex].classList.add('active');
+        }
+
+        // Auto-slide functionality
+        const autoSlideIntervalTime = 5000; // 5 seconds
+        let autoSlideInterval;
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(() => {
+                currentIndex = (currentIndex + 1) % pages.length; // Loop back to start
+                updateSlider();
+            }, autoSlideIntervalTime);
+        }
+
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+
+        // Pause auto-slide on manual interaction
+        prevButton.addEventListener('click', stopAutoSlide);
+        nextButton.addEventListener('click', stopAutoSlide);
+        dotsContainer.addEventListener('click', stopAutoSlide);
+
+        // Hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('mobile-active');
+            hamburger.classList.toggle('open');
         });
 
         // Close mobile menu when a link is clicked
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('mobile-active');
-                hamburgerMenu.classList.remove('open');
-                hamburgerMenu.setAttribute('aria-expanded', 'false');
+                hamburger.classList.remove('open');
             });
         });
 
-        // Reviews Slider
-        const reviewsSlider = document.getElementById('reviewsSlider');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const dotsContainer = document.getElementById('dotsContainer');
-        let currentSlide = 0;
-        const totalSlides = 2;
-
-        // Create dots
-        for (let i = 0; i < totalSlides; i++) {
-            const dot = document.createElement('button');
-            dot.classList.add('dot');
-            if (i === 0) dot.classList.add('active');
-            dot.setAttribute('aria-label', `Go to review ${i + 1}`);
-            dot.addEventListener('click', () => goToSlide(i));
-            dotsContainer.appendChild(dot);
-        }
-
-        function updateSlider() {
-            const offset = -currentSlide * 100;
-            reviewsSlider.style.transform = `translateX(${offset}%)`;
-            document.querySelectorAll('.dot').forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentSlide);
-            });
-        }
-
-        function goToSlide(n) {
-            currentSlide = n;
-            updateSlider();
-        }
-
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            updateSlider();
-        }
-
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-            updateSlider();
-        }
-
-        nextBtn.addEventListener('click', nextSlide);
-        prevBtn.addEventListener('click', prevSlide);
-
-        // Map Overlay
-        const mapOverlay = document.querySelector('.map-overlay');
-        if (mapOverlay) {
-            mapOverlay.addEventListener('click', function() {
-                this.classList.add('hidden');
-            });
-        }
-
-        // Form Submission
-        const contactForm = document.getElementById('contactForm');
-        if (contactForm) {
-            contactForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                alert('Thank you for your message! We will get back to you soon.');
-                contactForm.reset();
-            });
-        }
+        updateSlider(); // Set initial slide and dot
+        startAutoSlide(); // Start auto-slide
     </script>
 </body>
 </html>
