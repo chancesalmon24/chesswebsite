@@ -983,6 +983,218 @@
       .ln-gate-row { flex-direction: column; }
       .ln-booking { padding: 20px 16px; }
     }
+
+/* ---- Fun facts cards ---- */
+  .ff-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 720px) {
+    .ff-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .ff-grid { grid-template-columns: 1fr; }
+  }
+  .ff-card {
+    background: #f4faf6;
+    border: 1px solid rgba(28, 55, 39, .10);
+    border-radius: 16px;
+    padding: 24px 18px;
+    text-align: center;
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .ff-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 26px rgba(28, 55, 39, .12);
+  }
+  .ff-emoji {
+    font-size: 40px;
+    line-height: 1;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .ff-card h3 {
+    margin: 0 0 8px;
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    color: #1c3727;
+  }
+  .ff-card p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* ---- Know the game section: aged parchment theme ---- */
+  .live-section.game-story {
+    position: relative;
+    background:
+      radial-gradient(ellipse at 18% 8%, rgba(201,162,39,.10), transparent 55%),
+      radial-gradient(ellipse at 85% 95%, rgba(139,46,46,.08), transparent 55%),
+      linear-gradient(160deg, #f9f2df 0%, #f2e5c4 60%, #ead7ac 100%);
+    border: 1px solid rgba(107,79,42,.40);
+    box-shadow: inset 0 0 70px rgba(107,79,42,.14), 0 10px 30px rgba(28,55,39,.08);
+  }
+  .live-section.game-story::before {
+    content: "";
+    position: absolute;
+    inset: 12px;
+    border: 2px solid rgba(107,79,42,.50);
+    border-radius: 14px;
+    pointer-events: none;
+  }
+  .live-section.game-story .section-heading { color: #4a2f1d; }
+  .live-section.game-story .section-heading::after {
+    background: linear-gradient(90deg, #b8860b, #8b2e2e);
+  }
+  .live-section.game-story .section-intro { color: #6b5a43; }
+  .ornament {
+    text-align: center;
+    color: #b8860b;
+    font-size: 22px;
+    margin: 34px 0 0;
+    letter-spacing: .5em;
+  }
+  .story-sub {
+    margin: 26px 0 20px;
+    font-family: "Poppins", sans-serif;
+    font-size: 22px;
+    color: #4a2f1d;
+    text-align: center;
+    letter-spacing: .02em;
+  }
+  .story-sub:first-of-type { margin-top: 6px; }
+  .piece-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  @media (max-width: 720px) {
+    .piece-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 480px) {
+    .piece-grid { grid-template-columns: 1fr; }
+  }
+  .piece-card {
+    background: #fdf8e8;
+    border: 1px solid rgba(138,109,59,.55);
+    border-radius: 12px;
+    padding: 22px 18px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(107,79,42,.10);
+  }
+  .piece-glyph {
+    font-size: 52px;
+    line-height: 1;
+    display: block;
+    margin-bottom: 10px;
+    color: #4a2f1d;
+  }
+  .piece-card h3 {
+    margin: 0 0 6px;
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    color: #4a2f1d;
+  }
+  .piece-move {
+    margin: 0 0 10px;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: #4a3d28;
+  }
+  .piece-origin {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #7a6547;
+    font-style: italic;
+    border-top: 1px dashed rgba(138,109,59,.55);
+    padding-top: 10px;
+  }
+  .special-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 720px) {
+    .special-grid { grid-template-columns: 1fr; }
+  }
+  .special-card {
+    background: linear-gradient(165deg, #43301c 0%, #2e1f12 100%);
+    border: 1px solid rgba(201,162,39,.45);
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+    color: #f3e9d2;
+    box-shadow: 0 6px 18px rgba(46,31,18,.25);
+  }
+  .special-card .ff-emoji { font-size: 34px; margin-bottom: 10px; }
+  .special-card h3 {
+    margin: 0 0 8px;
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    color: #e8c766;
+  }
+  .special-card p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: rgba(243, 233, 210, .88);
+  }
+  /* ---- History timeline ---- */
+  .timeline {
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+    padding-left: 38px;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 11px;
+    top: 8px;
+    bottom: 8px;
+    width: 3px;
+    border-radius: 3px;
+    background: linear-gradient(#b8860b, #8b2e2e);
+  }
+  .tl-item { position: relative; margin-bottom: 26px; }
+  .tl-item:last-child { margin-bottom: 4px; }
+  .tl-item::before {
+    content: "";
+    position: absolute;
+    left: -33px;
+    top: 3px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #f6eed6;
+    border: 3px solid #b8860b;
+    box-shadow: 0 0 0 3px rgba(184,134,11,.18);
+  }
+  .tl-era {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #8b2e2e;
+  }
+  .tl-item h4 {
+    margin: 3px 0 6px;
+    font-family: "Poppins", sans-serif;
+    font-size: 17.5px;
+    color: #4a2f1d;
+  }
+  .tl-item p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.75;
+    color: #5d4a33;
+  }
+  .tl-item strong { color: #4a2f1d; }
 </style>
 </head>
 <body>
@@ -1215,6 +1427,152 @@
             <div class="contact-links"><span>📍 First Room Inside Brady’s Fitness<br />25 Amy Croft Dr, Windsor, ON N9K 1C7</span><a href="mailto:hasanbukhari1978@gmail.com">📧 hasanbukhari1978@gmail.com</a><a href="tel:5198905885">☎ (519) 890-5885</a></div>
           </div>
         </section>
+        <section class="live-section" aria-labelledby="funFactsTitle">
+  <h2 class="section-heading" id="funFactsTitle">🧠 Did You Know?</h2>
+  <p class="section-intro">Chess is way more than a board game — here's what it does for you and your kids.</p>
+  <div class="ff-grid">
+    <div class="ff-card">
+      <span class="ff-emoji">🎯</span>
+      <h3>Sharper Focus</h3>
+      <p>Chess trains kids to concentrate for longer stretches — a skill that carries straight into the classroom.</p>
+    </div>
+    <div class="ff-card">
+      <span class="ff-emoji">🧠</span>
+      <h3>Stronger Memory</h3>
+      <p>Remembering patterns, openings, and past games gives memory a serious workout.</p>
+    </div>
+    <div class="ff-card">
+      <span class="ff-emoji">🧩</span>
+      <h3>Better Problem-Solving</h3>
+      <p>Every move is a puzzle. Kids learn to think critically and find creative solutions under pressure.</p>
+    </div>
+    <div class="ff-card">
+      <span class="ff-emoji">📋</span>
+      <h3>Planning Ahead</h3>
+      <p>Chess teaches thinking several moves ahead — planning, patience, and thinking before acting.</p>
+    </div>
+    <div class="ff-card">
+      <span class="ff-emoji">📚</span>
+      <h3>School Superpowers</h3>
+      <p>Studies link chess to stronger math and reading skills in children.</p>
+    </div>
+    <div class="ff-card">
+      <span class="ff-emoji">💪</span>
+      <h3>Confidence &amp; Grit</h3>
+      <p>Winning builds confidence; losing teaches grace, resilience, and how to bounce back.</p>
+    </div>
+  </div>
+</section>
+
+<section class="live-section game-story" aria-labelledby="gameStoryTitle">
+  <h2 class="section-heading" id="gameStoryTitle">♟️ Know Your Game</h2>
+  <p class="section-intro">The pieces, the trick moves, and the 1,500-year journey behind the world's greatest board game.</p>
+
+  <h3 class="story-sub">Meet the pieces</h3>
+  <div class="piece-grid">
+    <div class="piece-card">
+      <span class="piece-glyph">♔</span>
+      <h3>King</h3>
+      <p class="piece-move">Moves one square in any direction. Protect him at all costs — if he's trapped, the game is over.</p>
+      <p class="piece-origin">Always royalty — the one piece whose name hasn't changed in 1,500 years.</p>
+    </div>
+    <div class="piece-card">
+      <span class="piece-glyph">♕</span>
+      <h3>Queen</h3>
+      <p class="piece-move">Moves any number of squares in any direction — sideways, up, down, or diagonal. The most powerful piece on the board.</p>
+      <p class="piece-origin">Once the king's quiet counsellor (the "vizier"); she gained her superpowers in 15th-century Europe.</p>
+    </div>
+    <div class="piece-card">
+      <span class="piece-glyph">♖</span>
+      <h3>Rook</h3>
+      <p class="piece-move">Moves any number of squares in straight lines — horizontally or vertically, like a tower on rails.</p>
+      <p class="piece-origin">From the Persian "rukh," meaning chariot — it charges in straight lines, just like one.</p>
+    </div>
+    <div class="piece-card">
+      <span class="piece-glyph">♗</span>
+      <h3>Bishop</h3>
+      <p class="piece-move">Moves any number of squares diagonally. Each bishop stays on its own colour for the whole game.</p>
+      <p class="piece-origin">Originally an elephant ("al-fil"); Europeans reshaped it into a bishop, mitre and all.</p>
+    </div>
+    <div class="piece-card">
+      <span class="piece-glyph">♘</span>
+      <h3>Knight</h3>
+      <p class="piece-move">Jumps in an L-shape — two squares one way, then one to the side. The only piece that leaps over others.</p>
+      <p class="piece-origin">The cavalry horse — then as now, the trickiest piece to predict.</p>
+    </div>
+    <div class="piece-card">
+      <span class="piece-glyph">♙</span>
+      <h3>Pawn</h3>
+      <p class="piece-move">Marches forward one square (two on its first move) and captures diagonally. Reach the far side and it promotes — usually to a queen.</p>
+      <p class="piece-origin">From the French "peon," a foot soldier — small, but every pawn dreams of promotion.</p>
+    </div>
+  </div>
+
+  <div class="ornament">❦ ❦ ❦</div>
+  <h3 class="story-sub">The trick moves</h3>
+  <div class="special-grid">
+    <div class="special-card">
+      <span class="ff-emoji">🏰</span>
+      <h3>Castling</h3>
+      <p>The king's escape plan: he slides two squares toward a rook, and the rook hops over him. The only move where two pieces move at once — a one-time deal per side.</p>
+    </div>
+    <div class="special-card">
+      <span class="ff-emoji">👻</span>
+      <h3>En Passant</h3>
+      <p>French for "in passing." If an enemy pawn sprints two squares right past yours, you may capture it as if it had moved only one. Blink and it's gone — only on the very next move.</p>
+    </div>
+    <div class="special-card">
+      <span class="ff-emoji">👑</span>
+      <h3>Promotion</h3>
+      <p>March a pawn all the way to the far side and it transforms into any piece you like — almost always a queen. The ultimate underdog story.</p>
+    </div>
+  </div>
+
+  <div class="ornament">❦ ❦ ❦</div>
+  <h3 class="story-sub">Where it all began</h3>
+  <div class="timeline">
+    <div class="tl-item">
+      <span class="tl-era">~500s AD · India</span>
+      <h4>Chaturanga is born</h4>
+      <p>In Gupta-era India, a game called <strong>chaturanga</strong> — "the four divisions" — is played on an 8×8 board known as the <strong>ashtapada</strong>. It mirrors the royal army piece for piece: the <strong>raja</strong> (king), his <strong>mantri</strong> (counsellor), <strong>gaja</strong> (war elephants), <strong>ashva</strong> (cavalry horses), <strong>ratha</strong> (chariots), and <strong>padati</strong> (foot soldiers). Each piece moves the way its battlefield unit would — which is why, 1,500 years later, your knight still jumps like a horse and your rook still charges in straight lines like a chariot. Some accounts say dice once decided which piece moved each turn. Mercifully, that idea didn't survive.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-era">600s · Persia</span>
+      <h4>The king's game — and a legend</h4>
+      <p>Persia adopts the game as <strong>chatrang</strong>, and it becomes part of a nobleman's education. Legend says its inventor asked the king for a reward of rice — one grain on the first square, doubled on each of the 64 — a sum so vast it would have bankrupted the royal granaries. The Persians give us the game's most famous words: <strong>"shah!"</strong> (king!) and <strong>"shah mat"</strong> — "the king is defeated" — the direct ancestors of <strong>"check"</strong> and <strong>"checkmate."</strong></p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-era">800s–900s · The Arab world</span>
+      <h4>The game goes abstract</h4>
+      <p>Chess — now <strong>shatranj</strong> — flourishes from Baghdad to Córdoba. Because Islamic tradition discouraged graven images, the pieces shed their lifelike shapes and become elegant <strong>abstract carvings</strong>, a style that still echoes in modern piece design. Masters like <strong>al-Suli</strong> (c. 880–946) write the first great strategy manuals and compose <strong>mansubat</strong> — fiendish chess puzzles, the ancestors of the problems players still solve today.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-era">~1000s–1200s · Europe</span>
+      <h4>Chess crosses the sea — and gets renamed</h4>
+      <p>The game slips into Europe through <strong>Moorish Spain</strong> and Italian trade routes, charming courts and monasteries alike. Everything gets translated into familiar terms: the elephant (<strong>al-fil</strong>) becomes the <strong>bishop</strong> — or <em>le fou</em>, "the jester," in French; the chariot (<strong>rukh</strong>) becomes the <strong>rook</strong>; the counsellor (<strong>fers</strong>) becomes the <strong>queen</strong>. The church can't decide what to make of it — chess is denounced from pulpits one century and played by popes the next.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-era">Late 1400s · Spain &amp; Italy</span>
+      <h4>The queen unleashed</h4>
+      <p>Revolution: in the age of powerful queens — some historians point to <strong>Isabella of Castile</strong> — the queen gains her sweeping modern powers and the bishop stretches across the whole diagonal. Players called it <strong>"madwoman's chess"</strong> (<em>alla rabiosa</em>), because the game turned ferociously fast almost overnight. The first printed chess book appears in Spain in <strong>1497</strong>, and the slow medieval game is gone forever.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-era">1500s–1700s · Europe</span>
+      <h4>The rules settle — slowly</h4>
+      <p>The fine print takes centuries to agree on. <strong>Castling</strong> evolves from an older "king's leap"; the pawn earns its <strong>two-square opening sprint</strong>, and <strong>en passant</strong> is invented to keep sneaky pawns honest. <strong>Stalemate</strong> sparks endless arguments — a win in some cities, a draw in others — until the draw rule finally wins out. For a while, chess isn't one game but a family of cousins slowly becoming one.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-era">1800s · The modern game</span>
+      <h4>Clocks, Staunton, and a champion</h4>
+      <p>The <strong>Staunton pattern</strong> (1849) finally gives the world one standard piece design — the same shapes on your board today. <strong>London 1851</strong> hosts the first international tournament, <strong>chess clocks</strong> arrive to stop players thinking forever, and in <strong>1886 Wilhelm Steinitz</strong> defeats Zukertort to become the first official World Champion. Modern competitive chess is born.</p>
+    </div>
+    <div class="tl-item">
+      <span class="tl-era">1900s → today · The world</span>
+      <h4>From Fischer to your phone</h4>
+      <p>The 20th century turns chess into global drama: the <strong>Soviet school</strong> dominates for decades, <strong>Bobby Fischer's</strong> 1972 triumph makes chess front-page news, and in <strong>1997 a computer — Deep Blue</strong> — defeats the reigning world champion for the first time. Today hundreds of millions play, with millions of games lighting up online every single day — <strong>1,500 years old, and still growing.</strong></p>
+    </div>
+  </div>
+</section>
         <section class="live-section late-night" id="late-night" aria-labelledby="lateNightTitle">
           <p class="ln-kicker">&#128272; Members only</p>
           <h2 class="section-heading" id="lateNightTitle">&#127769; Late Night Lounge</h2>
