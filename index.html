@@ -949,20 +949,27 @@
       background: rgba(255, 255, 255, .06); border: 1px solid rgba(244, 185, 66, .25);
     }
     .ln-booking h3 { margin: 0 0 18px; text-align: center; color: #ffe9a8; font-family: "Poppins", sans-serif; }
-    .live-section.late-night .form-field label { color: #ffe9a8; text-align: center; }
-    .live-section.late-night .form-field input,
-    .live-section.late-night .form-field select,
-    .live-section.late-night .form-field textarea {
-      background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .22); color: #ffffff; text-align: center;
+    .live-section.late-night .ln-form-grid { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 520px; margin: 0 auto; }
+    .live-section.late-night .ln-field { margin: 0; padding: 0; background: none; border: 0; text-align: center; }
+    .live-section.late-night .ln-field label { display: block; margin: 0 0 8px; color: #ffe9a8; font-size: 15px; font-weight: 700; text-align: center; }
+    .live-section.late-night .ln-field input,
+    .live-section.late-night .ln-field select {
+      -webkit-appearance: none; appearance: none;
+      display: block; width: 100%; height: 52px; padding: 0 16px; margin: 0; box-sizing: border-box;
+      border: 1px solid rgba(255, 255, 255, .25); border-radius: 12px;
+      background-color: rgba(255, 255, 255, .08); color: #ffffff;
+      font-family: inherit; font-size: 16px; line-height: 50px; text-align: center; text-align-last: center;
     }
-    .live-section.late-night .form-field input::placeholder,
-    .live-section.late-night .form-field textarea::placeholder { color: rgba(255, 255, 255, .45); }
-    .live-section.late-night .form-field select option { color: #1a1a1a; }
+    .live-section.late-night .ln-field select {
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ffe9a8' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px;
+    }
+    .live-section.late-night .ln-field input::placeholder { color: rgba(255, 255, 255, .45); opacity: 1; }
+    .live-section.late-night .ln-field select option { color: #1a1a1a; background: #ffffff; }
     .ln-discord-join { text-align: center; padding: 20px 16px; border-radius: 14px; background: rgba(88, 101, 242, .14); border: 1px solid rgba(88, 101, 242, .45); }
     .ln-discord-label { display: block; margin-bottom: 12px; color: #eef0ff; font-weight: 600; font-size: 15px; }
     .ln-discord-link { display: inline-block; padding: 12px 28px; border-radius: 50px; background: linear-gradient(45deg, #5865f2, #4752c4); color: #ffffff; font-weight: 800; text-decoration: none; box-shadow: 0 8px 18px rgba(88, 101, 242, .35); }
     .ln-discord-link:hover { filter: brightness(1.1); }
-    .live-section.late-night .form-grid { grid-template-columns: 1fr; max-width: 520px; margin-left: auto; margin-right: auto; }
     @keyframes ln-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
     .ln-shake { animation: ln-shake .3s ease 2; }
     @media (max-width: 640px) {
@@ -1219,11 +1226,11 @@
             <form class="preview-form contact-form" action="https://formsubmit.co/hasanbukhari1978@gmail.com" method="POST" aria-label="Book a late-night online session">
               <input type="hidden" name="_subject" value="Late Night Online Session Booking" />
               <input type="hidden" name="session_type" value="Late Night Online (after 8 PM)" />
-              <div class="form-grid">
-                <div class="form-field"><label for="lnTime">Time slot *</label><select id="lnTime" name="time_slot" required><option value="">Select a time</option><option value="8:00 PM">8:00 PM</option><option value="9:00 PM">9:00 PM</option><option value="10:00 PM">10:00 PM</option></select></div>
-                
-                <div class="form-field"><label for="lnChesscom">Your chess.com username *</label><input id="lnChesscom" name="chesscom_username" type="text" required placeholder="e.g. NightPawn99" /></div>
-                <div class="form-field wide ln-discord-join"><span class="ln-discord-label">Sessions happen on Discord &mdash; join the server here:</span><a class="ln-discord-link" href="https://discord.gg/A2pYeA2BK" target="_blank" rel="noopener">discord.gg/A2pYeA2BK</a></div>
+              <div class="ln-form-grid">
+                <div class="ln-field"><label for="lnDay">Day *</label><select id="lnDay" name="day" required><option value="">Select a day</option><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday">Saturday</option><option value="Sunday">Sunday</option></select></div>
+                <div class="ln-field"><label for="lnTime">Time slot *</label><select id="lnTime" name="time_slot" required><option value="">Select a time</option><option value="8:00 PM">8:00 PM</option><option value="9:00 PM">9:00 PM</option><option value="10:00 PM">10:00 PM</option></select></div>
+                <div class="ln-field"><label for="lnChesscom">Your chess.com username *</label><input id="lnChesscom" name="chesscom_username" type="text" required placeholder="e.g. NightPawn99" /></div>
+                <div class="ln-field ln-discord-join"><span class="ln-discord-label">Sessions happen on Discord &mdash; join the server here:</span><a class="ln-discord-link" href="https://discord.gg/A2pYeA2BK" target="_blank" rel="noopener">discord.gg/A2pYeA2BK</a></div>
               </div>
               <div class="contact-actions"><button type="submit" class="live-button ln-unlock">Book Late Night Session</button></div>
             </form>
