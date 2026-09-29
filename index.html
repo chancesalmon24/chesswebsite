@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="color-scheme" content="light dark" />
   <link rel="icon" href="/favicon.ico?v=2">
-<link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
@@ -897,6 +896,77 @@
       *, *::before, *::after { transition: none !important; }
     }
   button.live-button{border:0;font-family:inherit;cursor:pointer;}
+
+    /* ---- Late Night Lounge (members-only, after-hours) ---- */
+    .live-section.late-night {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(160deg, #0b1026 0%, #141b3d 55%, #1e1440 100%);
+      color: #eef0ff;
+      border: 1px solid rgba(244, 185, 66, .28);
+    }
+    .live-section.late-night::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(1.5px 1.5px at 12% 22%, #ffffff 50%, transparent 51%),
+        radial-gradient(1px 1px at 68% 12%, #ffffff 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 84% 38%, #ffe9a8 50%, transparent 51%),
+        radial-gradient(1px 1px at 32% 68%, #ffffff 50%, transparent 51%),
+        radial-gradient(1.5px 1.5px at 55% 82%, #ffffff 50%, transparent 51%),
+        radial-gradient(1px 1px at 90% 72%, #ffffff 50%, transparent 51%),
+        radial-gradient(2px 2px at 42% 30%, #ffe9a8 50%, transparent 51%);
+      opacity: .7;
+      pointer-events: none;
+    }
+    .live-section.late-night > * { position: relative; }
+    .ln-kicker {
+      margin: 0 0 10px; text-align: center;
+      color: #f4b942; font-weight: 700; letter-spacing: .18em;
+      text-transform: uppercase; font-size: 13px; padding-right: .18em;
+    }
+    .live-section.late-night .section-heading { color: #ffffff; }
+    .live-section.late-night .section-heading::after { background: linear-gradient(90deg, #f4b942, #b97e1e); }
+    .live-section.late-night .section-intro { color: rgba(238, 240, 255, .82); }
+    .ln-gate { max-width: 460px; margin: 8px auto 0; text-align: center; }
+    .ln-gate[hidden], .ln-booking[hidden] { display: none !important; }
+    .ln-label { display: block; margin-bottom: 10px; font-weight: 700; color: #ffe9a8; }
+    .ln-gate-row { display: flex; gap: 10px; }
+    .ln-gate-row input {
+      flex: 1; min-height: 49px; padding: 0 16px; border-radius: 50px;
+      border: 1px solid rgba(244, 185, 66, .45); background: rgba(255, 255, 255, .07);
+      color: #ffffff; font-size: 16px; font-family: inherit;
+    }
+    .ln-gate-row input::placeholder { color: rgba(255, 255, 255, .45); }
+    .ln-gate-row input:focus { outline: 2px solid #f4b942; outline-offset: 2px; }
+    .ln-unlock { background: linear-gradient(45deg, #f4b942, #d99a26) !important; color: #241a05 !important; font-weight: 800; white-space: nowrap; }
+    .ln-error { margin-top: 12px; color: #ff9d9d; font-weight: 600; }
+    .ln-hint { margin-top: 14px; font-size: 14px; color: rgba(238, 240, 255, .6); }
+    .ln-booking {
+      max-width: 860px; margin: 26px auto 0; padding: 28px; border-radius: 16px;
+      background: rgba(255, 255, 255, .06); border: 1px solid rgba(244, 185, 66, .25);
+    }
+    .ln-booking h3 { margin: 0 0 18px; text-align: center; color: #ffe9a8; font-family: "Poppins", sans-serif; }
+    .live-section.late-night .form-field label { color: #ffe9a8; text-align: center; }
+    .live-section.late-night .form-field input,
+    .live-section.late-night .form-field select,
+    .live-section.late-night .form-field textarea {
+      background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .22); color: #ffffff; text-align: center;
+    }
+    .live-section.late-night .form-field input::placeholder,
+    .live-section.late-night .form-field textarea::placeholder { color: rgba(255, 255, 255, .45); }
+    .live-section.late-night .form-field select option { color: #1a1a1a; }
+    .ln-discord-join { text-align: center; padding: 20px 16px; border-radius: 14px; background: rgba(88, 101, 242, .14); border: 1px solid rgba(88, 101, 242, .45); }
+    .ln-discord-label { display: block; margin-bottom: 12px; color: #eef0ff; font-weight: 600; font-size: 15px; }
+    .ln-discord-link { display: inline-block; padding: 12px 28px; border-radius: 50px; background: linear-gradient(45deg, #5865f2, #4752c4); color: #ffffff; font-weight: 800; text-decoration: none; box-shadow: 0 8px 18px rgba(88, 101, 242, .35); }
+    .ln-discord-link:hover { filter: brightness(1.1); }
+    .live-section.late-night .form-grid { grid-template-columns: 1fr; max-width: 520px; margin-left: auto; margin-right: auto; }
+    @keyframes ln-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+    .ln-shake { animation: ln-shake .3s ease 2; }
+    @media (max-width: 640px) {
+      .ln-gate-row { flex-direction: column; }
+      .ln-booking { padding: 20px 16px; }
+    }
 </style>
 </head>
 <body>
@@ -1128,6 +1198,35 @@
             <div class="contact-links"><span>📍 First Room Inside Brady’s Fitness<br />25 Amy Croft Dr, Windsor, ON N9K 1C7</span><a href="mailto:hasanbukhari1978@gmail.com">📧 hasanbukhari1978@gmail.com</a><a href="tel:5198905885">☎ (519) 890-5885</a></div>
           </div>
         </section>
+        <section class="live-section late-night" id="late-night" aria-labelledby="lateNightTitle">
+          <p class="ln-kicker">&#128272; Members only</p>
+          <h2 class="section-heading" id="lateNightTitle">&#127769; Late Night Lounge</h2>
+          <p class="section-intro">After-hours online chess sessions, after 8&nbsp;PM. This corner of the site is private &mdash; enter your passkey to unlock late-night booking.</p>
+          <div class="ln-gate" id="lnGate">
+            <label class="ln-label" for="lnPasskey">Passkey</label>
+            <div class="ln-gate-row">
+              <input id="lnPasskey" name="lnPasskey" type="password" autocomplete="off" placeholder="Enter your passkey" />
+              <button type="button" class="live-button ln-unlock" id="lnUnlock">Unlock</button>
+            </div>
+            <p class="ln-error" id="lnError" role="alert" hidden>That passkey didn&apos;t work &mdash; try again.</p>
+            <p class="ln-hint">No passkey? They&apos;re shared privately with members &mdash; just ask Hasan.</p>
+          </div>
+          <div class="ln-booking" id="lnBooking" hidden>
+            <h3>Book a late-night online session</h3>
+            <form class="preview-form contact-form" action="https://formsubmit.co/hasanbukhari1978@gmail.com" method="POST" aria-label="Book a late-night online session">
+              <input type="hidden" name="_subject" value="Late Night Online Session Booking" />
+              <input type="hidden" name="session_type" value="Late Night Online (after 8 PM)" />
+              <div class="form-grid">
+                <div class="form-field"><label for="lnTime">Time slot *</label><select id="lnTime" name="time_slot" required><option value="">Select a time</option><option value="8:00 PM">8:00 PM</option><option value="9:00 PM">9:00 PM</option><option value="10:00 PM">10:00 PM</option></select></div>
+                
+                <div class="form-field"><label for="lnChesscom">Your chess.com username *</label><input id="lnChesscom" name="chesscom_username" type="text" required placeholder="e.g. NightPawn99" /></div>
+                <div class="form-field wide ln-discord-join"><span class="ln-discord-label">Sessions happen on Discord &mdash; join the server here:</span><a class="ln-discord-link" href="https://discord.gg/A2pYeA2BK" target="_blank" rel="noopener">discord.gg/A2pYeA2BK</a></div>
+              </div>
+              <div class="contact-actions"><button type="submit" class="live-button ln-unlock">Book Late Night Session</button></div>
+            </form>
+          </div>
+        </section>
+
       </div>
     </div>
   </main>
@@ -1196,6 +1295,43 @@
       }
       document.getElementById('prevReview').addEventListener('click', function () { showReview(reviewIndex - 1); });
       document.getElementById('nextReview').addEventListener('click', function () { showReview(reviewIndex + 1); });
+
+      /* Late Night Lounge passkey gate (SHA-256 of the passkey; velvet rope, not a vault) */
+      var LN_HASH = 'b63c357dd65ee146e926cfa9a07cba5a1f2f6f3b2a0d73ea8c21fc6c9a96dc76';
+      var lnGate = document.getElementById('lnGate');
+      var lnBooking = document.getElementById('lnBooking');
+      var lnPasskey = document.getElementById('lnPasskey');
+      var lnError = document.getElementById('lnError');
+      function lnShowBooking() {
+        if (!lnGate || !lnBooking) return;
+        lnGate.hidden = true;
+        lnBooking.hidden = false;
+        try { localStorage.setItem('tc_ln', '1'); } catch (e) {}
+      }
+      function lnDeny() {
+        if (!lnError) return;
+        lnError.hidden = false;
+        if (lnGate) { lnGate.classList.remove('ln-shake'); void lnGate.offsetWidth; lnGate.classList.add('ln-shake'); }
+      }
+      async function lnTryUnlock() {
+        if (!lnPasskey) return;
+        var val = lnPasskey.value.trim();
+        if (!val) { lnDeny(); return; }
+        try {
+          var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(val));
+          var hex = Array.prototype.map.call(new Uint8Array(buf), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+          if (hex === LN_HASH) { lnShowBooking(); } else { lnDeny(); }
+        } catch (e) { lnDeny(); }
+      }
+      if (lnGate && lnBooking) {
+        try { if (localStorage.getItem('tc_ln') === '1') { lnShowBooking(); } } catch (e) {}
+        var lnBtn = document.getElementById('lnUnlock');
+        if (lnBtn) { lnBtn.addEventListener('click', lnTryUnlock); }
+        if (lnPasskey) {
+          lnPasskey.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); lnTryUnlock(); } });
+          lnPasskey.addEventListener('input', function () { if (lnError) lnError.hidden = true; });
+        }
+      }
     }());
   </script>
 </body>
