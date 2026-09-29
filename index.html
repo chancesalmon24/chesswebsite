@@ -251,6 +251,9 @@
     .cta-primary { color: #1a4f32; background: #ffffff; box-shadow: 0 12px 28px rgba(11, 32, 20, .22); }
     .cta-primary:hover { background: #edf8f1; }
     .visual .cta-row { margin-top: 26px; }
+    .lounge-jump { margin-top: 14px; text-align: center; }
+    .lounge-jump-link { display: inline-block; padding: 9px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,.45); background: rgba(255,255,255,.07); color: #ffffff; font-size: 13px; font-weight: 700; text-decoration: none; transition: background .18s ease; }
+    .lounge-jump-link:hover { background: rgba(255,255,255,.16); }
     .visual .cta { width: 100%; }
     .cta-secondary { color: #fff; background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.5); }
     .cta-secondary:hover { background: rgba(255,255,255,.14); }
@@ -1035,6 +1038,7 @@
           <div class="cta-row">
             <button class="cta cta-primary" id="bookButton" type="button">Book a Free Intro Lesson <span class="arrow" aria-hidden="true">→</span></button>
           </div>
+          <div class="lounge-jump"><a class="lounge-jump-link" href="#late-night">Scroll to bottom &#8595;</a></div>
         </div>
       </div>
     </section>
@@ -1217,7 +1221,7 @@
           <div class="ln-gate" id="lnGate">
             <div class="ln-field">
               <label for="lnPasskey">Your passkey</label>
-              <input id="lnPasskey" name="lnPasskey" type="password" autocomplete="off" placeholder="Enter passkey" />
+              <input id="lnPasskey" name="lnPasskey" type="text" autocomplete="off" placeholder="Enter passkey" />
             </div>
             <p class="ln-trivia-kicker">&#128270; Today&apos;s question</p>
             <p class="ln-question" id="lnQuestion">Loading today&apos;s question&hellip;</p>
