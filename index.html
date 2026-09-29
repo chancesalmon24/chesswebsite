@@ -949,6 +949,7 @@
       background: rgba(255, 255, 255, .06); border: 1px solid rgba(244, 185, 66, .25);
     }
     .ln-booking h3 { margin: 0 0 18px; text-align: center; color: #ffe9a8; font-family: "Poppins", sans-serif; }
+    .live-section.late-night .ln-form { margin: 0; }
     .live-section.late-night .ln-form-grid { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 520px; margin: 0 auto; }
     .live-section.late-night .ln-field { margin: 0; padding: 0; background: none; border: 0; text-align: center; }
     .live-section.late-night .ln-field label { display: block; margin: 0 0 8px; color: #ffe9a8; font-size: 15px; font-weight: 700; text-align: center; }
@@ -1210,7 +1211,7 @@
         <section class="live-section late-night" id="late-night" aria-labelledby="lateNightTitle">
           <p class="ln-kicker">&#128272; Members only</p>
           <h2 class="section-heading" id="lateNightTitle">&#127769; Late Night Lounge</h2>
-          <p class="section-intro">After-hours online chess sessions, after 8&nbsp;PM. This corner of the site is private &mdash; answer today’s trivia question to unlock late-night booking.</p>
+          <p class="section-intro">After-hours online chess sessions, after 8&nbsp;PM. Answer today’s trivia question to unlock late-night booking.</p>
           <div class="ln-gate" id="lnGate">
             <p class="ln-trivia-kicker">&#128270; Today&apos;s question to enter</p>
             <p class="ln-question" id="lnQuestion">Loading today&apos;s question&hellip;</p>
@@ -1223,7 +1224,7 @@
           </div>
           <div class="ln-booking" id="lnBooking" hidden>
             <h3>Book a late-night online session</h3>
-            <form class="preview-form contact-form" action="https://formsubmit.co/hasanbukhari1978@gmail.com" method="POST" aria-label="Book a late-night online session">
+            <form class="ln-form" action="https://formsubmit.co/hasanbukhari1978@gmail.com" method="POST" aria-label="Book a late-night online session">
               <input type="hidden" name="_subject" value="Late Night Online Session Booking" />
               <input type="hidden" name="session_type" value="Late Night Online (after 8 PM)" />
               <div class="ln-form-grid">
