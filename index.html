@@ -1451,6 +1451,18 @@
           lnPasskey.addEventListener('input', function () { if (lnError) lnError.hidden = true; });
         }
       }
+      /* Remember the visitor's chess.com username on their device and pre-fill it */
+      (function () {
+        var input = document.getElementById('lnChesscom');
+        if (!input) return;
+        try {
+          var saved = localStorage.getItem('tc_ln_chesscom');
+          if (saved) { input.value = saved; }
+          input.addEventListener('input', function () {
+            try { localStorage.setItem('tc_ln_chesscom', input.value); } catch (e) {}
+          });
+        } catch (e) {}
+      })();
     }());
   </script>
 </body>
