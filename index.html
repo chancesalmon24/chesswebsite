@@ -898,6 +898,8 @@
   button.live-button{border:0;font-family:inherit;cursor:pointer;}
 
     /* ---- Late Night Lounge (members-only, after-hours) ---- */
+    .live-section.late-night .ln-gate .ln-field { margin-bottom: 16px; }
+    .live-section.late-night .ln-gate .ln-submit { margin-top: 4px; }
     .live-section.late-night .ln-trivia-kicker { margin: 0 0 8px; text-align: center; color: #f4b942; font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
     .live-section.late-night .ln-question { margin: 0 0 16px; text-align: center; color: #ffffff; font-size: 20px; font-weight: 700; }
     .live-section.late-night {
@@ -1211,16 +1213,20 @@
         <section class="live-section late-night" id="late-night" aria-labelledby="lateNightTitle">
           <p class="ln-kicker">&#128272; Members only</p>
           <h2 class="section-heading" id="lateNightTitle">&#127769; Late Night Lounge</h2>
-          <p class="section-intro">After-hours online chess sessions, after 8&nbsp;PM. Answer today’s trivia question to unlock late-night booking.</p>
+          <p class="section-intro">After-hours online chess sessions, after 8&nbsp;PM. Please enter passkey and answer today’s trivia question to book.</p>
           <div class="ln-gate" id="lnGate">
-            <p class="ln-trivia-kicker">&#128270; Today&apos;s question to enter</p>
-            <p class="ln-question" id="lnQuestion">Loading today&apos;s question&hellip;</p>
-            <div class="ln-gate-row">
-              <input id="lnAnswer" name="lnAnswer" type="text" autocomplete="off" placeholder="Your answer" />
-              <button type="button" class="live-button ln-unlock" id="lnUnlock">Unlock</button>
+            <div class="ln-field">
+              <label for="lnPasskey">Your passkey</label>
+              <input id="lnPasskey" name="lnPasskey" type="password" autocomplete="off" placeholder="Enter passkey" />
             </div>
-            <p class="ln-error" id="lnError" role="alert" hidden>Not quite &mdash; try again.</p>
-            <p class="ln-hint">A new question every day. Stuck? Just ask Hasan.</p>
+            <p class="ln-trivia-kicker">&#128270; Today&apos;s question</p>
+            <p class="ln-question" id="lnQuestion">Loading today&apos;s question&hellip;</p>
+            <div class="ln-field">
+              <label for="lnAnswer">Your answer</label>
+              <input id="lnAnswer" name="lnAnswer" type="text" autocomplete="off" placeholder="Your answer" />
+            </div>
+            <div class="ln-submit"><button type="button" class="live-button ln-unlock" id="lnUnlock">Unlock</button></div>
+            <p class="ln-error" id="lnError" role="alert" hidden>Something wasn&apos;t right &mdash; try again.</p>
           </div>
           <div class="ln-booking" id="lnBooking" hidden>
             <h3>Book a late-night online session</h3>
@@ -1406,6 +1412,7 @@
       var lnGate = document.getElementById('lnGate');
       var lnBooking = document.getElementById('lnBooking');
       var lnAnswer = document.getElementById('lnAnswer');
+      var lnPasskey = document.getElementById('lnPasskey');
       var lnError = document.getElementById('lnError');
       var lnQuestion = document.getElementById('lnQuestion');
       function lnShowBooking() {
@@ -1420,11 +1427,11 @@
         if (lnGate) { lnGate.classList.remove('ln-shake'); void lnGate.offsetWidth; lnGate.classList.add('ln-shake'); }
       }
       function lnTryUnlock() {
-        if (!lnAnswer) return;
+        if (!lnAnswer || !lnPasskey) return;
+        var passOk = lnNorm(lnPasskey.value) === "pluto";
         var val = lnNorm(lnAnswer.value);
-        if (!val) { lnDeny(); return; }
-        var ok = lnItem[1].some(function (a) { return lnNorm(a) === val; });
-        if (ok) { lnShowBooking(); } else { lnDeny(); }
+        var triviaOk = !!val && lnItem[1].some(function (a) { return lnNorm(a) === val; });
+        if (passOk && triviaOk) { lnShowBooking(); } else { lnDeny(); }
       }
       if (lnGate && lnBooking) {
         if (lnQuestion) { lnQuestion.textContent = lnItem[0]; }
@@ -1434,6 +1441,10 @@
         if (lnAnswer) {
           lnAnswer.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); lnTryUnlock(); } });
           lnAnswer.addEventListener('input', function () { if (lnError) lnError.hidden = true; });
+        }
+        if (lnPasskey) {
+          lnPasskey.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); lnTryUnlock(); } });
+          lnPasskey.addEventListener('input', function () { if (lnError) lnError.hidden = true; });
         }
       }
     }());
