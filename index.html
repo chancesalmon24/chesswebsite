@@ -1635,9 +1635,10 @@
           </div>
           <div class="ln-booking" id="lnBooking" hidden>
             <h3>Book a late-night online session</h3>
-            <form class="ln-form" id="lnBookForm" aria-label="Book a late-night online session">
+            <form class="ln-form" id="lnBookForm" action="https://formsubmit.co/hasanbukhari1978@gmail.com" method="POST" aria-label="Book a late-night online session">
               <input type="hidden" name="_subject" value="Late Night Online Session Booking" />
               <input type="hidden" name="session_type" value="Late Night Online (after 8 PM)" />
+              <input type="hidden" name="_next" value="https://tecumsehchess.ca/#late-night" />
               <div class="ln-form-grid">
                 <div class="ln-field"><label for="lnDay">Day *</label><select id="lnDay" name="day" required><option value="">Select a day</option><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday">Saturday</option><option value="Sunday">Sunday</option></select></div>
                 <div class="ln-field"><label for="lnTime">Time slot *</label><select id="lnTime" name="time_slot" required><option value="">Select a time</option><option value="8:00 PM">8:00 PM</option><option value="9:00 PM">9:00 PM</option><option value="10:00 PM">10:00 PM</option></select></div>
@@ -1877,7 +1878,13 @@
             if (msg) { msg.textContent = 'You\u2019re booked! Hasan will confirm your late-night session.'; msg.className = 'ln-booking-msg success'; }
             form.reset();
           }).catch(function () {
-            if (msg) { msg.textContent = 'Something went wrong sending that \u2014 please try again, or message Hasan directly.'; msg.className = 'ln-booking-msg error'; }
+            /* AJAX failed (endpoint down/blocked): fall back to a normal POST
+               so the booking still reaches FormSubmit. form.submit() does not
+               re-fire the submit event, so there is no loop. _next brings the
+               visitor back to the lounge section. */
+            try { form.submit(); } catch (e) {
+              if (msg) { msg.textContent = 'Something went wrong sending that \u2014 please try again, or message Hasan directly.'; msg.className = 'ln-booking-msg error'; }
+            }
           }).finally(function () {
             if (btn) { btn.disabled = false; btn.textContent = 'Book Late Night Session'; }
           });
