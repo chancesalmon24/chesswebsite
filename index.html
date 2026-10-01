@@ -949,11 +949,10 @@
     }
   button.live-button{border:0;font-family:inherit;cursor:pointer;}
 
-    /* ---- Late Night Lounge (members-only, after-hours) ---- */
+    /* ---- Late Night Chess Lounge (members-only, after-hours) ---- */
     .live-section.late-night .ln-gate .ln-field { margin-bottom: 16px; }
     .live-section.late-night .ln-gate .ln-submit { margin-top: 4px; }
-    .live-section.late-night .ln-trivia-kicker { margin: 0 0 8px; text-align: center; color: #f4b942; font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
-    .live-section.late-night .ln-question { margin: 0 0 16px; text-align: center; color: #ffffff; font-size: 20px; font-weight: 700; }
+    .live-section.late-night .ln-gate-kicker { margin: 0 0 8px; text-align: center; color: #f4b942; font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
     .live-section.late-night {
       position: relative;
       overflow: hidden;
@@ -1792,23 +1791,22 @@
   </div>
 </section>
         <section class="live-section late-night" id="late-night" aria-labelledby="lateNightTitle">
-          <h2 class="section-heading" id="lateNightTitle">&#127769; Night Lounge</h2>
-          <p class="section-intro">After-hours online chess sessions, after 8&nbsp;PM. Answer today’s trivia question to book.</p>
+          <h2 class="section-heading" id="lateNightTitle">&#127769; Late Night Chess Lounge</h2>
+          <p class="section-intro">A free online lesson for members who have been with Tecumseh Chess for more than 6 months. Sessions run after 8&nbsp;PM. Enter the members passkey to book yours.</p>
           <div class="ln-gate" id="lnGate">
-            <p class="ln-trivia-kicker">&#128270; Today&apos;s question</p>
-            <p class="ln-question" id="lnQuestion">Loading today&apos;s question&hellip;</p>
+            <p class="ln-gate-kicker">&#128273; Members only</p>
             <div class="ln-field">
-              <label for="lnAnswer">Your answer</label>
-              <input id="lnAnswer" name="lnAnswer" type="text" autocomplete="off" placeholder="Your answer" />
+              <label for="lnPasskey">Passkey</label>
+              <input id="lnPasskey" name="lnPasskey" type="password" autocomplete="off" placeholder="Enter the passkey" />
             </div>
             <div class="ln-submit"><button type="button" class="live-button ln-unlock" id="lnUnlock">Unlock</button></div>
-            <p class="ln-error" id="lnError" role="alert" hidden>Something wasn&apos;t right &mdash; try again.</p>
+            <p class="ln-error" id="lnError" role="alert" hidden>That passkey wasn&apos;t right &mdash; try again.</p>
           </div>
           <div class="ln-booking" id="lnBooking" hidden>
-            <h3>Book a night session online</h3>
-            <form class="ln-form" id="lnBookForm" action="https://formsubmit.co/hasanbukhari1978@gmail.com" method="POST" aria-label="Book a night session online">
-              <input type="hidden" name="_subject" value="Night Online Session Booking" />
-              <input type="hidden" name="session_type" value="Night Online (after 8 PM)" />
+            <h3>Book your free online lesson</h3>
+            <form class="ln-form" id="lnBookForm" action="https://formsubmit.co/hasanbukhari1978@gmail.com" method="POST" aria-label="Book your free online lesson">
+              <input type="hidden" name="_subject" value="Late Night Chess Lounge Booking" />
+              <input type="hidden" name="session_type" value="Late Night Chess Lounge (free member lesson, after 8 PM)" />
               <input type="hidden" name="_next" value="https://tecumsehchess.ca/#late-night" />
               <div class="ln-form-grid">
                 <div class="ln-field"><label for="lnDay">Day *</label><select id="lnDay" name="day" required><option value="">Select a day</option><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday">Saturday</option><option value="Sunday">Sunday</option></select></div>
@@ -1816,7 +1814,7 @@
                 <div class="ln-field"><label for="lnChesscom">Your chess.com username *</label><input id="lnChesscom" name="chesscom_username" type="text" required placeholder="e.g. NightPawn99" /></div>
                 <div class="ln-field ln-discord-join"><span class="ln-discord-label">Sessions happen on Discord &mdash; join the server here:</span><a class="ln-discord-link" href="https://discord.gg/A2pYeA2BK" target="_blank" rel="noopener">discord.gg/A2pYeA2BK</a></div>
               </div>
-              <div class="contact-actions"><button type="submit" class="live-button ln-unlock">Book Night Session</button></div>
+              <div class="contact-actions"><button type="submit" class="live-button ln-unlock">Book Free Lesson</button></div>
               <p class="ln-booking-msg" id="lnBookingMsg" role="status" hidden></p>
             </form>
           </div>
@@ -1891,112 +1889,17 @@
       document.getElementById('prevReview').addEventListener('click', function () { showReview(reviewIndex - 1); });
       document.getElementById('nextReview').addEventListener('click', function () { showReview(reviewIndex + 1); });
 
-      /* Late Night Lounge: daily trivia gate (velvet rope, not a vault). Question changes every day (UTC). */
-      var LN_TRIVIA = [
-        ["What is the largest mountain in the world?", ["everest", "mount everest", "mt everest"]],
-        ["Which planet is known as the Red Planet?", ["mars"]],
-        ["What is the largest ocean on Earth?", ["pacific", "pacific ocean"]],
-        ["How many days are in a leap year?", ["366"]],
-        ["What is the capital of Canada?", ["ottawa"]],
-        ["What is the largest planet in our solar system?", ["jupiter"]],
-        ["How many continents are there?", ["7", "seven"]],
-        ["What is the fastest land animal?", ["cheetah"]],
-        ["How many legs does a spider have?", ["8", "eight"]],
-        ["What do bees make?", ["honey"]],
-        ["What is the hottest planet in our solar system?", ["venus"]],
-        ["How many colours are in a rainbow?", ["7", "seven"]],
-        ["What is the capital of France?", ["paris"]],
-        ["How many minutes are in an hour?", ["60", "sixty"]],
-        ["How many players are on a soccer team on the field?", ["11", "eleven"]],
-        ["What is the largest mammal in the world?", ["blue whale", "whale"]],
-        ["What is H2O commonly known as?", ["water"]],
-        ["How many sides does a triangle have?", ["3", "three"]],
-        ["What is the capital of Japan?", ["tokyo"]],
-        ["What colour do you get when you mix blue and yellow?", ["green"]],
-        ["How many days are in a week?", ["7", "seven"]],
-        ["What is the tallest animal in the world?", ["giraffe"]],
-        ["Which planet is closest to the Sun?", ["mercury"]],
-        ["How many hours are in a day?", ["24", "twenty four"]],
-        ["What do giant pandas mostly eat?", ["bamboo"]],
-        ["What is the capital of Italy?", ["rome"]],
-        ["How many strings does a guitar have?", ["6", "six"]],
-        ["How many seasons are there in a year?", ["4", "four"]],
-        ["What is the largest country in the world by area?", ["russia"]],
-        ["How many moons does Earth have?", ["1", "one"]],
-        ["What colour is an emerald?", ["green"]],
-        ["How many letters are in the English alphabet?", ["26", "twenty six"]],
-        ["What is the currency of Japan?", ["yen"]],
-        ["Which planet is famous for its rings?", ["saturn"]],
-        ["How many cents are in a dollar?", ["100", "one hundred"]],
-        ["Which animal is known as the king of the jungle?", ["lion"]],
-        ["How many wheels does a tricycle have?", ["3", "three"]],
-        ["What is frozen water called?", ["ice"]],
-        ["What planet do we live on?", ["earth"]],
-        ["How many days are in a normal (non-leap) year?", ["365"]],
-        ["What is the 4th planet from the Sun?", ["mars"]],
-        ["What do you call a baby frog?", ["tadpole"]],
-        ["How many teeth does an adult human have?", ["32", "thirty two"]],
-        ["What is the tallest building in the world?", ["burj khalifa"]],
-        ["Which planet has the Great Red Spot?", ["jupiter"]],
-        ["What is the capital of Australia?", ["canberra"]],
-        ["How many bones are in the adult human body?", ["206"]],
-        ["What is the hardest natural material on Earth?", ["diamond"]],
-        ["What is the smallest ocean in the world?", ["arctic", "arctic ocean"]],
-        ["What gas do humans need to breathe in to stay alive?", ["oxygen"]],
-        ["How many hearts does an octopus have?", ["3", "three"]],
-        ["What is the capital of Brazil?", ["brasilia"]],
-        ["What do you call a group of wolves?", ["pack"]],
-        ["About how many kilometres long is a marathon?", ["42", "forty two"]],
-        ["What is the largest island in the world?", ["greenland"]],
-        ["Which bird cannot fly but is a great swimmer?", ["penguin"]],
-        ["What is the capital of Egypt?", ["cairo"]],
-        ["How many players are on a basketball team on the court?", ["5", "five"]],
-        ["What is the fastest bird in the world?", ["peregrine falcon", "falcon"]],
-        ["What does a caterpillar turn into?", ["butterfly", "butterflies"]],
-        ["What is the capital of Spain?", ["madrid"]],
-        ["How many inches are in a foot?", ["12", "twelve"]],
-        ["What is the largest reptile in the world?", ["saltwater crocodile", "crocodile"]],
-        ["Which planet spins on its side?", ["uranus"]],
-        ["What is the capital of China?", ["beijing"]],
-        ["How many keys are on a piano?", ["88", "eighty eight"]],
-        ["What land animal lives the longest?", ["tortoise", "giant tortoise"]],
-        ["What is the capital of India?", ["new delhi", "delhi"]],
-        ["What force pulls objects toward the Earth?", ["gravity"]],
-        ["How many states are in the USA?", ["50", "fifty"]],
-        ["What is the smallest planet in our solar system?", ["mercury"]],
-        ["What do you call frozen rain?", ["hail"]],
-        ["What is the capital of Mexico?", ["mexico city"]],
-        ["How many sides does a hexagon have?", ["6", "six"]],
-        ["What is the only mammal that can fly?", ["bat"]],
-        ["What is the deepest ocean trench in the world?", ["mariana trench", "mariana"]],
-        ["How many weeks are in a year?", ["52", "fifty two"]],
-        ["What is the capital of England?", ["london"]],
-        ["Which chess piece can only move diagonally?", ["bishop"]],
-        ["What is the 3rd planet from the Sun?", ["earth"]]
-      ];
-      function lnTodayStr() { var d = new Date(); return d.getUTCFullYear() + "-" + (d.getUTCMonth() + 1) + "-" + d.getUTCDate(); }
-      function lnNorm(s) {
-        var r = String(s).toLowerCase(), out = "", prevSpace = true;
-        for (var i = 0; i < r.length; i++) {
-          var c = r.charAt(i);
-          var wordChar = (c >= "a" && c <= "z") || (c >= "0" && c <= "9");
-          if (wordChar) { out += c; prevSpace = false; }
-          else if (!prevSpace) { out += " "; prevSpace = true; }
-        }
-        if (out.charAt(out.length - 1) === " ") { out = out.substring(0, out.length - 1); }
-        return out;
-      }
-      var lnItem = LN_TRIVIA[Math.floor(Date.now() / 86400000) % LN_TRIVIA.length];
+      /* Late Night Chess Lounge: members-only passkey gate (velvet rope, not a vault). */
+      var LN_PASSKEY = "pluto";
       var lnGate = document.getElementById('lnGate');
       var lnBooking = document.getElementById('lnBooking');
-      var lnAnswer = document.getElementById('lnAnswer');
+      var lnAnswer = document.getElementById('lnPasskey');
       var lnError = document.getElementById('lnError');
-      var lnQuestion = document.getElementById('lnQuestion');
       function lnShowBooking() {
         if (!lnGate || !lnBooking) return;
         lnGate.hidden = true;
         lnBooking.hidden = false;
-        try { localStorage.setItem('tc_ln_day', lnTodayStr()); } catch (e) {}
+        try { localStorage.setItem('tc_ln_unlocked', '1'); } catch (e) {}
       }
       function lnDeny() {
         if (!lnError) return;
@@ -2005,13 +1908,11 @@
       }
       function lnTryUnlock() {
         if (!lnAnswer) return;
-        var val = lnNorm(lnAnswer.value);
-        var triviaOk = !!val && lnItem[1].some(function (a) { return lnNorm(a) === val; });
-        if (triviaOk) { lnShowBooking(); } else { lnDeny(); }
+        var val = String(lnAnswer.value).trim().toLowerCase();
+        if (val === LN_PASSKEY) { lnShowBooking(); } else { lnDeny(); }
       }
       if (lnGate && lnBooking) {
-        if (lnQuestion) { lnQuestion.textContent = lnItem[0]; }
-        try { if (localStorage.getItem('tc_ln_day') === lnTodayStr()) { lnShowBooking(); } } catch (e) {}
+        try { if (localStorage.getItem('tc_ln_unlocked') === '1') { lnShowBooking(); } } catch (e) {}
         var lnBtn = document.getElementById('lnUnlock');
         if (lnBtn) { lnBtn.addEventListener('click', lnTryUnlock); }
         if (lnAnswer) {
@@ -2040,7 +1941,7 @@
             if (!res.ok) { throw new Error('bad response'); }
             return res.json();
           }).then(function () {
-            if (msg) { msg.textContent = 'You\u2019re booked! Hasan will confirm your night session.'; msg.className = 'ln-booking-msg success'; }
+            if (msg) { msg.textContent = 'You\u2019re booked! Hasan will confirm your free online lesson.'; msg.className = 'ln-booking-msg success'; }
             form.reset();
           }).catch(function () {
             /* AJAX failed (endpoint down/blocked): fall back to a normal POST
@@ -2051,7 +1952,7 @@
               if (msg) { msg.textContent = 'Something went wrong sending that \u2014 please try again, or message Hasan directly.'; msg.className = 'ln-booking-msg error'; }
             }
           }).finally(function () {
-            if (btn) { btn.disabled = false; btn.textContent = 'Book Night Session'; }
+            if (btn) { btn.disabled = false; btn.textContent = 'Book Free Lesson'; }
           });
         });
       })();
