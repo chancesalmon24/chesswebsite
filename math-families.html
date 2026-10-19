@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Question Families Circle, Enchanted Forest</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  body { font-family:Georgia, 'Palatino Linotype', 'Times New Roman', serif; min-height:100vh; display:block; padding:30px 14px 80px; overflow-x:hidden;
+    background:radial-gradient(circle at 50% 34%, #26502f 0%, #17351e 46%, #0a1f10 78%, #05130a 100%);
+    color:#f3e9cf; }
+  .moon { position:fixed; top:4%; right:7%; width:74px; height:74px; border-radius:50%;
+    background:radial-gradient(circle at 38% 36%, #fffbe8, #f3e3ac 62%, #e0c078);
+    box-shadow:0 0 60px 22px rgba(255,240,190,.35); opacity:.9; z-index:0; }
+  .trees { position:fixed; left:0; right:0; bottom:0; width:100%; height:190px; pointer-events:none; z-index:0; }
+  .fly { position:fixed; width:7px; height:7px; border-radius:50%; background:#ffe98a; box-shadow:0 0 14px 5px rgba(255,233,138,.65); pointer-events:none; animation:drift 7s ease-in-out infinite alternate; z-index:1; }
+  @keyframes drift { from { transform:translate(0,0); opacity:.55; } to { transform:translate(26px,-34px); opacity:1; } }
+  .screen { transition:opacity .45s ease; }
+  .hidden { display:none !important; }
+  button { font-family:inherit; }
+  /* HOME LAYOUT */
+  .homewrap { display:flex; align-items:center; justify-content:center; gap:30px; position:relative; z-index:2; width:max-content; max-width:100%; margin:0 auto; }
+  .panel { order:2; width:252px; flex:none; background:linear-gradient(165deg, #f9efcf, #eddca9 75%, #e6d096); color:#2c1a08;
+    border:2px solid #6d4c1e; outline:1px solid rgba(255,240,190,.65); outline-offset:3px; border-radius:12px;
+    padding:18px 16px 14px; box-shadow:0 16px 40px rgba(0,0,0,.6), inset 0 0 30px rgba(150,110,40,.22); }
+  .panel h2 { font-size:21px; color:#22401f; text-align:center; margin-bottom:4px; }
+  .panel .sub { font-size:13.5px; color:#6d4c1e; text-align:center; margin-bottom:13px; font-style:italic; }
+  .prac { display:block; width:100%; text-align:left; cursor:pointer; margin-bottom:11px; padding:12px 13px;
+    background:#fffaf0; border:2px solid #b89b58; border-radius:10px; color:#2c1a08; transition:all .2s ease; }
+  .prac:hover { border-color:#22401f; transform:translateX(4px); }
+  .prac b { font-size:16.5px; color:#22401f; display:block; margin-bottom:2px; }
+  .prac span { font-size:13.5px; color:#6d4c1e; line-height:1.35; display:block; }
+  .testbtn { display:block; width:100%; cursor:pointer; margin-top:4px; padding:14px 13px; text-align:center;
+    background:linear-gradient(180deg, #ffe9a0, #e9bc4a); border:2px solid #6d4c1e; border-radius:10px;
+    color:#3a2a08; font-size:19px; font-weight:800; letter-spacing:.4px; box-shadow:0 8px 18px rgba(0,0,0,.35); transition:all .2s ease; }
+  .testbtn:hover { transform:translateY(-2px); box-shadow:0 12px 24px rgba(0,0,0,.45); }
+  .testbtn span { display:block; font-size:13px; font-weight:600; color:#6d4c1e; margin-top:3px; letter-spacing:0; }
+  /* HOME CIRCLE */
+  .stage { order:1; position:relative; width:600px; height:600px; max-width:94vw; aspect-ratio:1; }
+  .backdrop { position:absolute; inset:0; width:100%; height:100%; filter:drop-shadow(0 0 12px rgba(255,207,110,.35)); }
+  .core { position:absolute; left:50%; top:50%; width:230px; transform:translate(-50%,-50%); text-align:center;
+    font-size:22px; font-weight:700; color:#ffdf8e; line-height:1.4; letter-spacing:.4px;
+    text-shadow:0 0 18px rgba(255,207,110,.55), 0 2px 6px rgba(0,0,0,.6); }
+  .core:before, .core:after { content:'\2726'; display:block; font-size:15px; color:#ffcf6e; margin:6px auto; }
+  .card { position:absolute; width:172px; transform:translate(-50%,-50%);
+    background:linear-gradient(165deg, #f9efcf, #eddca9 70%, #e3cb8d);
+    border:2px solid #6d4c1e; outline:1px solid rgba(255,240,190,.65); outline-offset:3px;
+    border-radius:8px; padding:10px 10px 14px; text-align:center;
+    box-shadow:0 10px 26px rgba(0,0,0,.6), inset 0 0 22px rgba(150,110,40,.28);
+    animation:rise .7s ease backwards; transition:transform .3s ease, box-shadow .25s ease; }
+  .card:hover { z-index:10; box-shadow:0 18px 42px rgba(0,0,0,.7), 0 0 30px rgba(255,207,110,.55), inset 0 0 22px rgba(150,110,40,.28); }
+  .card h2 { font-size:16.5px; color:#22401f; margin-bottom:6px; line-height:1.15; letter-spacing:.3px; }
+  .icon { background:#fffaf0; border-radius:6px; display:block; box-shadow:inset 0 0 0 1px #cdb271; }
+  .play { position:absolute; left:50%; bottom:-15px; transform:translateX(-50%); opacity:0; pointer-events:none;
+    transition:opacity .25s ease, bottom .25s ease; cursor:pointer;
+    background:linear-gradient(180deg, #ffe9a0, #e9bc4a); color:#3a2a08; border:2px solid #6d4c1e;
+    font-size:15px; font-weight:800; letter-spacing:.5px; border-radius:999px; padding:6px 20px;
+    box-shadow:0 6px 16px rgba(0,0,0,.55); white-space:nowrap; }
+  .card:hover .play, .card:focus-within .play { opacity:1; pointer-events:auto; bottom:-13px; }
+  @keyframes rise { from { opacity:0; } to { opacity:1; } }
+  .p0 { left:50%; top:14.4%; animation-delay:.05s; }
+  .p1 { left:77.8%; top:27.8%; animation-delay:.15s; }
+  .p2 { left:84.7%; top:57.9%; animation-delay:.25s; }
+  .p3 { left:65.5%; top:82.1%; animation-delay:.35s; }
+  .p4 { left:34.5%; top:82.1%; animation-delay:.45s; }
+  .p5 { left:15.3%; top:57.9%; animation-delay:.55s; }
+  .p6 { left:22.2%; top:27.8%; animation-delay:.65s; }
+  .p0:hover { transform:translate(-50%, calc(-50% + 26px)) scale(1.32); }
+  .p1:hover { transform:translate(calc(-50% - 21px), calc(-50% + 17px)) scale(1.32); }
+  .p2:hover { transform:translate(calc(-50% - 26px), calc(-50% - 6px)) scale(1.32); }
+  .p3:hover { transform:translate(calc(-50% - 12px), calc(-50% - 24px)) scale(1.32); }
+  .p4:hover { transform:translate(calc(-50% + 12px), calc(-50% - 24px)) scale(1.32); }
+  .p5:hover { transform:translate(calc(-50% + 26px), calc(-50% - 6px)) scale(1.32); }
+  .p6:hover { transform:translate(calc(-50% + 21px), calc(-50% + 17px)) scale(1.32); }
+  /* SHARED QUIZ + PANELS */
+  .quizwrap { position:relative; z-index:2; width:560px; max-width:94vw; margin:6px auto 0; }
+  .qcard { background:linear-gradient(165deg, #f9efcf, #eddca9 75%, #e6d096); color:#2c1a08;
+    border:2px solid #6d4c1e; outline:1px solid rgba(255,240,190,.65); outline-offset:3px; border-radius:12px;
+    padding:20px 20px 16px; box-shadow:0 16px 40px rgba(0,0,0,.65), inset 0 0 30px rgba(150,110,40,.22); }
+  .qtop { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+  .qfam { font-size:22px; font-weight:800; color:#22401f; }
+  .qcount { font-size:15px; color:#6d4c1e; font-weight:700; }
+  .bar { height:8px; background:#d9c48f; border-radius:99px; margin:12px 0 4px; overflow:hidden; }
+  .barfill { height:100%; background:linear-gradient(90deg, #7fb069, #2e6e46); border-radius:99px; transition:width .4s ease; }
+  .qtext { font-size:19px; line-height:1.5; margin:10px 0 4px; }
+  .qgraph { display:flex; justify-content:center; margin:6px 0; }
+  .opts { display:grid; gap:9px; margin-top:10px; }
+  .opt { font-size:17.5px; text-align:left; cursor:pointer; padding:12px 15px; border-radius:10px;
+    background:#fffaf0; color:#2c1a08; border:2px solid #b89b58; transition:all .2s ease; }
+  .opt:hover { border-color:#22401f; }
+  .opt.right { background:#dcefd9; border-color:#2e6e46; font-weight:700; }
+  .opt.wrong { background:#f6d9d2; border-color:#a33327; }
+  .opt:disabled { cursor:default; opacity:.92; }
+  .sol { display:none; margin-top:13px; background:#fffaf0; border:2px dashed #7fb069; border-radius:10px; padding:12px 15px; }
+  .sol.show { display:block; animation:rise .4s ease; }
+  .sol h3 { color:#2e6e46; font-size:16px; margin-bottom:6px; }
+  .sol p { font-size:16.5px; line-height:1.5; margin:3px 0; }
+  .sol .final { font-weight:800; color:#22401f; margin-top:7px; font-size:17.5px; }
+  .qnav { display:flex; justify-content:space-between; align-items:center; margin-top:15px; gap:10px; flex-wrap:wrap; }
+  .btn { cursor:pointer; border-radius:999px; font-size:16px; font-weight:800; padding:11px 24px; border:2px solid #6d4c1e; }
+  .btn.gold { background:linear-gradient(180deg, #ffe9a0, #e9bc4a); color:#3a2a08; box-shadow:0 6px 16px rgba(0,0,0,.4); }
+  .btn.ghost { background:transparent; color:#5d3a12; }
+  .btn:disabled { opacity:.4; cursor:default; }
+  .score { text-align:center; padding:14px 0 4px; }
+  .score .big { font-size:44px; font-weight:800; color:#22401f; }
+  .score p { font-size:18px; margin-top:6px; line-height:1.5; }
+  /* GRAPH PLAYGROUND */
+  .modes { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; }
+  .modebtn { cursor:pointer; border-radius:999px; font-size:15px; font-weight:700; padding:8px 16px; border:2px solid #b89b58; background:#fffaf0; color:#2c1a08; }
+  .modebtn.on { background:#22401f; color:#ffdf8e; border-color:#22401f; }
+  #board { display:block; margin:6px auto; background:#fffaf0; border-radius:10px; box-shadow:inset 0 0 0 1px #cdb271; cursor:crosshair; max-width:100%; height:auto; }
+  .readout { min-height:24px; font-size:16.5px; text-align:center; margin-top:8px; color:#22401f; font-weight:700; }
+  /* WORDS */
+  .wprompt { background:#fffaf0; border:2px solid #b89b58; border-radius:10px; padding:14px 15px; margin-top:13px; }
+  .wprompt h3 { color:#22401f; font-size:17px; margin-bottom:5px; }
+  .wprompt p { font-size:16.5px; line-height:1.5; }
+  .wprompt textarea { width:100%; margin-top:9px; min-height:62px; font-family:inherit; font-size:16px; padding:10px;
+    border:2px solid #d9c48f; border-radius:8px; background:#fffef8; color:#2c1a08; resize:vertical; }
+  .wprompt textarea:focus { outline:none; border-color:#22401f; }
+  .model { display:none; margin-top:10px; background:#eef6ea; border:2px dashed #7fb069; border-radius:8px; padding:10px 12px; font-size:16px; line-height:1.55; }
+  .model.show { display:block; animation:rise .4s ease; }
+  .model b { color:#2e6e46; }
+  .model ul { margin:7px 0 2px 19px; }
+  .model li { margin:4px 0; line-height:1.4; }
+  .smallbtn { cursor:pointer; margin-top:9px; border-radius:999px; font-size:14.5px; font-weight:800; padding:8px 18px;
+    border:2px solid #6d4c1e; background:linear-gradient(180deg, #ffe9a0, #e9bc4a); color:#3a2a08; }
+  @media (max-width:1150px) {
+    .homewrap { flex-direction:column; gap:22px; margin-left:0; }
+    .panel { width:340px; max-width:94vw; }
+  }
+  @media (max-width:560px) {
+    .card { width:130px; padding:7px 7px 12px; }
+    .card h2 { font-size:12.5px; }
+    .core { font-size:16px; width:168px; }
+    .moon { width:48px; height:48px; }
+    .play { font-size:12.5px; padding:5px 14px; bottom:-12px; }
+    .p0:hover { transform:translate(-50%, calc(-50% + 19px)) scale(1.3); }
+    .p1:hover { transform:translate(calc(-50% - 15px), calc(-50% + 12px)) scale(1.3); }
+    .p2:hover { transform:translate(calc(-50% - 19px), calc(-50% - 4px)) scale(1.3); }
+    .p3:hover { transform:translate(calc(-50% - 9px), calc(-50% - 17px)) scale(1.3); }
+    .p4:hover { transform:translate(calc(-50% + 9px), calc(-50% - 17px)) scale(1.3); }
+    .p5:hover { transform:translate(calc(-50% + 19px), calc(-50% - 4px)) scale(1.3); }
+    .p6:hover { transform:translate(calc(-50% + 15px), calc(-50% + 12px)) scale(1.3); }
+    .qtext { font-size:17px; } .opt { font-size:16px; }
+  }
+</style>
+<style>@media (hover:none){.play{opacity:1!important;pointer-events:auto!important;bottom:-13px}}</style></head>
+<body>
+<div class="moon"></div>
+<svg class="trees" viewBox="0 0 1200 190" preserveAspectRatio="none">
+  <g fill="#04120a">
+    <polygon points="0,190 60,60 120,190"/>
+    <polygon points="90,190 170,30 250,190"/>
+    <polygon points="220,190 280,80 340,190"/>
+    <polygon points="880,190 950,50 1020,190"/>
+    <polygon points="990,190 1075,20 1160,190"/>
+    <polygon points="1120,190 1170,80 1200,140 1200,190"/>
+    <rect x="0" y="168" width="1200" height="22"/>
+  </g>
+</svg>
+<span class="fly" style="left:14%; top:30%; animation-delay:.2s"></span>
+<span class="fly" style="left:22%; top:64%; animation-delay:1.4s"></span>
+<span class="fly" style="left:80%; top:38%; animation-delay:.8s"></span>
+<span class="fly" style="left:70%; top:72%; animation-delay:2s"></span>
+<span class="fly" style="left:46%; top:12%; animation-delay:1s"></span>
+<span class="fly" style="left:88%; top:66%; animation-delay:.5s"></span>
+<span class="fly" style="left:8%; top:48%; animation-delay:1.8s"></span>
+
+<!-- HOME: PRACTICE PANEL + THE CIRCLE -->
+<div class="homewrap screen" id="homewrap">
+  <aside class="panel">
+    <h2>Practice Grounds</h2>
+    <p class="sub">Warm up here, then take on the circle.</p>
+    <button class="prac" id="go-graph"><b>&#9998; Make It On A Graph</b><span>Plot points, draw lines, build triangles. Tap the grid and make it real.</span></button>
+    <button class="prac" id="go-neg"><b>&#8723; Negatives &amp; Positives</b><span>Every sign combination there is: -n plus +n, +n minus -n, all of them, with real numbers.</span></button>
+    <button class="prac" id="go-words"><b>&#9997; Say It In Words</b><span>Type out how you would attack a problem before touching the numbers. If you can say it, you understand it.</span></button>
+    <button class="testbtn" id="go-test">&#9733; Take Test<span>All 7 subjects on the circle. 8 very hard questions. 30 minutes on the clock.</span></button>
+  </aside>
+  <div class="stage" id="home">
+    <svg class="backdrop" viewBox="0 0 680 680">
+      <circle cx="340" cy="340" r="242" fill="none" stroke="#ffcf6e" stroke-width="3"/>
+      <circle cx="340" cy="340" r="228" fill="none" stroke="#7fb069" stroke-opacity=".7" stroke-width="1.5"/>
+      <circle cx="340" cy="340" r="150" fill="none" stroke="#ffcf6e" stroke-opacity=".5" stroke-width="1.5"/>
+      <g stroke="#ffcf6e" stroke-width="3" stroke-linecap="round">
+        <line x1="340" y1="84" x2="340" y2="98"/><line x1="452" y1="119" x2="445" y2="131"/>
+        <line x1="564" y1="228" x2="552" y2="235"/><line x1="596" y1="340" x2="582" y2="340"/>
+        <line x1="564" y1="452" x2="552" y2="445"/><line x1="452" y1="561" x2="445" y2="549"/>
+        <line x1="340" y1="596" x2="340" y2="582"/><line x1="228" y1="561" x2="235" y2="549"/>
+        <line x1="116" y1="452" x2="128" y2="445"/><line x1="84" y1="340" x2="98" y2="340"/>
+        <line x1="116" y1="228" x2="128" y2="235"/><line x1="228" y1="119" x2="235" y2="131"/>
+      </g>
+      <g fill="#ffdf8e">
+        <circle cx="340" cy="98" r="7"/><circle cx="529" cy="189" r="7"/><circle cx="576" cy="394" r="7"/>
+        <circle cx="445" cy="558" r="7"/><circle cx="235" cy="558" r="7"/>
+        <circle cx="104" cy="394" r="7"/><circle cx="151" cy="189" r="7"/>
+      </g>
+      <g fill="#fff3c4" font-size="17" text-anchor="middle">
+        <text x="340" y="70">&#10038;</text><text x="600" y="346">&#10038;</text><text x="80" y="346">&#10038;</text>
+        <text x="470" y="610">&#10038;</text><text x="210" y="610">&#10038;</text>
+      </g>
+    </svg>
+    <div class="core">Everything You Will See On Test Tuesday</div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="quizwrap screen hidden" id="quiz">
+  <div class="qcard">
+    <div class="qtop">
+      <div class="qfam" id="qfam">Family</div>
+      <div style="text-align:right">
+        <div class="qcount" id="qtimer" style="display:none; font-size:19px; color:#a33327">&#9201; 30:00</div>
+        <div class="qcount" id="qcount">Question 1 of 5</div>
+      </div>
+    </div>
+    <div class="bar"><div class="barfill" id="barfill" style="width:20%"></div></div>
+    <div id="qbody">
+      <div class="qtext" id="qtext"></div>
+      <div class="qgraph" id="qgraph"></div>
+      <div class="opts" id="qopts"></div>
+      <div class="sol" id="qsol"></div>
+    </div>
+    <div id="qend" style="display:none">
+      <div class="score">
+        <div class="big" id="scorebig">5 / 5</div>
+        <p id="scoremsg"></p>
+      </div>
+    </div>
+    <div class="qnav">
+      <button class="btn ghost" id="btn-circle">&#8634; Circle</button>
+      <button class="btn gold" id="btn-again" style="display:none">&#8635; New 5</button>
+      <button class="btn gold" id="btn-next" disabled>Next &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<!-- GRAPH PLAYGROUND -->
+<div class="quizwrap screen hidden" id="graphscreen">
+  <div class="qcard">
+    <div class="qtop">
+      <div class="qfam">Make It On A Graph</div>
+      <div class="qcount">Free practice</div>
+    </div>
+    <div class="modes">
+      <button class="modebtn on" data-mode="points">&#9679; Points</button>
+      <button class="modebtn" data-mode="lines">&#9585; Lines</button>
+      <button class="modebtn" data-mode="triangles">&#9651; Triangles</button>
+      <button class="modebtn" id="gundo">Undo</button>
+      <button class="modebtn" id="gclear">Clear</button>
+    </div>
+    <svg id="board" viewBox="0 0 340 340" width="320" height="320"></svg>
+    <div class="readout" id="gread">Tap the grid to plot a point.</div>
+    <div class="qnav">
+      <button class="btn ghost" id="btn-circle2">&#8634; Circle</button>
+      <span></span>
+    </div>
+  </div>
+</div>
+
+<!-- SAY IT IN WORDS -->
+<div class="quizwrap screen hidden" id="wordsscreen">
+  <div class="qcard">
+    <div class="qtop">
+      <div class="qfam">Say It In Words</div>
+      <div class="qcount" id="wtimer" style="font-size:21px; color:#a33327">&#9201; 30:00</div>
+    </div>
+    <p style="font-size:16.5px; line-height:1.5; margin-top:8px">For each problem, type how you would solve it, step by step, in your own words. Then open the model approach and compare. If your words match the moves, you truly understand it.</p>
+    <div id="wprompts"></div>
+    <div class="qnav">
+      <button class="btn ghost" id="btn-circle3">&#8634; Circle</button>
+      <button class="btn ghost" id="btn-wreset">Reset Timer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var GRID = '<g stroke="#e3d5ab" stroke-width="1">'
+  + '<line x1="26" y1="0" x2="26" y2="120"/><line x1="52" y1="0" x2="52" y2="120"/><line x1="78" y1="0" x2="78" y2="120"/><line x1="104" y1="0" x2="104" y2="120"/><line x1="156" y1="0" x2="156" y2="120"/><line x1="182" y1="0" x2="182" y2="120"/><line x1="208" y1="0" x2="208" y2="120"/><line x1="234" y1="0" x2="234" y2="120"/>'
+  + '<line x1="0" y1="20" x2="260" y2="20"/><line x1="0" y1="40" x2="260" y2="40"/><line x1="0" y1="80" x2="260" y2="80"/><line x1="0" y1="100" x2="260" y2="100"/></g>'
+  + '<g stroke="#9a8a5f" stroke-width="2"><line x1="130" y1="0" x2="130" y2="120"/><line x1="0" y1="60" x2="260" y2="60"/></g>';
+
+var FAMILIES = [
+  { id:'slope', name:'Slope', icon:
+    '<line x1="40" y1="90" x2="220" y2="25" stroke="#22401f" stroke-width="4"/>'
+    + '<line x1="150" y1="51" x2="220" y2="51" stroke="#2e6e46" stroke-width="3" stroke-dasharray="6 5"/>'
+    + '<line x1="220" y1="51" x2="220" y2="25" stroke="#b8860b" stroke-width="3" stroke-dasharray="6 5"/>',
+    qs:[
+      { q:'Find the slope of the line through (0, 0) and (4, 2).', pts:[[0,0,''],[4,2,'']], opts:['1/2','2','-1/2','4'], a:0,
+        sol:['Slope = rise over run.','Rise: 2 - 0 = 2. Run: 4 - 0 = 4.','m = 2 / 4 = 1/2.'] },
+      { q:'Find the slope of the line through (1, 3) and (3, 7).', pts:[[1,3,''],[3,7,'']], opts:['2','1/2','-2','4'], a:0,
+        sol:['Slope = rise over run.','Rise: 7 - 3 = 4. Run: 3 - 1 = 2.','m = 4 / 2 = 2.'] },
+      { q:'Find the slope of the line through (2, 5) and (6, 1).', pts:[[2,5,''],[6,1,'']], opts:['-1','1','-1/4','4'], a:0,
+        sol:['Slope = rise over run.','Rise: 1 - 5 = -4. Run: 6 - 2 = 4.','m = -4 / 4 = -1. The line goes down, so the slope is negative.'] },
+      { q:'Find the slope of the line through (-1, 2) and (2, -4).', pts:[[-1,2,''],[2,-4,'']], opts:['-2','2','-1/2','-6'], a:0,
+        sol:['Slope = rise over run.','Rise: -4 - 2 = -6. Run: 2 - (-1) = 3.','m = -6 / 3 = -2.'] },
+      { q:'Find the slope of the line through (3, 3) and (3, 8).', pts:[[3,3,''],[3,8,'']], opts:['Undefined','0','5','1'], a:0,
+        sol:['Rise: 8 - 3 = 5. Run: 3 - 3 = 0.','You cannot divide by zero, and the line is straight up and down.','A vertical line has an undefined slope.'] }
+    ]},
+  { id:'midpoint', name:'Midpoint', icon:
+    '<line x1="30" y1="85" x2="230" y2="35" stroke="#22401f" stroke-width="4"/>'
+    + '<circle cx="30" cy="85" r="6" fill="#2c1a08"/><circle cx="230" cy="35" r="6" fill="#2c1a08"/>'
+    + '<circle cx="130" cy="60" r="8" fill="#a33327" stroke="#fff" stroke-width="2"/>'
+    + '<line x1="86" y1="70" x2="78" y2="84" stroke="#b8860b" stroke-width="4"/>'
+    + '<line x1="182" y1="40" x2="174" y2="54" stroke="#b8860b" stroke-width="4"/>',
+    qs:[
+      { q:'Find the midpoint of (-4, 5) and (6, -1).', pts:[[-4,5,''],[6,-1,'']], opts:['(1, 2)','(1, -2)','(5, 3)','(-1, 2)'], a:0,
+        sol:['Average the x\u2019s: (-4 + 6) / 2 = 1.','Average the y\u2019s: (5 + -1) / 2 = 2.','Midpoint = (1, 2).'] },
+      { q:'Find the midpoint of (0, 0) and (6, 4).', pts:[[0,0,''],[6,4,'']], opts:['(3, 2)','(6, 4)','(3, -2)','(2, 3)'], a:0,
+        sol:['Average the x\u2019s: (0 + 6) / 2 = 3.','Average the y\u2019s: (0 + 4) / 2 = 2.','Midpoint = (3, 2).'] },
+      { q:'Find the midpoint of (2, -3) and (8, 5).', pts:[[2,-3,''],[8,5,'']], opts:['(5, 1)','(5, -1)','(3, 1)','(10, 2)'], a:0,
+        sol:['Average the x\u2019s: (2 + 8) / 2 = 5.','Average the y\u2019s: (-3 + 5) / 2 = 1.','Midpoint = (5, 1).'] },
+      { q:'Find the midpoint of (-5, 1) and (3, 7).', pts:[[-5,1,''],[3,7,'']], opts:['(-1, 4)','(1, 4)','(-4, 3)','(-1, -4)'], a:0,
+        sol:['Average the x\u2019s: (-5 + 3) / 2 = -1.','Average the y\u2019s: (1 + 7) / 2 = 4.','Midpoint = (-1, 4).'] },
+      { q:'Find the midpoint of (4, 4) and (-2, -6).', pts:[[4,4,''],[-2,-6,'']], opts:['(1, -1)','(1, 1)','(-1, -1)','(3, -1)'], a:0,
+        sol:['Average the x\u2019s: (4 + -2) / 2 = 1.','Average the y\u2019s: (4 + -6) / 2 = -1.','Midpoint = (1, -1).'] }
+    ]},
+  { id:'parallel', name:'Parallel Line', icon:
+    '<line x1="25" y1="95" x2="235" y2="45" stroke="#22401f" stroke-width="4"/>'
+    + '<line x1="25" y1="65" x2="235" y2="15" stroke="#a33327" stroke-width="4"/>'
+    + '<circle cx="130" cy="40" r="6" fill="#2c1a08"/>',
+    qs:[
+      { q:'Find the line parallel to y = 3x - 7 that passes through (2, 5).', pts:[[2,5,'']], line:[3,-7], lineLabel:'y = 3x - 7', opts:['y = 3x - 1','y = 3x','y = 3x + 1','y = -3x - 1'], a:0,
+        sol:['Parallel means keep the slope: m = 3.','Plug the point in: 5 = 3(2) + b, so 5 = 6 + b and b = -1.','y = 3x - 1.'] },
+      { q:'Find the line parallel to y = -4x + 5 that passes through (0, 2).', pts:[[0,2,'']], line:[-4,5], lineLabel:'y = -4x + 5', opts:['y = -4x + 2','y = -4x + 5','y = 4x + 2','y = -4x - 2'], a:0,
+        sol:['Keep the slope: m = -4.','The point (0, 2) sits on the y-axis, so b = 2.','y = -4x + 2.'] },
+      { q:'Find the line parallel to y = 2x + 3 that passes through (1, 1).', pts:[[1,1,'']], line:[2,3], lineLabel:'y = 2x + 3', opts:['y = 2x - 1','y = 2x + 1','y = 2x + 3','y = -2x + 1'], a:0,
+        sol:['Keep the slope: m = 2.','Plug the point in: 1 = 2(1) + b, so b = -1.','y = 2x - 1.'] },
+      { q:'Find the line parallel to y = (1/2)x - 4 that passes through (4, 3).', pts:[[4,3,'']], line:[0.5,-4], lineLabel:'y = (1/2)x - 4', opts:['y = (1/2)x + 1','y = (1/2)x - 1','y = (1/2)x + 3','y = 2x + 1'], a:0,
+        sol:['Keep the slope: m = 1/2.','Plug the point in: 3 = (1/2)(4) + b, so 3 = 2 + b and b = 1.','y = (1/2)x + 1.'] },
+      { q:'Find the line parallel to y = -x + 6 that passes through (3, 3).', pts:[[3,3,'']], line:[-1,6], lineLabel:'y = -x + 6', opts:['y = -x + 6','y = -x + 3','y = -x','y = x + 6'], a:0,
+        sol:['Keep the slope: m = -1.','Plug the point in: 3 = -(3) + b, so b = 6.','The point sits on the original line, so you get the same line back: y = -x + 6.'] }
+    ]},
+  { id:'bisector', name:'Perpendicular Bisector (m\u00e9diatrice)', icon:
+    '<line x1="30" y1="85" x2="230" y2="35" stroke="#22401f" stroke-width="4"/>'
+    + '<line x1="152" y1="108" x2="108" y2="12" stroke="#a33327" stroke-width="4"/>'
+    + '<circle cx="30" cy="85" r="6" fill="#2c1a08"/><circle cx="230" cy="35" r="6" fill="#2c1a08"/>'
+    + '<circle cx="130" cy="60" r="7" fill="#a33327" stroke="#fff" stroke-width="2"/>',
+    qs:[
+      { q:'Find the perpendicular bisector of the segment joining E (2, 6) and F (8, 2).', pts:[[2,6,'E'],[8,2,'F']], opts:['y = (3/2)x - 7/2','y = (3/2)x + 7/2','y = -(3/2)x - 7/2','y = (2/3)x - 7/2'], a:0,
+        sol:['Move 1, midpoint: ((2+8)/2, (6+2)/2) = (5, 4).','Move 2, slope of EF: (2-6)/(8-2) = -2/3. Flip it: 3/2.','Move 3, build through (5, 4): y - 4 = (3/2)(x - 5).','y = (3/2)x - 7/2.'] },
+      { q:'Find the perpendicular bisector of the segment joining P (1, 3) and Q (7, 5).', pts:[[1,3,'P'],[7,5,'Q']], opts:['y = -3x + 16','y = 3x + 16','y = -3x - 16','y = -(1/3)x + 16'], a:0,
+        sol:['Move 1, midpoint: ((1+7)/2, (3+5)/2) = (4, 4).','Move 2, slope of PQ: (5-3)/(7-1) = 1/3. Flip it: -3.','Move 3, build through (4, 4): y - 4 = -3(x - 4).','y = -3x + 16.'] },
+      { q:'Find the perpendicular bisector of the segment joining A (0, 2) and B (6, 6).', pts:[[0,2,'A'],[6,6,'B']], opts:['y = -(3/2)x + 17/2','y = (2/3)x + 17/2','y = -(3/2)x - 17/2','y = (3/2)x + 17/2'], a:0,
+        sol:['Move 1, midpoint: ((0+6)/2, (2+6)/2) = (3, 4).','Move 2, slope of AB: (6-2)/(6-0) = 2/3. Flip it: -3/2.','Move 3, build through (3, 4): y - 4 = -(3/2)(x - 3).','y = -(3/2)x + 17/2.'] },
+      { q:'Find the perpendicular bisector of the segment joining C (-2, 1) and D (4, 5).', pts:[[-2,1,'C'],[4,5,'D']], opts:['y = -(3/2)x + 9/2','y = -(3/2)x - 9/2','y = (3/2)x + 9/2','y = -(2/3)x + 9/2'], a:0,
+        sol:['Move 1, midpoint: ((-2+4)/2, (1+5)/2) = (1, 3).','Move 2, slope of CD: (5-1)/(4-(-2)) = 2/3. Flip it: -3/2.','Move 3, build through (1, 3): y - 3 = -(3/2)(x - 1).','y = -(3/2)x + 9/2.'] },
+      { q:'Find the perpendicular bisector of the segment joining G (0, 0) and H (4, 2).', pts:[[0,0,'G'],[4,2,'H']], opts:['y = -2x + 5','y = 2x + 5','y = -2x - 5','y = -(1/2)x + 5'], a:0,
+        sol:['Move 1, midpoint: ((0+4)/2, (0+2)/2) = (2, 1).','Move 2, slope of GH: (2-0)/(4-0) = 1/2. Flip it: -2.','Move 3, build through (2, 1): y - 1 = -2(x - 2).','y = -2x + 5.'] }
+    ]},
+  { id:'median', name:'Median', icon:
+    '<polygon points="60,20 25,100 235,100" fill="none" stroke="#22401f" stroke-width="4"/>'
+    + '<line x1="60" y1="20" x2="130" y2="100" stroke="#a33327" stroke-width="4"/>'
+    + '<circle cx="130" cy="100" r="6" fill="#a33327"/>',
+    qs:[
+      { q:'Triangle A (4, 5), B (2, -6), C (-4, -2). Find the median from A.', pts:[[4,5,'A'],[2,-6,'B'],[-4,-2,'C']], opts:['y = (9/5)x - 11/5','y = (9/5)x + 11/5','y = -(9/5)x - 11/5','y = (5/9)x - 11/5'], a:0,
+        sol:['The median from A lands on the midpoint of BC: ((2 + -4)/2, (-6 + -2)/2) = (-1, -4).','Slope from A (4, 5) to (-1, -4): (5 - -4)/(4 - -1) = 9/5.','Build through A: y - 5 = (9/5)(x - 4).','y = (9/5)x - 11/5.'] },
+      { q:'Triangle A (6, 4), B (2, -2), C (-2, 4). Find the median from A.', pts:[[6,4,'A'],[2,-2,'B'],[-2,4,'C']], opts:['y = (1/2)x + 1','y = (1/2)x - 1','y = 2x + 1','y = -(1/2)x + 1'], a:0,
+        sol:['Midpoint of BC: ((2 + -2)/2, (-2 + 4)/2) = (0, 1).','Slope from A (6, 4) to (0, 1): (4 - 1)/(6 - 0) = 1/2.','Build through (0, 1), so b = 1.','y = (1/2)x + 1.'] },
+      { q:'Triangle A (2, 8), B (0, 0), C (6, 0). Find the median from A.', pts:[[2,8,'A'],[0,0,'B'],[6,0,'C']], opts:['y = -8x + 24','y = 8x + 24','y = -8x - 24','y = -(1/8)x + 24'], a:0,
+        sol:['Midpoint of BC: ((0 + 6)/2, (0 + 0)/2) = (3, 0).','Slope from A (2, 8) to (3, 0): (8 - 0)/(2 - 3) = -8.','Build through (3, 0): y = -8(x - 3).','y = -8x + 24.'] },
+      { q:'Triangle A (5, 5), B (1, 1), C (7, 1). Find the median from A.', pts:[[5,5,'A'],[1,1,'B'],[7,1,'C']], opts:['y = 4x - 15','y = 4x + 15','y = -4x - 15','y = (1/4)x - 15'], a:0,
+        sol:['Midpoint of BC: ((1 + 7)/2, (1 + 1)/2) = (4, 1).','Slope from A (5, 5) to (4, 1): (5 - 1)/(5 - 4) = 4.','Build through A: y - 5 = 4(x - 5).','y = 4x - 15.'] },
+      { q:'Triangle A (-3, 4), B (-5, -2), C (3, -2). Find the median from A.', pts:[[-3,4,'A'],[-5,-2,'B'],[3,-2,'C']], opts:['y = -3x - 5','y = 3x - 5','y = -3x + 5','y = -(1/3)x - 5'], a:0,
+        sol:['Midpoint of BC: ((-5 + 3)/2, (-2 + -2)/2) = (-1, -2).','Slope from A (-3, 4) to (-1, -2): (4 - -2)/(-3 - -1) = -3.','Build through A: y - 4 = -3(x + 3).','y = -3x - 5.'] }
+    ]},
+  { id:'triangles', name:'Triangles', icon:
+    '<polygon points="130,14 28,102 232,102" fill="none" stroke="#22401f" stroke-width="4"/>'
+    + '<line x1="130" y1="14" x2="130" y2="102" stroke="#a33327" stroke-width="4"/>'
+    + '<polyline points="130,102 148,102 148,84" fill="none" stroke="#2e6e46" stroke-width="3"/>'
+    + '<circle cx="130" cy="102" r="5" fill="#a33327"/>',
+    qs:[
+      { q:'P (1, 1), Q (5, 1), R (1, 4). Is this a right triangle, and what is its area?', pts:[[1,1,'P'],[5,1,'Q'],[1,4,'R']], opts:['Right triangle, area 6','Right triangle, area 12','Not a right triangle, area 6','Right triangle, area 7.5'], a:0,
+        sol:['Slope of PQ: (1-1)/(5-1) = 0, flat. Slope of PR: x never changes, undefined, straight up.','Flat and straight up meet at 90 degrees at P.','Legs: PQ = 4, PR = 3. Area = (4 x 3) / 2 = 6.'] },
+      { q:'P (-1, 2), Q (5, 2), R (-1, 10). Is this a right triangle, and what is its area?', pts:[[-1,2,'P'],[5,2,'Q'],[-1,10,'R']], opts:['Right triangle, area 24','Right triangle, area 12','Right triangle, area 48','Not a right triangle, area 24'], a:0,
+        sol:['Slope of PQ = 0, flat. PR is vertical, undefined slope. Right angle at P.','Legs: PQ = 6, PR = 8. Area = (6 x 8) / 2 = 24.'] },
+      { q:'A (0, 0), B (4, 0), C (0, 3). Is this a right triangle, and what is its area?', pts:[[0,0,'A'],[4,0,'B'],[0,3,'C']], opts:['Right triangle, area 6','Right triangle, area 12','Right triangle, area 5','Not a right triangle, area 6'], a:0,
+        sol:['AB runs along the x-axis, AC runs up the y-axis. They meet at 90 degrees at A.','Legs: AB = 4, AC = 3. Area = (4 x 3) / 2 = 6.'] },
+      { q:'A (2, 2), B (2, 7), C (6, 2). Is this a right triangle, and what is its area?', pts:[[2,2,'A'],[2,7,'B'],[6,2,'C']], opts:['Right triangle, area 10','Right triangle, area 20','Right triangle, area 9','Not a right triangle, area 10'], a:0,
+        sol:['AB is vertical (x stays 2), AC is flat (y stays 2). Right angle at A.','Legs: AB = 5, AC = 4. Area = (5 x 4) / 2 = 10.'] },
+      { q:'A (0, 1), B (6, 1), C (0, 5). Is this a right triangle, and what is its area?', pts:[[0,1,'A'],[6,1,'B'],[0,5,'C']], opts:['Right triangle, area 12','Right triangle, area 24','Right triangle, area 15','Not a right triangle, area 12'], a:0,
+        sol:['AB is flat (y stays 1), AC is vertical (x stays 0). Right angle at A.','Legs: AB = 6, AC = 4. Area = (6 x 4) / 2 = 12.'] }
+    ]},
+  { id:'circle', name:'Circle Diameter', icon:
+    '<circle cx="130" cy="60" r="48" fill="none" stroke="#22401f" stroke-width="4"/>'
+    + '<line x1="82" y1="60" x2="178" y2="60" stroke="#a33327" stroke-width="4"/>'
+    + '<circle cx="82" cy="60" r="6" fill="#2c1a08"/><circle cx="178" cy="60" r="6" fill="#2c1a08"/>'
+    + '<circle cx="130" cy="60" r="6" fill="#a33327"/>',
+    qs:[
+      { q:'A circle has centre M (1, 2). One end of a diameter is A (5, 6). Find the other end.', pts:[[1,2,'M'],[5,6,'A']], opts:['(-3, -2)','(3, 2)','(-3, 2)','(3, -2)'], a:0,
+        sol:['Centre first: the centre is the midpoint, so double it and take away the known end.','x: 2(1) - 5 = -3. y: 2(2) - 6 = -2.','Other end = (-3, -2).'] },
+      { q:'A circle has centre M (2, 0). One end of a diameter is G (-4, 4). Find the other end.', pts:[[2,0,'M'],[-4,4,'G']], opts:['(8, -4)','(-8, 4)','(8, 4)','(-8, -4)'], a:0,
+        sol:['Other end = 2 times centre minus the known point.','x: 2(2) - (-4) = 8. y: 2(0) - 4 = -4.','Other end = (8, -4).'] },
+      { q:'A circle has centre M (-1, 1). One end of a diameter is (4, 5). Find the other end.', pts:[[-1,1,'M'],[4,5,'']], opts:['(-6, -3)','(6, 3)','(-6, 3)','(6, -3)'], a:0,
+        sol:['Other end = 2 times centre minus the known point.','x: 2(-1) - 4 = -6. y: 2(1) - 5 = -3.','Other end = (-6, -3).'] },
+      { q:'A circle has centre M (0, 0). One end of a diameter is (3, 4). Find the other end.', pts:[[0,0,'M'],[3,4,'']], opts:['(-3, -4)','(3, -4)','(-3, 4)','(6, 8)'], a:0,
+        sol:['Other end = 2 times centre minus the known point.','x: 2(0) - 3 = -3. y: 2(0) - 4 = -4.','Other end = (-3, -4), straight through the centre.'] },
+      { q:'A circle has centre M (3, -2). One end of a diameter is (7, 0). Find the other end.', pts:[[3,-2,'M'],[7,0,'']], opts:['(-1, -4)','(1, -4)','(-1, 4)','(11, 2)'], a:0,
+        sol:['Other end = 2 times centre minus the known point.','x: 2(3) - 7 = -1. y: 2(-2) - 0 = -4.','Other end = (-1, -4).'] }
+    ]}
+];
+
+// Teaching order clockwise from the top
+var ORDER = ['slope','midpoint','parallel','bisector','median','triangles','circle'];
+var home = document.getElementById('home');
+ORDER.forEach(function(id, i){
+  var fam = FAMILIES.filter(function(f){ return f.id === id; })[0];
+  var card = document.createElement('div');
+  card.className = 'card p' + i;
+  card.innerHTML = '<h2>' + fam.name + '</h2>'
+    + '<svg class="icon" viewBox="0 0 260 120" width="100%" height="62">' + GRID + fam.icon + '</svg>'
+    + '<button class="play" data-fam="' + fam.id + '">&#9654; Play</button>';
+  home.appendChild(card);
+});
+document.querySelectorAll('.play').forEach(function(b){
+  b.addEventListener('click', function(){ startQuiz(b.getAttribute('data-fam')); });
+});
+
+// SCREEN ROUTER
+var screens = { home: document.getElementById('homewrap'), quiz: document.getElementById('quiz'),
+  graph: document.getElementById('graphscreen'), words: document.getElementById('wordsscreen') };
+function show(name){
+  Object.keys(screens).forEach(function(k){ screens[k].classList.toggle('hidden', k !== name); });
+  window.scrollTo({top:0});
+  if (name !== 'quiz' && typeof stopQTimer === 'function') stopQTimer();
+  if (name === 'words') startWTimer();
+}
+// WORDS TIMER: 30 minutes, runs only while the words screen is open
+var wRemain = 1800, wTick = null;
+function wDraw(){
+  var el = document.getElementById('wtimer');
+  if (wRemain <= 0) { el.innerHTML = '&#9201; Time\u2019s Up'; el.style.color = '#a33327'; return; }
+  var mm = Math.floor(wRemain / 60), ss = wRemain % 60;
+  el.innerHTML = '&#9201; ' + mm + ':' + (ss < 10 ? '0' : '') + ss;
+  el.style.color = wRemain <= 300 ? '#a33327' : '#6d4c1e';
+}
+function startWTimer(){
+  wDraw();
+  if (wTick) return;
+  wTick = setInterval(function(){
+    if (screens.words.classList.contains('hidden')) return;
+    if (wRemain > 0) { wRemain--; wDraw(); if (wRemain === 0) { /* stays at Time's Up */ } }
+  }, 1000);
+}
+document.getElementById('btn-wreset').addEventListener('click', function(){
+  wRemain = 1800; wDraw();
+});
+document.getElementById('go-graph').addEventListener('click', function(){ show('graph'); });
+document.getElementById('go-neg').addEventListener('click', function(){ startNegQuiz(); });
+document.getElementById('go-words').addEventListener('click', function(){ show('words'); });
+['btn-circle','btn-circle2','btn-circle3'].forEach(function(id){
+  document.getElementById(id).addEventListener('click', function(){ show('home'); });
+});
+
+// QUIZ ENGINE
+var quizEl = document.getElementById('quiz');
+var cur = null, qi = 0, score = 0, answered = false;
+function shuffle(arr){ var a = arr.slice(); for (var i = a.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+function drawGraph(item){
+  var pts = item.pts;
+  if (!pts || !pts.length) return '';
+  var xs = pts.map(function(p){ return p[0]; }), ys = pts.map(function(p){ return p[1]; });
+  var pad = item.line ? 3.5 : 2;
+  var minX = Math.min.apply(null, xs) - pad, maxX = Math.max.apply(null, xs) + pad;
+  var minY = Math.min.apply(null, ys) - pad, maxY = Math.max.apply(null, ys) + pad;
+  var span = Math.max(maxX - minX, maxY - minY);
+  var cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
+  minX = cx - span / 2; maxX = cx + span / 2; minY = cy - span / 2; maxY = cy + span / 2;
+  var S = 250, px = function(x){ return (x - minX) / span * S; }, py = function(y){ return S - (y - minY) / span * S; };
+  var s = '<svg width="250" height="250" viewBox="0 0 250 250" style="background:#fffaf0;border-radius:8px;box-shadow:inset 0 0 0 1px #cdb271">';
+  for (var gx = Math.ceil(minX); gx <= maxX; gx++) s += '<line x1="' + px(gx) + '" y1="0" x2="' + px(gx) + '" y2="250" stroke="#e7dab2" stroke-width="1"/>';
+  for (var gy = Math.ceil(minY); gy <= maxY; gy++) s += '<line x1="0" y1="' + py(gy) + '" x2="250" y2="' + py(gy) + '" stroke="#e7dab2" stroke-width="1"/>';
+  if (minX < 0 && maxX > 0) s += '<line x1="' + px(0) + '" y1="0" x2="' + px(0) + '" y2="250" stroke="#9a8a5f" stroke-width="2"/>';
+  if (minY < 0 && maxY > 0) s += '<line x1="0" y1="' + py(0) + '" x2="250" y2="' + py(0) + '" stroke="#9a8a5f" stroke-width="2"/>';
+  if (item.line) {
+    var m = item.line[0], b = item.line[1];
+    var cand = [[minX, m * minX + b], [maxX, m * maxX + b]];
+    if (m !== 0) { cand.push([(minY - b) / m, minY]); cand.push([(maxY - b) / m, maxY]); }
+    var inside = [];
+    cand.forEach(function(p){
+      if (p[0] >= minX - 1e-9 && p[0] <= maxX + 1e-9 && p[1] >= minY - 1e-9 && p[1] <= maxY + 1e-9) {
+        var dup = inside.some(function(q){ return Math.abs(q[0] - p[0]) < 1e-6 && Math.abs(q[1] - p[1]) < 1e-6; });
+        if (!dup) inside.push(p);
+      }
+    });
+    if (inside.length >= 2) {
+      var best = null, bestD = -1;
+      for (var i2 = 0; i2 < inside.length; i2++) for (var j2 = i2 + 1; j2 < inside.length; j2++) {
+        var d = Math.pow(inside[i2][0] - inside[j2][0], 2) + Math.pow(inside[i2][1] - inside[j2][1], 2);
+        if (d > bestD) { bestD = d; best = [inside[i2], inside[j2]]; }
+      }
+      s += '<line x1="' + px(best[0][0]) + '" y1="' + py(best[0][1]) + '" x2="' + px(best[1][0]) + '" y2="' + py(best[1][1]) + '" stroke="#7a4fd0" stroke-width="4" stroke-linecap="round"/>';
+      var lp = best[0][0] > best[1][0] ? best[0] : best[1];
+      s += '<text x="' + Math.max(4, px(lp[0]) - 92) + '" y="' + Math.max(16, py(lp[1]) - 8) + '" font-size="13.5" font-weight="700" fill="#7a4fd0">' + item.lineLabel + '</text>';
+    }
+  }
+  if (pts.length > 1) { s += '<polyline fill="none" stroke="#b89b58" stroke-width="2" stroke-dasharray="5 4" points="' + pts.map(function(p){ return px(p[0]) + ',' + py(p[1]); }).join(' ') + '"/>'; }
+  pts.forEach(function(p){
+    s += '<circle cx="' + px(p[0]) + '" cy="' + py(p[1]) + '" r="6" fill="#a33327" stroke="#fff" stroke-width="2"/>';
+    s += '<text x="' + (px(p[0]) + 10) + '" y="' + (py(p[1]) - 8) + '" font-size="13" font-weight="700" fill="#2c1a08">' + (p[2] ? p[2] + ' ' : '') + '(' + p[0] + ', ' + p[1] + ')</text>';
+  });
+  return s + '</svg>';
+}
+function startQuiz(id){
+  startQuizObj(FAMILIES.filter(function(f){ return f.id === id; })[0]);
+}
+function startQuizObj(fam){
+  cur = fam; qi = 0; score = 0;
+  document.getElementById('btn-again').style.display = fam.regen ? 'inline-block' : 'none';
+  show('quiz');
+  if (fam.timed) startQTimer(); else stopQTimer();
+  renderQ();
+}
+// QUIZ TIMER (for the big test)
+var qRemain = 0, qTick = null;
+function qDraw(){
+  var el = document.getElementById('qtimer');
+  var mm = Math.floor(qRemain / 60), ss = qRemain % 60;
+  el.innerHTML = '&#9201; ' + mm + ':' + (ss < 10 ? '0' : '') + ss;
+  el.style.color = qRemain <= 300 ? '#a33327' : '#6d4c1e';
+}
+function startQTimer(){
+  qRemain = 1800;
+  var el = document.getElementById('qtimer');
+  el.style.display = 'block'; qDraw();
+  if (qTick) clearInterval(qTick);
+  qTick = setInterval(function(){
+    if (screens.quiz.classList.contains('hidden')) return;
+    qRemain--;
+    if (qRemain <= 0) { qRemain = 0; qDraw(); endQuiz('Time\u2019s up.'); return; }
+    qDraw();
+  }, 1000);
+}
+function stopQTimer(){
+  if (qTick) { clearInterval(qTick); qTick = null; }
+  document.getElementById('qtimer').style.display = 'none';
+}
+function renderQ(){
+  answered = false;
+  var item = cur.qs[qi];
+  document.getElementById('qfam').textContent = cur.name;
+  document.getElementById('qcount').textContent = 'Question ' + (qi + 1) + ' of ' + cur.qs.length;
+  document.getElementById('barfill').style.width = ((qi + 1) / cur.qs.length * 100) + '%';
+  document.getElementById('qbody').style.display = 'block';
+  document.getElementById('qend').style.display = 'none';
+  document.getElementById('qtext').textContent = item.q;
+  document.getElementById('qgraph').innerHTML = drawGraph(item);
+  var sol = document.getElementById('qsol'); sol.className = 'sol'; sol.innerHTML = '';
+  var box = document.getElementById('qopts'); box.innerHTML = '';
+  var order = shuffle(item.opts.map(function(_, i){ return i; }));
+  order.forEach(function(oi){
+    var b = document.createElement('button');
+    b.className = 'opt'; b.textContent = item.opts[oi];
+    b.addEventListener('click', function(){ answer(b, oi === item.a, item); });
+    box.appendChild(b);
+  });
+  var next = document.getElementById('btn-next');
+  next.disabled = true; next.style.display = 'inline-block';
+  next.textContent = qi === cur.qs.length - 1 ? 'Finish' : 'Next \u2192';
+}
+function answer(btn, right, item){
+  if (answered) return; answered = true;
+  if (right) score++;
+  document.querySelectorAll('.opt').forEach(function(b){
+    b.disabled = true;
+    if (b.textContent === item.opts[item.a]) b.classList.add('right');
+  });
+  if (!right) btn.classList.add('wrong');
+  var sol = document.getElementById('qsol');
+  sol.innerHTML = '<h3>' + (right ? 'Correct. Here is the proof:' : 'Not quite. Watch the moves:') + '</h3>'
+    + item.sol.map(function(l, i){ return '<p class="' + (i === item.sol.length - 1 ? 'final' : '') + '">' + l + '</p>'; }).join('');
+  sol.classList.add('show');
+  document.getElementById('btn-next').disabled = false;
+}
+function endQuiz(prefix){
+  stopQTimer();
+  document.getElementById('qbody').style.display = 'none';
+  document.getElementById('qsol').className = 'sol';
+  document.getElementById('qend').style.display = 'block';
+  document.getElementById('qcount').textContent = 'Done';
+  var total = cur.qs.length;
+  document.getElementById('scorebig').textContent = score + ' / ' + total;
+  var msg =
+    score === total ? 'Perfect score. Test ready, truly.' :
+    score >= total - 1 ? 'Nearly perfect. That is test level.' :
+    score >= Math.ceil(total / 2) ? 'Solid work. Review the missed moves and run it again.' :
+    'Tough test. Go back to the families, one at a time, then return.';
+  document.getElementById('scoremsg').textContent = (prefix ? prefix + ' ' : '') + msg;
+  document.getElementById('btn-next').style.display = 'none';
+}
+document.getElementById('btn-next').addEventListener('click', function(){
+  if (qi < cur.qs.length - 1) { qi++; renderQ(); }
+  else endQuiz('');
+});
+document.getElementById('btn-again').addEventListener('click', function(){
+  if (cur && cur.regen) startQuizObj(makeNegFamily());
+});
+
+// NEGATIVES & POSITIVES: fresh generated questions, every sign pattern
+function rnd(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); }
+function fmt(n){ return n < 0 ? '(' + n + ')' : '' + n; }
+function makeNegFamily(){
+  var patterns = [
+    function(){ var a = rnd(2,15), b = rnd(2,15); return { t:'(-' + a + ') + (+' + b + ')', v:-a + b,
+      s:['A negative plus a positive: the bigger size wins the sign.','Sizes: ' + a + ' and ' + b + '. ' + (a === b ? 'They cancel out.' : 'Difference is ' + Math.abs(a - b) + ', sign of the bigger one (' + (a > b ? 'negative' : 'positive') + ').'), 'Answer: ' + (-a + b) + '.'] }; },
+    function(){ var a = rnd(2,15), b = rnd(2,15); return { t:'(+' + a + ') + (-' + b + ')', v:a - b,
+      s:['A positive plus a negative is the same as subtracting: ' + a + ' - ' + b + '.','Answer: ' + (a - b) + '.'] }; },
+    function(){ var a = rnd(2,15), b = rnd(2,15); return { t:'(-' + a + ') + (-' + b + ')', v:-a - b,
+      s:['Same signs: add the sizes and keep the sign.','Sizes add to ' + (a + b) + ', sign stays negative.','Answer: ' + (-a - b) + '.'] }; },
+    function(){ var a = rnd(2,15), b = rnd(2,15); return { t:'(+' + a + ') - (-' + b + ')', v:a + b,
+      s:['Minus a negative flips into a plus: ' + a + ' + ' + b + '.','Answer: ' + (a + b) + '.'] }; },
+    function(){ var a = rnd(2,15), b = rnd(2,15); return { t:'(-' + a + ') - (-' + b + ')', v:-a + b,
+      s:['Minus a negative flips into a plus: -' + a + ' + ' + b + '.','Then it is a normal fight of sizes: ' + (-a + b) + '.','Answer: ' + (-a + b) + '.'] }; },
+    function(){ var a = rnd(2,15), b = rnd(2,15); return { t:'(-' + a + ') - (+' + b + ')', v:-a - b,
+      s:['Going down, then down again: the sizes add.','-' + a + ' - ' + b + ' = -' + (a + b) + '.','Answer: ' + (-a - b) + '.'] }; },
+    function(){ var a = rnd(2,15), b = rnd(2,19); return { t:'(+' + a + ') - (+' + b + ')', v:a - b,
+      s:['Plain subtraction. If the second number is bigger, the answer goes negative.','Answer: ' + (a - b) + '.'] }; },
+    function(){ var a = rnd(2,12), b = rnd(2,12); return { t:'(-' + a + ') \u00d7 (+' + b + ')', v:-a * b,
+      s:['Different signs multiply to a negative.','Sizes: ' + a + ' \u00d7 ' + b + ' = ' + (a * b) + ', with a minus sign.','Answer: ' + (-a * b) + '.'] }; },
+    function(){ var a = rnd(2,12), b = rnd(2,12); return { t:'(-' + a + ') \u00d7 (-' + b + ')', v:a * b,
+      s:['Two negatives multiply into a positive.','Sizes: ' + a + ' \u00d7 ' + b + ' = ' + (a * b) + '.','Answer: ' + (a * b) + '.'] }; },
+    function(){ var b = rnd(2,12), c = rnd(2,12); var a = b * c; return { t:'(-' + a + ') \u00f7 (+' + b + ')', v:-c,
+      s:['Different signs divide to a negative.','Sizes: ' + a + ' \u00f7 ' + b + ' = ' + c + ', with a minus sign.','Answer: ' + (-c) + '.'] }; }
+  ];
+  var picked = shuffle(patterns).slice(0, 5);
+  var qs = picked.map(function(make){
+    var it = make();
+    var opts = [it.v];
+    [ -it.v, it.v + 2, it.v - 2, it.v + 10, it.v - 10, -it.v + 1 ].forEach(function(c){
+      if (opts.length < 4 && opts.indexOf(c) === -1) opts.push(c);
+    });
+    while (opts.length < 4) opts.push(it.v + opts.length + 3);
+    return { q:'What is ' + it.t + ' ?', pts:[], opts:opts.map(function(n){ return '' + n; }), a:0, sol:it.s };
+  });
+  return { id:'neg', name:'Negatives & Positives', regen:true, qs:qs };
+}
+function startNegQuiz(){ startQuizObj(makeNegFamily()); }
+
+// THE BIG TEST: all subjects, 8 very hard questions, 30 minutes
+var TEST_FAM = { id:'test', name:'The Test', timed:true, qs:[
+  { q:'SLOPE. Find the slope of the line through (-3, -2) and (5, -6).', pts:[[-3,-2,''],[5,-6,'']], opts:['-1/2','-2','1/2','-1/8'], a:0,
+    sol:['Rise: -6 - (-2) = -4. Watch the double negative.','Run: 5 - (-3) = 8.','m = -4 / 8 = -1/2.'] },
+  { q:'MIDPOINT. Find the midpoint of (-7, 4) and (3, -8).', pts:[[-7,4,''],[3,-8,'']], opts:['(-2, -2)','(-2, 2)','(2, -2)','(-5, -2)'], a:0,
+    sol:['Average the x\u2019s: (-7 + 3) / 2 = -2.','Average the y\u2019s: (4 + -8) / 2 = -2.','Midpoint = (-2, -2).'] },
+  { q:'PARALLEL. Find the line parallel to y = -(2/5)x + 3 that passes through (10, 1).', pts:[[10,1,'']], line:[-0.4,3], lineLabel:'y = -(2/5)x + 3', opts:['y = -(2/5)x + 5','y = -(2/5)x + 3','y = (5/2)x + 5','y = -(2/5)x - 5'], a:0,
+    sol:['Keep the slope: m = -2/5.','Plug in: 1 = -(2/5)(10) + b, so 1 = -4 + b and b = 5.','y = -(2/5)x + 5.'] },
+  { q:'PERPENDICULAR BISECTOR. Find the perpendicular bisector of the segment joining A (-4, 6) and B (8, -2).', pts:[[-4,6,'A'],[8,-2,'B']], opts:['y = (3/2)x - 1','y = (3/2)x + 1','y = -(3/2)x - 1','y = (2/3)x - 1'], a:0,
+    sol:['Move 1, midpoint: ((-4+8)/2, (6 + -2)/2) = (2, 2).','Move 2, slope of AB: (-2-6)/(8-(-4)) = -8/12 = -2/3. Flip it: 3/2.','Move 3, build through (2, 2): y - 2 = (3/2)(x - 2).','y = (3/2)x - 1.'] },
+  { q:'MEDIAN. Triangle A (-2, 7), B (-6, -3), C (4, -3). Find the median from A.', pts:[[-2,7,'A'],[-6,-3,'B'],[4,-3,'C']], opts:['y = -10x - 13','y = -10x + 13','y = 10x - 13','y = -(1/10)x - 13'], a:0,
+    sol:['Midpoint of BC: ((-6+4)/2, (-3 + -3)/2) = (-1, -3).','Slope from A (-2, 7) to (-1, -3): (7 - -3)/(-2 - -1) = 10 / -1 = -10.','Build through A: y - 7 = -10(x + 2).','y = -10x - 13.'] },
+  { q:'TRIANGLES. A (0, 0), B (2, 4), C (6, 2). Is this a right triangle, and what is its area?', pts:[[0,0,'A'],[2,4,'B'],[6,2,'C']], opts:['Right triangle, area 10','Right triangle, area 20','Not a right triangle','Right triangle, area 5'], a:0,
+    sol:['Slope of AB: (4-0)/(2-0) = 2. Slope of BC: (2-4)/(6-2) = -1/2.','2 and -1/2 are flips with opposite signs, so AB and BC are perpendicular: right angle at B.','Legs: AB = \u221a20 and BC = \u221a20. Area = (\u221a20 \u00d7 \u221a20) / 2 = 20 / 2 = 10.'] },
+  { q:'CIRCLE DIAMETER. A circle has centre M (-3, -1). One end of a diameter is (4, 5). Find the other end.', pts:[[-3,-1,'M'],[4,5,'']], opts:['(-10, -7)','(10, -7)','(-10, 7)','(-4, -3)'], a:0,
+    sol:['Other end = 2 times centre minus the known point.','x: 2(-3) - 4 = -10. y: 2(-1) - 5 = -7.','Other end = (-10, -7).'] },
+  { q:'FINAL BOSS. Find the m\u00e9diatrice (perpendicular bisector) of the segment joining C (1, -3) and D (9, 5).', pts:[[1,-3,'C'],[9,5,'D']], opts:['y = -x + 6','y = x + 6','y = -x - 6','y = -x + 1'], a:0,
+    sol:['Move 1, midpoint: ((1+9)/2, (-3+5)/2) = (5, 1).','Move 2, slope of CD: (5 - -3)/(9-1) = 1. Flip it: -1.','Move 3, build through (5, 1): y - 1 = -(x - 5).','y = -x + 6.'] }
+]};
+document.getElementById('go-test').addEventListener('click', function(){ startQuizObj(TEST_FAM); });
+
+// GRAPH PLAYGROUND
+var board = document.getElementById('board');
+var gmode = 'points', gpts = [], glines = [], gtris = [], pending = [];
+function bpx(x){ return (x + 10) * 16 + 10; }
+function bpy(y){ return 330 - (y + 10) * 16; }
+function drawBoard(){
+  var s = '';
+  for (var i = -10; i <= 10; i++) {
+    s += '<line x1="' + bpx(i) + '" y1="10" x2="' + bpx(i) + '" y2="330" stroke="' + (i === 0 ? '#9a8a5f' : '#e7dab2') + '" stroke-width="' + (i === 0 ? 2 : 1) + '"/>';
+    s += '<line x1="10" y1="' + bpy(i) + '" x2="330" y2="' + bpy(i) + '" stroke="' + (i === 0 ? '#9a8a5f' : '#e7dab2') + '" stroke-width="' + (i === 0 ? 2 : 1) + '"/>';
+  }
+  s += '<text x="322" y="164" font-size="11" font-weight="700" fill="#6d4c1e">x</text>';
+  s += '<text x="176" y="22" font-size="11" font-weight="700" fill="#6d4c1e">y</text>';
+  gtris.forEach(function(t){
+    s += '<polygon points="' + t.map(function(p){ return bpx(p[0]) + ',' + bpy(p[1]); }).join(' ') + '" fill="rgba(127,176,105,.35)" stroke="#2e6e46" stroke-width="2.5"/>';
+  });
+  glines.forEach(function(l){
+    s += '<line x1="' + bpx(l[0][0]) + '" y1="' + bpy(l[0][1]) + '" x2="' + bpx(l[1][0]) + '" y2="' + bpy(l[1][1]) + '" stroke="#7a4fd0" stroke-width="3.5" stroke-linecap="round"/>';
+  });
+  gpts.forEach(function(p){
+    s += '<circle cx="' + bpx(p[0]) + '" cy="' + bpy(p[1]) + '" r="5.5" fill="#a33327" stroke="#fff" stroke-width="2"/>';
+  });
+  pending.forEach(function(p){
+    s += '<circle cx="' + bpx(p[0]) + '" cy="' + bpy(p[1]) + '" r="9" fill="none" stroke="#e9bc4a" stroke-width="3"/>';
+  });
+  board.innerHTML = s;
+}
+drawBoard();
+function dist(a, b){ return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2)); }
+board.addEventListener('click', function(e){
+  var r = board.getBoundingClientRect();
+  var vx = (e.clientX - r.left) / r.width * 340, vy = (e.clientY - r.top) / r.height * 340;
+  var gx = Math.round((vx - 10) / 16 - 10), gy = Math.round((330 - vy) / 16 - 10);
+  gx = Math.max(-10, Math.min(10, gx)); gy = Math.max(-10, Math.min(10, gy));
+  var p = [gx, gy];
+  var read = document.getElementById('gread');
+  if (gmode === 'points') {
+    if (!gpts.some(function(q){ return q[0] === gx && q[1] === gy; })) gpts.push(p);
+    read.textContent = 'Point plotted at (' + gx + ', ' + gy + ').';
+  } else if (gmode === 'lines') {
+    if (!gpts.some(function(q){ return q[0] === gx && q[1] === gy; })) gpts.push(p);
+    pending.push(p);
+    if (pending.length === 2) {
+      glines.push([pending[0], pending[1]]);
+      var d = dist(pending[0], pending[1]);
+      read.textContent = 'Line from (' + pending[0][0] + ', ' + pending[0][1] + ') to (' + pending[1][0] + ', ' + pending[1][1] + '), length about ' + d.toFixed(1) + '.';
+      pending = [];
+    } else read.textContent = 'First end set at (' + gx + ', ' + gy + '). Tap the other end.';
+  } else {
+    if (!gpts.some(function(q){ return q[0] === gx && q[1] === gy; })) gpts.push(p);
+    pending.push(p);
+    if (pending.length === 3) {
+      gtris.push(pending.slice());
+      var a = pending[0], b = pending[1], c = pending[2];
+      var area = Math.abs(a[0] * (b[1] - c[1]) + b[0] * (c[1] - a[1]) + c[0] * (a[1] - b[1])) / 2;
+      read.textContent = 'Triangle built. Its area is ' + area + ' square units.';
+      pending = [];
+    } else read.textContent = 'Corner ' + pending.length + ' set at (' + gx + ', ' + gy + '). ' + (3 - pending.length) + ' to go.';
+  }
+  drawBoard();
+});
+document.querySelectorAll('.modebtn[data-mode]').forEach(function(b){
+  b.addEventListener('click', function(){
+    document.querySelectorAll('.modebtn[data-mode]').forEach(function(x){ x.classList.remove('on'); });
+    b.classList.add('on'); gmode = b.getAttribute('data-mode'); pending = []; drawBoard();
+    document.getElementById('gread').textContent =
+      gmode === 'points' ? 'Tap the grid to plot a point.' :
+      gmode === 'lines' ? 'Tap two points to draw a line between them.' : 'Tap three corners to build a triangle.';
+  });
+});
+document.getElementById('gundo').addEventListener('click', function(){
+  if (pending.length) pending.pop();
+  else if (gmode === 'triangles' && gtris.length) gtris.pop();
+  else if (gmode === 'lines' && glines.length) glines.pop();
+  else if (gpts.length) gpts.pop();
+  drawBoard();
+});
+document.getElementById('gclear').addEventListener('click', function(){
+  gpts = []; glines = []; gtris = []; pending = []; drawBoard();
+  document.getElementById('gread').textContent = 'Clean board. Make something new.';
+});
+
+// SAY IT IN WORDS
+var WORDS = [
+  { t:'The Perpendicular Bisector', p:'Segment AB joins A (-3, 5) and B (7, -1). Describe, in words only, exactly how you would find the perpendicular bisector of AB.',
+    m:['Name the family: bisector. The answer is one line\u2019s equation.','Find the midpoint: average the x\u2019s, average the y\u2019s.','Find the slope of AB: rise over run.','Flip the slope and change its sign.','Build the line through the midpoint with the flipped slope.','Simplify to y = mx + b.'] },
+  { t:'The Trap: Median Or M\u00e9diatrice?', p:'In triangle ABC, a line crosses side BC at its midpoint and stands at 90 degrees to BC, but it does NOT pass through corner A. Is it the median? Describe in words what this line is, and how you would find its equation.',
+    m:['It is not the median. A median must touch the opposite corner.','This line is the m\u00e9diatrice (perpendicular bisector) of BC.','Find the midpoint of BC: average B and C.','Find the slope of BC: rise over run.','Flip the slope and change its sign.','Build the line through the midpoint. Simplify to y = mx + b.'] },
+  { t:'The Other End Of The Diameter', p:'A circle has centre M (-2, 3). One end of a diameter is (5, -4). Describe in words how you would find the other end.',
+    m:['The centre is the midpoint of the diameter.','Start with the centre numbers first.','Double the centre, x and y separately.','Subtract the known point, x and y separately.','That is the other end.','Careful: the centre has negatives. Watch every sign.'] },
+  { t:'The Parallel Line, With A Fraction', p:'Describe in words how you would find the line parallel to y = (2/3)x + 1 that passes through (6, 3).',
+    m:['Parallel means same slope: keep m = 2/3.','Only b changes.','Plug the point into y = (2/3)x + b.','Multiply first: (2/3) of 6 is 4.','Solve for b.','Write the full line.'] },
+  { t:'Proving A Right Triangle, The Hard Way', p:'Points P, Q and R form a triangle, but no side is flat and no side is vertical. Describe in words how you would still prove it is a right triangle, and how you would find its area.',
+    m:['Find all three slopes: rise over run, three times.','Look for two slopes that are flips with opposite signs.','Those two sides are perpendicular.','The right angle sits at the corner they share.','Measure those two sides with the distance formula. They are the legs.','Area = leg \u00d7 leg \u00f7 2.'] },
+  { t:'Build A Line From Nothing', p:'Describe in words how you would find the equation of the line passing through (-2, 4) and (4, -5), when no slope and no other line is given.',
+    m:['Name the family: build the line. Two points, nothing else.','Slope first: rise over run between the two points.','Pick either point. It does not matter which.','Plug the slope and that point into y = mx + b.','Solve for b.','Write the full line.'] }
+];
+var wbox = document.getElementById('wprompts');
+WORDS.forEach(function(w, i){
+  var d = document.createElement('div');
+  d.className = 'wprompt';
+  d.innerHTML = '<h3>' + (i + 1) + '. ' + w.t + '</h3><p>' + w.p + '</p>'
+    + '<textarea placeholder="Type your approach here, in your own words..."></textarea>'
+    + '<button class="smallbtn">Show A Model Approach</button>'
+    + '<div class="model"><b>Model approach:</b><ul>' + w.m.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ul></div>';
+  d.querySelector('.smallbtn').addEventListener('click', function(){ d.querySelector('.model').classList.toggle('show'); });
+  wbox.appendChild(d);
+});
+</script>
+</body>
+</html>
