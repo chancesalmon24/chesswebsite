@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projectile Motion Quest</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#0f172a;color:#f1f5f9;line-height:1.55}
+  .wrap{max-width:720px;margin:0 auto;padding:16px 14px 60px}
+  h1{font-size:28px;line-height:1.15;margin:10px 0 6px}
+  h2{font-size:22px;margin:8px 0}
+  h3{font-size:18px;margin:14px 0 6px;color:#fbbf24}
+  p{margin:8px 0}
+  .sub{color:#cbd5e1;font-size:15px}
+  .card{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:16px;margin:14px 0}
+  .gold{border-color:#f59e0b}
+  .formula{background:#0b1220;border:1px solid #475569;border-radius:10px;padding:10px 12px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14.5px;overflow-x:auto;white-space:pre-wrap;margin:8px 0;color:#fde68a}
+  .btn{display:block;width:100%;text-align:left;background:#1e293b;border:1px solid #475569;color:#f1f5f9;border-radius:14px;padding:14px 16px;margin:10px 0;font-size:16px;cursor:pointer}
+  .btn:active{transform:scale(.99)}
+  .btn.primary{background:#b45309;border-color:#f59e0b;text-align:center;font-weight:700}
+  .btn.small{display:inline-block;width:auto;text-align:center;padding:9px 14px;font-size:14px;margin:4px 4px 4px 0}
+  .btn.choice{background:#0b1220}
+  .btn.choice.correct{border-color:#22c55e;background:#14532d}
+  .btn.choice.wrong{border-color:#ef4444;background:#450a0a}
+  .tag{display:inline-block;background:#334155;color:#fde68a;border-radius:999px;padding:2px 10px;font-size:12.5px;margin:2px 4px 2px 0}
+  .explain{display:none;background:#0b1220;border:1px solid #22c55e;border-radius:12px;padding:12px 14px;margin-top:12px;font-size:15px}
+  .explain.show{display:block}
+  .explain.bad{border-color:#ef4444}
+  .steps li{margin:7px 0}
+  .hidden{display:none}
+  .topbar{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .pill{background:#334155;border-radius:999px;padding:4px 12px;font-size:13px;white-space:nowrap}
+  .pill.red{background:#7f1d1d;color:#fecaca}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+  th,td{border:1px solid #475569;padding:6px;text-align:center}
+  th{background:#0b1220;color:#fde68a}
+  .big{font-size:19px;font-weight:700}
+  .center{text-align:center}
+  svg{width:100%;height:auto;display:block}
+  .why{background:#172554;border:1px solid #3b82f6;border-radius:12px;padding:12px 14px;margin:10px 0}
+  .spot{background:#3b0764;border:1px solid #a855f7;border-radius:12px;padding:12px 14px;margin:10px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HOME -->
+  <div id="screen-home">
+    <div class="center">
+      <svg viewBox="0 0 340 150" role="img" aria-label="Castle wall, a rock flying in a curved path over a moat">
+        <rect x="10" y="60" width="70" height="80" fill="#475569"/>
+        <rect x="10" y="48" width="16" height="14" fill="#475569"/><rect x="42" y="48" width="16" height="14" fill="#475569"/>
+        <circle cx="42" cy="36" r="9" fill="#fbbf24"/>
+        <path d="M 55 45 Q 170 -30 285 118" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="6 5"/>
+        <circle cx="285" cy="118" r="6" fill="#e2e8f0"/>
+        <path d="M 95 140 Q 140 128 185 140 Q 230 152 275 140 L 275 150 L 95 150 Z" fill="#2563eb"/>
+        <text x="120" y="145" fill="#bfdbfe" font-size="11">moat</text>
+      </svg>
+    </div>
+    <h1>Projectile Motion Quest</h1>
+    <p class="sub">Complex Projectile Motion, the review sheet, turned into a game. First you learn to spot what kind of question it is. Then you learn the moves for that kind. Then you solve.</p>
+
+    <div class="card gold">
+      <h3 style="margin-top:0">The One Big Idea (read this first)</h3>
+      <p>A projectile is not one motion. It is <b>two motions happening at the same time</b>.</p>
+      <p><b>Sideways (x):</b> Nothing pushes or pulls it sideways, so its sideways speed <b>never changes</b>. It just keeps coasting at the speed it started with.</p>
+      <p><b>Up and down (y):</b> Gravity pulls it down the whole time. Every second, its downward speed grows by 9.8 m/s.</p>
+      <p>The two motions do not bother each other. A ball thrown sideways falls at the exact same rate as a ball that is just dropped. The sideways speed only decides <i>where</i> it lands, not <i>when</i> it lands.</p>
+      <p><b>Time is the bridge.</b> The sideways trip and the falling trip last the exact same number of seconds. So in almost every problem you solve one side to get the time, then you carry that same time over to the other side. That is the whole game.</p>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">Your Toolbox (the only formulas you need)</h3>
+      <p>Set up every problem the same way: <b>up is positive, so a<sub>y</sub> = -9.8 m/s<sup>2</sup> and a<sub>x</sub> = 0.</b></p>
+      <div class="formula">SIDEWAYS (speed never changes)
+v<sub>x</sub> stays the same the whole flight
+&Delta;x = v<sub>x</sub> &times; t</div>
+      <div class="formula">UP AND DOWN (gravity is in charge)
+&Delta;y = v<sub>iy</sub>t + &frac12; a<sub>y</sub> t<sup>2</sup>
+v<sub>fy</sub> = v<sub>iy</sub> + a<sub>y</sub> t
+v<sub>fy</sub><sup>2</sup> = v<sub>iy</sub><sup>2</sup> + 2 a<sub>y</sub> &Delta;y</div>
+      <div class="formula">IF IT IS LAUNCHED AT AN ANGLE, SPLIT IT FIRST
+v<sub>ix</sub> = v<sub>i</sub> cos(angle) &nbsp; this is your v<sub>x</sub>
+v<sub>iy</sub> = v<sub>i</sub> sin(angle) &nbsp; this is your starting up speed</div>
+      <div class="formula">VELOCITY AT IMPACT (put the two pieces back together)
+speed = &radic;( v<sub>x</sub><sup>2</sup> + v<sub>fy</sub><sup>2</sup> )
+angle below horizontal = tan<sup>-1</sup>( |v<sub>fy</sub>| &divide; v<sub>x</sub> )</div>
+      <p class="sub">Why split an angled launch? Because gravity only acts on the up and down piece. The sideways piece does not know gravity exists. So one angled throw becomes two simple problems you already know how to do.</p>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">The 5 Moves (every single question on the sheet)</h3>
+      <ol class="steps">
+        <li><b>Spot the family.</b> Flat launch or angled launch? Does it land level, lower, or do they just ask about the top?</li>
+        <li><b>Split it.</b> If there is an angle, break v<sub>i</sub> into v<sub>ix</sub> and v<sub>iy</sub>. If it is flat, v<sub>iy</sub> = 0 and v<sub>x</sub> is the given speed.</li>
+        <li><b>Get the time from the vertical side.</b> Falling is what decides how long anything stays in the air.</li>
+        <li><b>Carry the time sideways.</b> &Delta;x = v<sub>x</sub> &times; t gives you the range, the moat width, the distance. Same t, other side.</li>
+        <li><b>If they ask for velocity at impact, rebuild it.</b> v<sub>x</sub> is unchanged, v<sub>fy</sub> comes from gravity and time, then combine with the toolbox formula.</li>
+      </ol>
+    </div>
+
+    <h2>The 6 Families</h2>
+    <p class="sub">Tap a family to learn it. Each one has: how to spot it, why it works, the moves, and your actual homework question solved step by step. Then 5 fresh problems to solve yourself.</p>
+    <div id="family-list"></div>
+
+    <button class="btn primary" onclick="startTest()">Take The Final Practice Test (10 questions)</button>
+    <p class="sub center">60% or more passes. Full worked solution after every answer, even in the test. 25 minute timer, and it never locks you out.</p>
+  </div>
+
+  <!-- FAMILY DETAIL -->
+  <div id="screen-family" class="hidden">
+    <div class="topbar"><button class="btn small" onclick="goHome()">Back to Families</button><span class="pill" id="fam-progress"></span></div>
+    <div id="family-content"></div>
+    <button class="btn primary" id="fam-practice-btn" onclick="startPractice(currentFamily)">Start Practice: 5 Problems</button>
+  </div>
+
+  <!-- PRACTICE -->
+  <div id="screen-practice" class="hidden">
+    <div class="topbar"><button class="btn small" onclick="goHome()">Quit</button><span class="pill" id="prac-progress"></span></div>
+    <h2 id="prac-title"></h2>
+    <button class="btn small" onclick="toggleHomework()">See The Original Homework Question</button>
+    <div class="card hidden" id="prac-homework"></div>
+    <div class="card"><p class="big" id="prac-q"></p><div id="prac-choices"></div><div class="explain" id="prac-explain"></div></div>
+    <button class="btn primary hidden" id="prac-next" onclick="nextPractice()">Next Problem</button>
+  </div>
+
+  <!-- TEST -->
+  <div id="screen-test" class="hidden">
+    <div class="topbar"><button class="btn small" onclick="quitTest()">Quit Test</button><span class="pill" id="test-progress"></span><span class="pill" id="test-timer">25:00</span></div>
+    <h2 id="test-title"></h2>
+    <div class="card"><p class="big" id="test-q"></p><div id="test-choices"></div><div class="explain" id="test-explain"></div></div>
+    <button class="btn primary hidden" id="test-next" onclick="nextTest()">Next Question</button>
+  </div>
+
+  <!-- RESULT -->
+  <div id="screen-result" class="hidden">
+    <h2 class="center" id="res-title"></h2>
+    <div class="card center"><p class="big" id="res-score"></p><p id="res-msg"></p></div>
+    <button class="btn primary" onclick="goHome()">Back to Families</button>
+  </div>
+
+</div>
+
+<script>
+var G = 9.8;
+
+var FAMILIES = [
+{
+  id:0, name:"Family 1: Flat Launch, Off The Edge", sheet:"Homework Q3",
+  homework:"Q3. A marble rolls off a table with a velocity of 1.93 m/s [horizontally]. The tabletop is 76.5 cm above the floor. If air resistance is negligible, determine (a) how long the marble is airborne, (b) the horizontal range, (c) the velocity at impact.",
+  spot:"The words say rolls off, falls off, thrown horizontally, or drops from a table, desk, cliff edge or counter. The launch has NO angle. It starts moving purely sideways.",
+  why:"Because it starts purely sideways, its starting up and down speed is zero. It is already falling from the very first instant, just like a dropped object, while it also coasts forward. The height alone decides how long it takes to hit the ground. A faster sideways speed does NOT keep it in the air longer. It only makes it land farther away.",
+  moves:["Write v_iy = 0. The given speed is all v_x, and v_x never changes.","Get time from the fall: Delta y = (1/2) a_y t^2, so t = sqrt( 2 x height / 9.8 ). Height in metres, and Delta y is negative if up is positive.","Carry that t sideways: Delta x = v_x x t. That is the range.","For velocity at impact: v_fy = -9.8 x t, then combine v_x and v_fy with Pythagoras and get the angle from tan^-1( |v_fy| / v_x )."],
+  exampleTitle:"Worked Example: your Q3, the marble off the table",
+  example:[
+    "Given: v_x = 1.93 m/s flat, tabletop is 76.5 cm = 0.765 m above the floor. v_iy = 0.",
+    "(a) Time airborne. Use only the fall: -0.765 = 0 x t - 4.9 t^2. So t^2 = 0.765 / 4.9 = 0.156, and t = 0.395 s.",
+    "(b) Horizontal range. Carry the same 0.395 s sideways: Delta x = 1.93 x 0.395 = 0.763 m = 76.3 cm.",
+    "(c) Velocity at impact. Downward speed at landing: v_fy = 0 - 9.8 x 0.395 = -3.87 m/s. Sideways is still 1.93 m/s, it never changed.",
+    "Combine: speed = sqrt(1.93^2 + 3.87^2) = 4.33 m/s. Angle = tan^-1(3.87 / 1.93) = 63.5 degrees below the horizontal.",
+    "Notice the pattern: time came from height only, range came from time, impact came from putting the two speeds back together. Every Flat Launch question is these same 3 moves."
+  ],
+  exampleAnswer:"Answers: (a) 0.395 s  (b) 76.3 cm  (c) 4.33 m/s [63.5 degrees below the horizontal]"
+},
+{
+  id:1, name:"Family 2: Flat Launch, Find The Speed", sheet:"Homework Q5",
+  homework:"Q5. A baseball pitcher throws a ball horizontally under negligible air resistance. The ball falls 83 cm in travelling 18.4 m to the home plate. Determine the ball's initial horizontal speed.",
+  spot:"It is still a flat, horizontal launch, but this time they do NOT give you the speed. They give you how far it fell and how far forward it travelled, and they ask how fast it was thrown.",
+  why:"It is Family 1 run backwards. The fall still tells you the time, because falling does not care about sideways speed. Once you know the time, the forward distance tells you the speed, because sideways it just coasts: distance = speed x time, so speed = distance / time.",
+  moves:["Get time from the fall first, exactly like Family 1: t = sqrt( 2 x fall distance / 9.8 ).","Then flip the sideways formula around: v_x = Delta x / t.","That v_x is the initial speed, because in a flat launch the sideways speed is the whole starting speed."],
+  exampleTitle:"Worked Example: your Q5, the baseball pitch",
+  example:[
+    "Given: the ball falls 83 cm = 0.83 m while travelling 18.4 m forward to home plate. Thrown flat, so v_iy = 0.",
+    "Step 1, time from the fall: t = sqrt( 2 x 0.83 / 9.8 ) = sqrt(0.169) = 0.412 s. The pitch is only in the air about 0.41 seconds.",
+    "Step 2, speed from the forward trip: v_x = 18.4 / 0.412 = 44.7 m/s, which the sheet rounds to 45 m/s.",
+    "Sanity check: 45 m/s is about 160 km/h. That is a serious fastball, which makes sense, it crossed 18.4 m in under half a second while only dropping 83 cm."
+  ],
+  exampleAnswer:"Answer: 45 m/s [horizontally]"
+},
+{
+  id:2, name:"Family 3: Second By Second", sheet:"Homework Q4",
+  homework:"Q4. A stone is thrown horizontally with an initial speed of 8.0 m/s from a cliff. Air resistance is negligible. (a) Determine the horizontal and vertical components of displacement and instantaneous velocity at t = 0.0 s, 1.0 s, 2.0 s, and 3.0 s. (b) Draw a scale diagram showing the path of the stone. (c) Draw the instantaneous velocity vector at each point on your diagram. (d) Determine the average acceleration between 1.0 s and 2.0 s, and between 2.0 s and 3.0 s. What do you conclude?",
+  spot:"They name specific times, like at t = 0 s, 1.0 s, 2.0 s, 3.0 s, and ask for the pieces at each time: displacement across, displacement down, velocity across, velocity down. Or they ask for the average acceleration between two times.",
+  why:"This family exists to prove the Big Idea to you. Sideways, the object covers the same extra distance every second, because its sideways speed never changes. Downward, it covers MORE distance every second and its downward speed grows by exactly 9.8 m/s every second, because gravity keeps speeding it up. The path curves because one side is steady and the other side keeps accelerating.",
+  moves:["Sideways at any time: Delta x = v_x x t, and v_x is still just the starting speed.","Downward at any time: Delta y = (1/2)(9.8) t^2 downward, and v_y = 9.8 x t downward (starting from 0 for a flat launch).","Average acceleration between any two times: change in velocity / change in time. Only the downward velocity changes, so you always get 9.8 m/s^2 [down]. That is the conclusion they want: acceleration is constant and equals gravity, sideways motion does not change it."],
+  exampleTitle:"Worked Example: your Q4, the stone thrown flat at 8.0 m/s",
+  example:[
+    "v_x = 8.0 m/s the whole flight. At t = 1.0 s: Delta x = 8.0 m, fall = 4.9 m, v_y = 9.8 m/s down.",
+    "At t = 2.0 s: Delta x = 16 m, fall = 19.6 m, v_y = 19.6 m/s down. See it: sideways doubled neatly, the fall quadrupled, because fall grows with t^2.",
+    "At t = 3.0 s: Delta x = 24 m, fall = 44 m, v_y = 29.4 m/s down. Full speed = sqrt(8.0^2 + 29.4^2) = 3.0 x 10^1 m/s, at tan^-1(29.4 / 8.0) = 75 degrees below the horizontal.",
+    "The path you would draw goes through (0,0), (8, -4.9), (16, -19.6), (24, -44). Equal sideways steps, bigger and bigger drops. That curve is the projectile path.",
+    "Average acceleration from 1.0 s to 2.0 s: v_y went 9.8 to 19.6, a change of 9.8 in 1.0 s, so a = 9.8 m/s^2 [down]. From 2.0 s to 3.0 s you get the exact same number. Conclusion: the acceleration never changes, it is always just gravity."
+  ],
+  exampleAnswer:"Answers: at 3.0 s, Delta x = 24 m, Delta y = 44 m down, v = 3.0 x 10^1 m/s [75 degrees below the horizontal]; (d) 9.8 m/s^2 [down] every time"
+},
+{
+  id:3, name:"Family 4: Top Of The Flight", sheet:"Homework Q8",
+  homework:"Q8. A field hockey ball is struck and undergoes projectile motion. Air resistance is negligible. (a) What is the vertical component of velocity at the top of the flight? (b) What is the acceleration at the top of the flight? (c) How does the rise time compare to the fall time if the ball lands at the same level from which it was struck?",
+  spot:"The words at the top, at the maximum height, highest point, peak. Or questions about rise time versus fall time. No numbers needed, this family is about understanding.",
+  why:"At the very top, the object has finished rising and has not started falling yet, so for that one instant its up and down velocity is zero. But gravity does NOT switch off at the top. If it did, the object would just stay there. Gravity is still pulling at 9.8 m/s^2, which is exactly why it starts falling again. And the object is NOT stopped at the top either: its sideways velocity is still fully there, carrying it forward.",
+  moves:["Vertical velocity at the top: always 0 m/s. No calculation.","Acceleration at the top: always 9.8 m/s^2 [down]. Same as everywhere else in the flight.","Speed at the top: just v_x, because the vertical piece is 0 at that instant.","Rise time vs fall time: if it lands at the SAME level it was launched from, rise time = fall time, the trip up mirrors the trip down. If it lands LOWER, the fall takes longer than the rise. If it lands HIGHER, the fall is shorter."],
+  exampleTitle:"Worked Example: your Q8, the field hockey ball",
+  example:[
+    "(a) Vertical component of velocity at the top of the flight: 0 m/s. It has used up all its upward speed, and has not gained any downward speed yet.",
+    "(b) Acceleration at the top: 9.8 m/s^2 [down]. Gravity never pauses, not even for an instant at the top.",
+    "(c) Rise time vs fall time, landing at the same level it was struck from: they are EQUAL. Going up, gravity slows it by 9.8 every second until it stops rising. Coming down from the same height, it is the exact mirror image, so it takes the same time.",
+    "The trap in this family is saying the acceleration at the top is 0. It is not. Only the vertical VELOCITY is 0 for that instant. Velocity and acceleration are different things: velocity is how fast it moves, acceleration is how fast its velocity is changing, and at the top the velocity is changing from up to down, driven by gravity."
+  ],
+  exampleAnswer:"Answers: (a) 0 m/s  (b) 9.8 m/s^2 [down]  (c) rise time = fall time"
+},
+{
+  id:4, name:"Family 5: Angled Launch, Lands Level", sheet:"Homework Q9",
+  homework:"Q9. A cannon is set at an angle of 45 degrees above the horizontal. A cannonball leaves the muzzle with a speed of 2.2 x 10^2 m/s. Air resistance is negligible. Determine the cannonball's (a) maximum height, (b) time of flight, (c) horizontal range (to the same vertical level), (d) velocity at impact.",
+  spot:"There is a launch angle above the horizontal, like 45 degrees, AND it lands at the same height it was launched from. Words like to the same vertical level are the giveaway.",
+  why:"Landing level makes the flight perfectly symmetric. It goes up, stops rising at the top, and comes down to exactly where it started in height. So the fall mirrors the rise: time up = time down, and it lands with the same speed it was launched at, just angled down instead of up. Symmetry does half your work for you in this family.",
+  moves:["Split first: v_ix = v_i cos(angle), v_iy = v_i sin(angle).","Maximum height: use v_fy^2 = v_iy^2 + 2 a_y Delta y with v_fy = 0 at the top. So Delta y = v_iy^2 / (2 x 9.8).","Time up: v_iy / 9.8. Total time of flight: double it, because the fall mirrors the rise.","Range: Delta x = v_ix x total time.","Velocity at impact: same size as launch speed, same angle, but below the horizontal. v_x is unchanged and v_fy is just v_iy pointing down."],
+  exampleTitle:"Worked Example: your Q9, the cannon at 45 degrees, 2.2 x 10^2 m/s",
+  example:[
+    "Split it: v_ix = 220 cos(45) = 156 m/s, v_iy = 220 sin(45) = 156 m/s. At 45 degrees the two pieces are equal, that is a nice check.",
+    "(a) Maximum height: Delta y = 156^2 / (2 x 9.8) = 24,336 / 19.6 = 1,242 m, which the sheet gives as 1.2 x 10^3 m.",
+    "(b) Time of flight: time up = 156 / 9.8 = 15.9 s. Double it for the mirror fall: 32 s total.",
+    "(c) Horizontal range: Delta x = 156 x 31.7 = 4,940 m, given as 4.9 x 10^3 m. Almost 5 km.",
+    "(d) Velocity at impact: v_x is still 156, v_fy is 156 downward, so the speed is sqrt(156^2 + 156^2) = 220 m/s = 2.2 x 10^2 m/s, at 45 degrees below the horizontal. Same speed it left with. Symmetry kept its promise."
+  ],
+  exampleAnswer:"Answers: (a) 1.2 x 10^3 m  (b) 32 s  (c) 4.9 x 10^3 m  (d) 2.2 x 10^2 m/s [45 degrees below the horizontal]"
+},
+{
+  id:5, name:"Family 6: Angled Launch, Lands Lower (The Castle)", sheet:"Homework Q10",
+  homework:"Q10. A medieval prince trapped in a castle wraps a message around a rock and throws it from the top of the castle wall with an initial velocity of 12 m/s [42 degrees above the horizontal]. The rock lands just on the far side of the castle's moat, at a level 9.5 m below the initial level (Figure 14). Determine the rock's (a) time of flight, (b) width of the moat, (c) velocity at impact.",
+  spot:"There is a launch angle, AND it lands BELOW where it started: off a wall, off a cliff, down to a moat, down to the ground from a height. They give you how far below, like 9.5 m below the initial level.",
+  why:"This is the hardest family on the sheet, and here is why: the flight is NOT symmetric anymore. It rises, comes back down past its starting level, and keeps falling the extra distance below. So you cannot just double the rise time. The vertical formula becomes a quadratic equation, because the object passes its launch height on the way down and still has farther to fall. You solve it, and you keep the positive time answer: the negative answer is the maths telling you where the path would have been before the throw, which never happened.",
+  moves:["Split first: v_ix = v_i cos(angle), v_iy = v_i sin(angle).","Write the vertical equation with Delta y NEGATIVE, because it ends below the start: Delta y = v_iy t - 4.9 t^2, with Delta y = -(drop).","Rearrange into a quadratic: 4.9 t^2 - v_iy t - (drop) = 0, and solve with the quadratic formula. Keep the positive root.","Range or moat width: Delta x = v_ix x t, using that longer time.","Velocity at impact: v_fy = v_iy - 9.8 t (it will be a bigger downward number than in a level landing), then combine with the unchanged v_ix."],
+  exampleTitle:"Worked Example: your Q10, the prince, the rock, and the moat",
+  example:[
+    "Given: v_i = 12 m/s at 42 degrees above the horizontal, lands 9.5 m below the launch level.",
+    "Split it: v_ix = 12 cos(42) = 8.92 m/s, v_iy = 12 sin(42) = 8.03 m/s.",
+    "(a) Time of flight. Vertical: -9.5 = 8.03 t - 4.9 t^2. Rearranged: 4.9 t^2 - 8.03 t - 9.5 = 0. Quadratic formula: t = [8.03 + sqrt(8.03^2 + 4 x 4.9 x 9.5)] / (2 x 4.9) = [8.03 + 15.8] / 9.8 = 2.4 s.",
+    "Check that it makes sense: rising took about 8.03 / 9.8 = 0.82 s, so it spent about 1.6 s falling, longer than the rise, because it had the extra 9.5 m to fall. Asymmetric, exactly as expected.",
+    "(b) Width of the moat: Delta x = 8.92 x 2.43 = 21.7 m, given as 22 m. That is how far forward it travelled in those 2.4 s.",
+    "(c) Velocity at impact: v_fy = 8.03 - 9.8 x 2.43 = -15.8 m/s. Combine with v_x = 8.92: speed = sqrt(8.92^2 + 15.8^2) = 18 m/s, angle = tan^-1(15.8 / 8.92) = 60 degrees below the horizontal.",
+    "Notice it lands FASTER (18 m/s) than it was thrown (12 m/s). That is the extra 9.5 m of falling adding speed. In Family 5, landing level, it landed at exactly its launch speed. The drop is the difference."
+  ],
+  exampleAnswer:"Answers: (a) 2.4 s  (b) 22 m  (c) 18 m/s [60 degrees below the horizontal]"
+}
+];
+
+var PRACTICE = [
+[ // Family 1
+ {q:"A ball rolls off a 1.20 m high table at 2.5 m/s [horizontally]. How long is it in the air?", c:["0.49 s","0.24 s","0.98 s","1.20 s"], a:"0.49 s", e:"Flat launch, so v_iy = 0 and only the fall matters. t = sqrt(2 x 1.20 / 9.8) = sqrt(0.245) = 0.49 s. The 2.5 m/s sideways speed plays no part in the time."},
+ {q:"The same ball, off a 1.20 m table at 2.5 m/s [horizontally]. How far from the base of the table does it land?", c:["1.2 m","0.61 m","2.5 m","0.49 m"], a:"1.2 m", e:"Time from the fall is 0.49 s. Carry it sideways: Delta x = 2.5 x 0.49 = 1.2 m."},
+ {q:"A book slides off a 0.90 m desk at 1.5 m/s [horizontally]. What is its velocity at impact?", c:["4.5 m/s [70 degrees below the horizontal]","1.5 m/s [horizontally]","4.2 m/s [straight down]","6.0 m/s [45 degrees below the horizontal]"], a:"4.5 m/s [70 degrees below the horizontal]", e:"t = sqrt(2 x 0.90 / 9.8) = 0.43 s. v_fy = 9.8 x 0.43 = 4.2 m/s down. v_x is still 1.5. Speed = sqrt(1.5^2 + 4.2^2) = 4.5 m/s. Angle = tan^-1(4.2 / 1.5) = 70 degrees below the horizontal."},
+ {q:"A stone is thrown horizontally at 10 m/s from a 20 m cliff. How far out from the cliff does it land?", c:["20 m","10 m","44 m","2.0 m"], a:"20 m", e:"t = sqrt(2 x 20 / 9.8) = 2.02 s. Delta x = 10 x 2.02 = 20 m."},
+ {q:"A tray slides off a 0.80 m counter at 3.0 m/s [horizontally]. How long before it hits the floor?", c:["0.40 s","0.27 s","0.82 s","0.08 s"], a:"0.40 s", e:"t = sqrt(2 x 0.80 / 9.8) = sqrt(0.163) = 0.40 s. Height only. The 3.0 m/s would matter for distance, not for time."}
+],
+[ // Family 2
+ {q:"A ball thrown horizontally falls 1.25 m while travelling 6.0 m forward. What was its initial speed?", c:["12 m/s","3.0 m/s","6.0 m/s","24 m/s"], a:"12 m/s", e:"Time from the fall: t = sqrt(2 x 1.25 / 9.8) = 0.505 s. Speed = distance / time = 6.0 / 0.505 = 11.9, about 12 m/s."},
+ {q:"A pitch thrown horizontally falls 0.45 m while travelling 9.2 m. What was its initial speed?", c:["30 m/s","15 m/s","61 m/s","9.2 m/s"], a:"30 m/s", e:"t = sqrt(2 x 0.45 / 9.8) = 0.303 s. Speed = 9.2 / 0.303 = 30.4, about 30 m/s."},
+ {q:"A rock thrown flat off a ledge falls 2.45 m and lands 12 m out. What was its initial speed?", c:["17 m/s","8.5 m/s","34 m/s","5.9 m/s"], a:"17 m/s", e:"t = sqrt(2 x 2.45 / 9.8) = sqrt(0.50) = 0.707 s. Speed = 12 / 0.707 = 17 m/s."},
+ {q:"A stone launched horizontally falls 5.0 m while travelling 30 m forward. Its initial speed was:", c:["30 m/s","15 m/s","6.0 m/s","60 m/s"], a:"30 m/s", e:"t = sqrt(2 x 5.0 / 9.8) = 1.01 s. Speed = 30 / 1.01 = 29.7, about 30 m/s."},
+ {q:"In this family, why must you find the time from the VERTICAL fall first?", c:["Because the sideways information alone contains no time, but the fall distance and gravity give you the time, and then distance / time gives the speed","Because the sideways speed changes during the flight","Because gravity acts sideways as well as down","You do not, you find the speed first"], a:"Because the sideways information alone contains no time, but the fall distance and gravity give you the time, and then distance / time gives the speed", e:"Sideways you are given a distance but neither the speed (that is what you want) nor the time, so that side is stuck. Vertically you have the fall and gravity, which is enough for t. Time is the bridge: cross it, and the sideways side unlocks."}
+],
+[ // Family 3
+ {q:"A projectile is launched horizontally at 6.0 m/s. At t = 1.0 s, its horizontal displacement is:", c:["6.0 m","4.9 m","9.8 m","12 m"], a:"6.0 m", e:"Sideways speed never changes: Delta x = 6.0 x 1.0 = 6.0 m."},
+ {q:"Same launch, 6.0 m/s horizontally. At t = 1.0 s, how far has it fallen?", c:["4.9 m","9.8 m","6.0 m","2.5 m"], a:"4.9 m", e:"Fall = (1/2)(9.8)(1.0)^2 = 4.9 m. Notice at 1 second the fall (4.9 m) is already close to the sideways travel (6.0 m), and the fall is speeding up."},
+ {q:"Same launch, 6.0 m/s horizontally. At t = 2.0 s, its vertical velocity is:", c:["19.6 m/s [down]","9.8 m/s [down]","6.0 m/s [down]","0 m/s"], a:"19.6 m/s [down]", e:"v_y = 9.8 x t = 9.8 x 2.0 = 19.6 m/s down. It gains exactly 9.8 m/s of downward speed every second."},
+ {q:"Same launch, 6.0 m/s horizontally. At t = 2.0 s, its total speed is about:", c:["20.5 m/s","25.6 m/s","19.6 m/s","12.4 m/s"], a:"20.5 m/s", e:"v_x is still 6.0, v_y is 19.6 down. Speed = sqrt(6.0^2 + 19.6^2) = sqrt(36 + 384) = 20.5 m/s."},
+ {q:"For that same projectile, the average acceleration between t = 1.0 s and t = 2.0 s is:", c:["9.8 m/s^2 [down]","4.9 m/s^2 [down]","19.6 m/s^2 [down]","0, because the sideways speed is constant"], a:"9.8 m/s^2 [down]", e:"Only v_y changed: 9.8 to 19.6, a change of 9.8 over 1.0 s, so a = 9.8 m/s^2 [down]. You get this same answer between ANY two times. The acceleration is always just gravity."}
+],
+[ // Family 4
+ {q:"A ball is at the very top of its flight. Its vertical velocity at that instant is:", c:["0 m/s","9.8 m/s [up]","Equal to its horizontal velocity","At its maximum"], a:"0 m/s", e:"At the top it has finished rising and has not started falling. For that one instant the vertical velocity is 0. Its horizontal velocity is still fully there, so the ball itself is not stopped."},
+ {q:"A ball is launched at 20 m/s [30 degrees above the horizontal]. What is its speed at the top of the flight?", c:["17 m/s","0 m/s","20 m/s","10 m/s"], a:"17 m/s", e:"At the top the vertical piece is 0, so the speed is just the horizontal piece: v_x = 20 cos(30) = 17.3, about 17 m/s. It does not stop at the top, it coasts through it."},
+ {q:"The acceleration of a projectile at the top of its flight is:", c:["9.8 m/s^2 [down]","0","9.8 m/s^2 [up]","Smaller than during the rest of the flight"], a:"9.8 m/s^2 [down]", e:"Gravity never switches off. Acceleration is 9.8 m/s^2 [down] at the launch, at the top, and at the landing. Only the vertical velocity is 0 at the top, and velocity is not acceleration."},
+ {q:"A ball lands at the same level it was launched from. How does the rise time compare to the fall time?", c:["They are equal","Rise time is longer","Fall time is longer","It depends on the launch speed"], a:"They are equal", e:"Landing at the launch level makes the flight symmetric. The trip down from the top is the mirror image of the trip up to the top, so the times match."},
+ {q:"A ball is thrown from a castle wall and lands in the moat, well below where it was thrown. How does its fall time compare to its rise time?", c:["The fall time is longer","They are equal","The fall time is shorter","The fall time is zero"], a:"The fall time is longer", e:"It falls back past its launch level and still has the whole drop to the moat left to go. Extra falling distance means extra falling time. That broken symmetry is exactly what makes Family 6 harder than Family 5."}
+],
+[ // Family 5
+ {q:"A projectile is launched at 20 m/s [30 degrees above the horizontal] and lands at its launch level. Its initial vertical velocity is:", c:["10 m/s","17 m/s","20 m/s","5.0 m/s"], a:"10 m/s", e:"v_iy = v_i sin(angle) = 20 sin(30) = 20 x 0.50 = 10 m/s. The other piece, v_ix = 20 cos(30) = 17 m/s, is the sideways piece."},
+ {q:"Same launch: 20 m/s at 30 degrees, lands level. Its maximum height is about:", c:["5.1 m","10 m","17 m","2.5 m"], a:"5.1 m", e:"At the top v_fy = 0, so Delta y = v_iy^2 / (2 x 9.8) = 10^2 / 19.6 = 100 / 19.6 = 5.1 m."},
+ {q:"Same launch: 20 m/s at 30 degrees, lands level. Its total time of flight is about:", c:["2.0 s","1.0 s","4.1 s","3.5 s"], a:"2.0 s", e:"Time up = v_iy / 9.8 = 10 / 9.8 = 1.02 s. It lands level, so double it: 2.04 s, about 2.0 s."},
+ {q:"A projectile launched at 15 m/s [45 degrees above the horizontal] lands at its launch level. Its range is about:", c:["23 m","15 m","46 m","11 m"], a:"23 m", e:"v_ix = v_iy = 15 x 0.707 = 10.6 m/s. Flight time = 2 x 10.6 / 9.8 = 2.16 s. Range = 10.6 x 2.16 = 23 m."},
+ {q:"A projectile is launched at 25 m/s [40 degrees above the horizontal] and lands at its launch level. Its velocity at impact is:", c:["25 m/s [40 degrees below the horizontal]","0 m/s","25 m/s [40 degrees above the horizontal]","50 m/s [straight down]"], a:"25 m/s [40 degrees below the horizontal]", e:"Landing level means perfect symmetry. v_x never changed, and v_fy is the launch v_iy flipped downward. So it lands at exactly its launch speed, 25 m/s, at the same angle, 40 degrees, but below the horizontal instead of above it."}
+],
+[ // Family 6
+ {q:"A rock is thrown at 10 m/s [30 degrees above the horizontal] from a wall and lands 5.0 m below its launch level. Its time of flight is about:", c:["1.6 s","1.0 s","0.51 s","2.5 s"], a:"1.6 s", e:"Split: v_iy = 10 sin(30) = 5.0 m/s. Vertical: -5.0 = 5.0 t - 4.9 t^2, so 4.9 t^2 - 5.0 t - 5.0 = 0. Quadratic formula: t = [5.0 + sqrt(25 + 98)] / 9.8 = [5.0 + 11.1] / 9.8 = 1.64, about 1.6 s. Longer than the 1.02 s a level landing would take, because of the extra drop."},
+ {q:"Same rock: 10 m/s at 30 degrees, lands 5.0 m below launch. How far forward does it travel?", c:["14 m","8.7 m","25 m","5.0 m"], a:"14 m", e:"v_ix = 10 cos(30) = 8.66 m/s. Time is 1.64 s. Delta x = 8.66 x 1.64 = 14.2, about 14 m."},
+ {q:"Same rock: 10 m/s at 30 degrees, lands 5.0 m below launch. Its velocity at impact is about:", c:["14 m/s [52 degrees below the horizontal]","10 m/s [30 degrees below the horizontal]","11 m/s [straight down]","20 m/s [60 degrees below the horizontal]"], a:"14 m/s [52 degrees below the horizontal]", e:"v_fy = 5.0 - 9.8 x 1.64 = -11.1 m/s. v_x is still 8.66. Speed = sqrt(8.66^2 + 11.1^2) = 14.1, about 14 m/s. Angle = tan^-1(11.1 / 8.66) = 52 degrees. And note: 14 is faster than the 10 it was thrown at. The extra 5.0 m of falling added speed."},
+ {q:"A ball is launched at 15 m/s [35 degrees above the horizontal] and lands 12 m below its launch level. Its time of flight is about:", c:["2.7 s","1.8 s","0.88 s","3.5 s"], a:"2.7 s", e:"Split: v_iy = 15 sin(35) = 8.60 m/s. Vertical: -12 = 8.60 t - 4.9 t^2, so 4.9 t^2 - 8.60 t - 12 = 0. t = [8.60 + sqrt(74 + 235)] / 9.8 = [8.60 + 17.6] / 9.8 = 2.67, about 2.7 s."},
+ {q:"In this family, why can you NOT just double the rise time to get the time of flight?", c:["Because it lands below the launch level, so after falling back to launch level it still has farther to fall, and the fall takes longer than the rise","Because gravity gets stronger as it falls","Because the horizontal velocity changes on the way down","Because the angle changes during the flight"], a:"Because it lands below the launch level, so after falling back to launch level it still has farther to fall, and the fall takes longer than the rise", e:"Doubling the rise time only works when the fall ends where the rise started, Family 5. Here the object falls PAST that point. Rise time here was about 0.88 s, double would be 1.76 s, but the real flight was 2.7 s. That gap is the extra drop, and it is why this family needs the quadratic."}
+]
+];
+
+var TEST = [
+ {fam:"Family 1", q:"A cup rolls off a 1.80 m high counter at 4.0 m/s [horizontally]. How long is it in the air?", c:["0.61 s","0.30 s","1.22 s","0.45 s"], a:"0.61 s", e:"Flat launch: t = sqrt(2 x 1.80 / 9.8) = sqrt(0.367) = 0.61 s. Height only, the 4.0 m/s does not affect the time."},
+ {fam:"Family 1", q:"That same cup, off a 1.80 m counter at 4.0 m/s [horizontally]. How far from the counter does it land?", c:["2.4 m","1.2 m","4.0 m","7.2 m"], a:"2.4 m", e:"t = 0.61 s from the fall. Delta x = 4.0 x 0.61 = 2.4 m."},
+ {fam:"Family 2", q:"A ball thrown horizontally falls 1.80 m while travelling 13.5 m forward. Its initial speed was about:", c:["22 m/s","11 m/s","7.5 m/s","45 m/s"], a:"22 m/s", e:"t = sqrt(2 x 1.80 / 9.8) = 0.61 s. Speed = 13.5 / 0.61 = 22.3, about 22 m/s."},
+ {fam:"Family 3", q:"A projectile launched horizontally at 12 m/s: at t = 2.0 s, its total speed is about:", c:["23 m/s","20 m/s","32 m/s","12 m/s"], a:"23 m/s", e:"v_x stays 12. v_y = 9.8 x 2.0 = 19.6 down. Speed = sqrt(12^2 + 19.6^2) = sqrt(144 + 384) = 23 m/s."},
+ {fam:"Family 4", q:"A projectile is launched at 36 m/s [50 degrees above the horizontal]. Its speed at the top of the flight is about:", c:["23 m/s","0 m/s","36 m/s","28 m/s"], a:"23 m/s", e:"At the top the vertical piece is 0, so speed = v_x = 36 cos(50) = 23.1, about 23 m/s."},
+ {fam:"Family 4", q:"At the top of its flight, a projectile's acceleration is:", c:["9.8 m/s^2 [down]","0","9.8 m/s^2 [up]","Equal to its velocity"], a:"9.8 m/s^2 [down]", e:"Gravity acts for the entire flight with no pause at the top. The vertical velocity is 0 at the top, the acceleration is not."},
+ {fam:"Family 5", q:"A launcher fires at 28 m/s [55 degrees above the horizontal] and the projectile lands at its launch level. Its maximum height is about:", c:["27 m","14 m","55 m","7.8 m"], a:"27 m", e:"v_iy = 28 sin(55) = 22.9 m/s. Max height = 22.9^2 / (2 x 9.8) = 526 / 19.6 = 26.8, about 27 m."},
+ {fam:"Family 5", q:"Same launcher: 28 m/s at 55 degrees, lands level. Its range is about:", c:["75 m","38 m","150 m","28 m"], a:"75 m", e:"v_ix = 28 cos(55) = 16.1 m/s. Flight time = 2 x 22.9 / 9.8 = 4.68 s. Range = 16.1 x 4.68 = 75 m."},
+ {fam:"Family 6", q:"A rock is thrown at 14 m/s [38 degrees above the horizontal] from a wall and lands 7.0 m below launch level. Its time of flight is about:", c:["2.4 s","1.8 s","0.88 s","3.1 s"], a:"2.4 s", e:"v_iy = 14 sin(38) = 8.62 m/s. Vertical: -7.0 = 8.62 t - 4.9 t^2, so 4.9 t^2 - 8.62 t - 7.0 = 0. t = [8.62 + sqrt(74.3 + 137.2)] / 9.8 = [8.62 + 14.5] / 9.8 = 2.36, about 2.4 s."},
+ {fam:"Family 6", q:"That same rock: 14 m/s at 38 degrees, lands 7.0 m below launch, flight time 2.36 s. How far forward does it travel?", c:["26 m","13 m","33 m","17 m"], a:"26 m", e:"v_ix = 14 cos(38) = 11.0 m/s. Delta x = 11.0 x 2.36 = 26 m. That would be the width of the moat in a castle version of this question."}
+];
+
+var currentFamily = 0;
+var pracIndex = 0, pracScore = 0, pracAnswered = false;
+var testIndex = 0, testScore = 0, testAnswered = false, testTimerId = null, testSeconds = 25*60;
+
+function shuffle(arr){
+  var a = arr.slice();
+  for(var i=a.length-1;i>0;i--){ var j = Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+var SUP = {"-":"\u207B","0":"\u2070","1":"\u00B9","2":"\u00B2","3":"\u00B3","4":"\u2074","5":"\u2075","6":"\u2076","7":"\u2077","8":"\u2078","9":"\u2079"};
+function fmt(s){
+  return String(s)
+    .replace(/Delta x/g,"\u0394x").replace(/Delta y/g,"\u0394y").replace(/Delta/g,"\u0394")
+    .replace(/sqrt\(/g,"\u221A(")
+    .replace(/\(1\/2\)/g,"\u00BD")
+    .replace(/\^(-?\d+)/g,function(m,n){ return n.split("").map(function(ch){ return SUP[ch]||ch; }).join(""); })
+    .replace(/([A-Za-z])_([A-Za-z]+)/g,"$1<sub>$2</sub>")
+    .replace(/ x /g," \u00D7 ")
+    .replace(/ \/ /g," \u00F7 ")
+    .replace(/ degrees/g,"\u00B0")
+    .replace(/ degree/g,"\u00B0");
+}
+function show(id){
+  ["screen-home","screen-family","screen-practice","screen-test","screen-result"].forEach(function(s){
+    document.getElementById(s).classList.toggle("hidden", s!==id);
+  });
+  window.scrollTo(0,0);
+}
+function goHome(){ stopTimer(); show("screen-home"); }
+
+function renderFamilyList(){
+  var html = "";
+  FAMILIES.forEach(function(f,i){
+    html += '<button class="btn" onclick="openFamily('+i+')"><b>'+f.name+'</b><br><span style="color:#cbd5e1;font-size:14px">'+f.sheet+' &nbsp;|&nbsp; Learn it, see it solved, then 5 problems</span></button>';
+  });
+  document.getElementById("family-list").innerHTML = html;
+}
+
+function openFamily(i){
+  currentFamily = i;
+  var f = FAMILIES[i];
+  document.getElementById("fam-progress").textContent = f.sheet;
+  var moves = f.moves.map(function(m){ return "<li>"+fmt(m)+"</li>"; }).join("");
+  var steps = f.example.map(function(s){ return "<p>"+fmt(s)+"</p>"; }).join("");
+  document.getElementById("family-content").innerHTML =
+    "<h2>"+f.name+"</h2>" +
+    '<div class="spot"><b>SPOT IT:</b> '+fmt(f.spot)+"</div>" +
+    '<div class="why"><b>WHY IT WORKS:</b> '+fmt(f.why)+"</div>" +
+    '<div class="card"><h3 style="margin-top:0">THE MOVES</h3><ol class="steps">'+moves+"</ol></div>" +
+    '<div class="card"><h3 style="margin-top:0">YOUR ACTUAL HOMEWORK QUESTION (word for word from your sheet)</h3><p>'+fmt(f.homework)+"</p></div>" +
+    '<div class="card gold"><h3 style="margin-top:0">'+fmt(f.exampleTitle)+"</h3>"+steps+'<div class="formula">'+fmt(f.exampleAnswer)+"</div></div>" +
+    "<p class='sub'>Read the worked example again until the moves feel automatic. Then try the 5 fresh problems. Same family, new numbers, so you learn the moves and not just the answers.</p>";
+  show("screen-family");
+}
+
+function renderChoices(containerId, explainId, q, onPick){
+  var box = document.getElementById(containerId);
+  box.innerHTML = "";
+  shuffle(q.c).forEach(function(choice){
+    var b = document.createElement("button");
+    b.className = "btn choice"; b.innerHTML = fmt(choice); b.dataset.raw = choice;
+    b.onclick = function(){ onPick(b, choice); };
+    box.appendChild(b);
+  });
+  var ex = document.getElementById(explainId);
+  ex.className = "explain"; ex.innerHTML = "";
+}
+
+function markChoices(containerId, q, picked){
+  var kids = document.getElementById(containerId).children;
+  for(var i=0;i<kids.length;i++){
+    kids[i].disabled = true;
+    if(kids[i].dataset.raw === q.a) kids[i].classList.add("correct");
+    else if(kids[i].dataset.raw === picked) kids[i].classList.add("wrong");
+  }
+}
+
+function toggleHomework(){
+  document.getElementById("prac-homework").classList.toggle("hidden");
+}
+function startPractice(i){
+  currentFamily = i; pracIndex = 0; pracScore = 0;
+  var hw = document.getElementById("prac-homework");
+  hw.innerHTML = "<b>Original homework question:</b><br>"+fmt(FAMILIES[i].homework);
+  hw.classList.add("hidden");
+  show("screen-practice"); loadPractice();
+}
+function loadPractice(){
+  pracAnswered = false;
+  var list = PRACTICE[currentFamily];
+  var q = list[pracIndex];
+  document.getElementById("prac-progress").textContent = "Problem "+(pracIndex+1)+" of "+list.length+"  |  Score "+pracScore;
+  document.getElementById("prac-title").textContent = FAMILIES[currentFamily].name;
+  document.getElementById("prac-q").innerHTML = fmt(q.q);
+  document.getElementById("prac-next").classList.add("hidden");
+  renderChoices("prac-choices","prac-explain",q,function(btn, choice){
+    if(pracAnswered) return; pracAnswered = true;
+    var right = (choice === q.a);
+    if(right) pracScore++;
+    markChoices("prac-choices", q, choice);
+    var ex = document.getElementById("prac-explain");
+    ex.className = "explain show" + (right ? "" : " bad");
+    ex.innerHTML = "<b>"+(right ? "Correct. " : "Not quite. The answer is: "+fmt(q.a)+". ")+"</b>"+fmt(q.e);
+    document.getElementById("prac-progress").textContent = "Problem "+(pracIndex+1)+" of "+list.length+"  |  Score "+pracScore;
+    var next = document.getElementById("prac-next");
+    next.textContent = (pracIndex === list.length-1) ? "See My Score" : "Next Problem";
+    next.classList.remove("hidden");
+  });
+}
+function nextPractice(){
+  var list = PRACTICE[currentFamily];
+  if(pracIndex < list.length-1){ pracIndex++; loadPractice(); }
+  else{
+    document.getElementById("res-title").textContent = FAMILIES[currentFamily].name;
+    document.getElementById("res-score").textContent = pracScore+" out of "+list.length;
+    document.getElementById("res-msg").textContent = pracScore>=4 ? "You own this family, sir. Move to the next one." : (pracScore>=3 ? "Passing. Re-read the worked example once, then run it again and it will click." : "No stress. Go back to the worked example, follow the moves out loud, then try again. The moves are the whole trick.");
+    show("screen-result");
+  }
+}
+
+function startTest(){
+  testIndex = 0; testScore = 0; testSeconds = 25*60;
+  show("screen-test"); loadTest(); startTimer();
+}
+function startTimer(){
+  stopTimer(); updateTimer();
+  testTimerId = setInterval(function(){
+    testSeconds--; if(testSeconds<0) testSeconds=0; updateTimer();
+  },1000);
+}
+function stopTimer(){ if(testTimerId){ clearInterval(testTimerId); testTimerId=null; } }
+function updateTimer(){
+  var m = Math.floor(testSeconds/60), s = testSeconds%60;
+  var el = document.getElementById("test-timer");
+  el.textContent = m+":"+(s<10?"0":"")+s;
+  el.classList.toggle("red", testSeconds < 5*60);
+  if(testSeconds===0) el.textContent = "Time is up, keep going";
+}
+function quitTest(){ stopTimer(); goHome(); }
+function loadTest(){
+  testAnswered = false;
+  var q = TEST[testIndex];
+  document.getElementById("test-progress").textContent = "Question "+(testIndex+1)+" of "+TEST.length+"  |  Score "+testScore;
+  document.getElementById("test-title").textContent = "Final Practice Test";
+  document.getElementById("test-q").innerHTML = fmt(q.q);
+  document.getElementById("test-next").classList.add("hidden");
+  renderChoices("test-choices","test-explain",q,function(btn, choice){
+    if(testAnswered) return; testAnswered = true;
+    var right = (choice === q.a);
+    if(right) testScore++;
+    markChoices("test-choices", q, choice);
+    var ex = document.getElementById("test-explain");
+    ex.className = "explain show" + (right ? "" : " bad");
+    ex.innerHTML = "<b>"+(right ? "Correct. " : "Not quite. The answer is: "+fmt(q.a)+". ")+"</b><br><span style='color:#fde68a'>Family: "+q.fam+"</span><br>"+fmt(q.e);
+    document.getElementById("test-progress").textContent = "Question "+(testIndex+1)+" of "+TEST.length+"  |  Score "+testScore;
+    var next = document.getElementById("test-next");
+    next.textContent = (testIndex === TEST.length-1) ? "See My Test Score" : "Next Question";
+    next.classList.remove("hidden");
+  });
+}
+function nextTest(){
+  if(testIndex < TEST.length-1){ testIndex++; loadTest(); }
+  else{
+    stopTimer();
+    var pct = Math.round(testScore/TEST.length*100);
+    document.getElementById("res-title").textContent = "Final Practice Test";
+    document.getElementById("res-score").textContent = testScore+" out of "+TEST.length+" ("+pct+"%)";
+    document.getElementById("res-msg").textContent = pct>=90 ? "Test ready, sir. That is exam level." : (pct>=60 ? "Passed. You are ready to write the homework answers out in full. Revisit any family below 100% in practice if you want it locked in." : "Good reps. Go back through the families where the test explanations pointed, do their 5 problems again, then retake the test.");
+    show("screen-result");
+  }
+}
+
+renderFamilyList();
+</script>
+</body>
+</html>
